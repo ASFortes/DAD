@@ -12,6 +12,14 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+const routes = [
+    { path: '/', redirect: '/home' },
+   
+]
+
+const router = new VueRouter({
+    routes: routes
+})
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -21,5 +29,7 @@ Vue.use(VueRouter)
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
+    render:h=>h(App),
+    router,
     el: '#app'
 });

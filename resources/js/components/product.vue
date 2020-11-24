@@ -1,6 +1,23 @@
 <template>
-  <table class="table table-striped">
-    <thead>
+<div class ="overflow-auto">
+  <b-table class="table table-striped" 
+      id="my-table"
+      :items="products"
+      :per-page="perPage"
+      :current-page="currentPage"
+      small
+  >
+ <template #cell(photo)="data">
+         <img
+               
+                class="img-usr-container"
+                :src="'api/fotos/'+ data.item.photo "
+                height="50"
+                width="50"
+              />
+      </template>
+ 
+    <!-- <thead>
       <tr>
         <th>Name</th>
         <th>Type</th>
@@ -29,30 +46,56 @@
         <td>{{ product.description }}</td>
         
       </tr>
-    </tbody>
-  </table>
+  
+    </tbody> -->
+  </b-table>
+      <p class="mt-3">Current Page: {{ currentPage }}</p>
+     <b-pagination
+      
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
+    </div>
 </template>
 
 <script>
 export default {
   data: function () {
     return {
-      products: []
+      products: [],
+      currentPage:1,
+      perPage:10,
+      rows:0
     }
   },
-  mounted () {
+  methods:{
+      getProducts:function(){
       console.log(this.$root.products)
     if (this.$root.products.length === 0) {
-      axios.get('api/products')
+      axios.get('api/products?page='+this.currentPage)
         .then(response => {
           console.log(response)
           this.$root.products = response.data.data
           this.products = this.$root.products
+          this.rows=this.products.length;
         })
     } else {
       this.products = this.$root.products
     }
   }
+  },
+  mounted () {
+      this.getProducts();
+      
+    }
+    ,
+    computed:{
+       
+            
+  }
+
 }
 </script>
 

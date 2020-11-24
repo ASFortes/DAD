@@ -12,8 +12,10 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import ProductComponent from './components/product'
 import WelcomeComponent from './components/welcome'
+import BootstrapVue from 'bootstrap-vue'
 
 Vue.use(VueRouter)
+Vue.use(BootstrapVue);
 
 const routes = [
     { path: '/', redirect: '/home' },

@@ -1,5 +1,5 @@
 <template>
-<div class ="overflow-auto">
+<div class ="overflow-auto container mt-5 align-middle">
   <b-table class="table table-striped" 
       id="my-table"
       :items="products"
@@ -11,43 +11,24 @@
          <img
                
                 class="img-usr-container"
-                :src="'api/fotos/'+ data.item.photo "
+                :src="'storage/products/'+ data.item.photo"
                 height="50"
                 width="50"
               />
+              
       </template>
- 
-    <!-- <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Photo</th>
-        <th>Price</th>
-        <th>Description</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="product in products"
-        :key="product.id"
-      >
-        <td>{{ product.name }}</td>
-        <td>{{ product.type }}</td>
 
-         <img
-                 v-if="product.photo_url != null"
-                class="img-usr-container"
-                :src="'api/fotos/' + product.photo_url"
-                height="50"
-                width="50"
-              />
-        <td>{{ product.price}}</td>
-        <td>{{ product.description }}</td>
-        
-      </tr>
-  
-    </tbody> -->
+
+   <template #cell(type)="data">
+       <span v-if="data.item.type=='drink'"  class="badge badge-pill badge-info text-center ">{{data.item.type}}</span>
+       <span v-if="data.item.type=='hot dish'"  class="badge badge-pill badge-danger text-center ">{{data.item.type}}</span>
+       <span v-if="data.item.type=='dish'"  class="badge badge-pill badge-success text-center ">{{data.item.type}}</span>
+       <span v-if="data.item.type=='cold dish'"  class="badge badge-pill badge-primary text-center ">{{data.item.type}}</span>
+       <span v-if="data.item.type=='dessert'"  class="badge badge-pill badge-warning text-center ">{{data.item.type}}</span>
+      
+
+    
+      </template>
   </b-table>
       <p class="mt-3">Current Page: {{ currentPage }}</p>
      <b-pagination
@@ -102,3 +83,36 @@ export default {
 <style scoped>
 /*	  Specific style applied only on the component*/
 </style>
+
+
+  <!-- <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Photo</th>
+        <th>Price</th>
+        <th>Description</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="product in products"
+        :key="product.id"
+      >
+        <td>{{ product.name }}</td>
+        <td>{{ product.type }}</td>
+
+         <img
+                 v-if="product.photo_url != null"
+                class="img-usr-container"
+                :src="'api/fotos/' + product.photo_url"
+                height="50"
+                width="50"
+              />
+        <td>{{ product.price}}</td>
+        <td>{{ product.description }}</td>
+        
+      </tr>
+  
+    </tbody> -->

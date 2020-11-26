@@ -1,8 +1,23 @@
 <template>
 <div class ="overflow-auto container mt-5 align-middle">
+    <input  v-model="searchTerm" placeholder="Filtrar por nome">
+   
+  <b-dropdown id="dropdown-1" text="Tipo"  variant="primary" class="m-2">
+  <b-dropdown-item @click="changeType('drink')" >Drink</b-dropdown-item> 
+  <b-dropdown-item @click="changeType('dessert')">Dessert</b-dropdown-item> 
+  <b-dropdown-item @click="changeType('hot dish')">Hot Dish</b-dropdown-item>
+  <b-dropdown-item @click="changeType('dish')">Dish</b-dropdown-item>
+  <b-dropdown-item @click="changeType('cold dish')">Cold Dish</b-dropdown-item>
+  <b-dropdown-item @click="changeType('')">All</b-dropdown-item>  
+ </b-dropdown>
+  
+  
+
+    
   <b-table class="table table-striped" 
       id="my-table"
-      :items="products"
+     
+      :items="filteredProducts"
       :per-page="perPage"
       :current-page="currentPage"
       small
@@ -30,6 +45,8 @@
     
       </template>
   </b-table>
+  
+  
       <p class="mt-3">Current Page: {{ currentPage }}</p>
      <b-pagination
       
@@ -38,7 +55,13 @@
       :per-page="perPage"
       aria-controls="my-table"
     ></b-pagination>
+
+       
+
     </div>
+
+
+
 </template>
 
 <script>
@@ -46,18 +69,27 @@ export default {
   data: function () {
     return {
       products: [],
+      //filteredProducts:[],
       currentPage:1,
       perPage:10,
-      rows:0
+      rows:0,
+      searchTerm:'',
+      searchType:'',
+    
     }
   },
   methods:{
+      changeType:function(type){
+          this.searchType=type;
+      },
+      
+
       getProducts:function(){
-      console.log(this.$root.products)
+     
     if (this.$root.products.length === 0) {
       axios.get('api/products?page='+this.currentPage)
         .then(response => {
-          console.log(response)
+         
           this.$root.products = response.data.data
           this.products = this.$root.products
           this.rows=this.products.length;
@@ -69,10 +101,32 @@ export default {
   },
   mounted () {
       this.getProducts();
+
+
       
     }
     ,
     computed:{
+          filteredProducts() {
+
+              var filteredProducts= this.products.filter((product)=>{
+                  console.log(product.type);
+               
+                  return product.type.toLowerCase().includes(this.searchType.toLowerCase()) && product.name.toLowerCase().includes(this.searchTerm.toLowerCase());})
+
+                  
+              
+               let orderedProducts = filteredProducts.sort((a, b) => {
+        return b - a;
+      });
+       this.rows=orderedProducts.length;
+       return orderedProducts;
+        // return this.products.filter(item => {
+        //     console.log(item);
+        //     console.log(item);
+        //  return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+    //   })
+    }
        
             
   }

@@ -1,5 +1,18 @@
 <template>
-<div class ="overflow-auto container mt-5 align-middle">
+<div>
+    
+       
+    <div class ="overflow-auto container  align-middle">
+          <div  >
+          
+
+                <div class="top-right links">
+                     <a href="/#/home">Página Inicial</a>
+                        <a href="/#/login">Login</a>
+                            <a href="/#/register">Register</a>
+                </div>
+         </div>
+    
     <input  v-model="searchTerm" placeholder="Filtrar por nome">
    
   <b-dropdown id="dropdown-1" text="Tipo"  variant="primary" class="m-2">
@@ -60,7 +73,7 @@
 
     </div>
 
-
+</div>
 
 </template>
 

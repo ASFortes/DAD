@@ -123,7 +123,7 @@ export default {
           filteredProducts() {
 
               var filteredProducts= this.products.filter((product)=>{
-                  console.log(product.type);
+                  
                
                   return product.type.toLowerCase().includes(this.searchType.toLowerCase()) && product.name.toLowerCase().includes(this.searchTerm.toLowerCase());})
 

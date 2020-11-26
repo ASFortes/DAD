@@ -2,12 +2,14 @@
 
 
         <div class="flex-center position-ref full-height">
-    
+          
+
                 <div class="top-right links">
+                     <a href="/#/products">Menu</a>
                         <a href="/#/login">Login</a>
                             <a href="/#/register">Register</a>
                 </div>
-
+               
             <div class="content">
                 <div class="title m-b-md">
                     Food@Home
@@ -22,6 +24,8 @@
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -31,6 +35,9 @@ export default {
 
   methods: {
    
+  },
+  components:{
+
   },
   mounted(){
    

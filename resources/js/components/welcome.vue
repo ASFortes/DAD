@@ -3,12 +3,8 @@
 
         <div class="flex-center position-ref full-height">
           
-
-                <div class="top-right links">
-                     <a href="/#/products">Menu</a>
-                        <a href="/#/login">Login</a>
-                            <a href="/#/register">Register</a>
-                </div>
+                <nav-bar></nav-bar>
+               
                
             <div class="content">
                 <div class="title m-b-md">
@@ -24,6 +20,7 @@
 </template>
 
 <script>
+import NavBarComponent from './navBar'
 
 
 export default {
@@ -37,9 +34,11 @@ export default {
    
   },
   components:{
-
+        
+        'navBar':NavBarComponent,
   },
-  mounted(){
+  
+    NavBarmounted(){
    
 
   

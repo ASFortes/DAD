@@ -2,8 +2,9 @@
     <div>
         
     <!-- <router-link to="/users">Users</router-link> - -->
-   
+  
     <router-view></router-view>
+    
    
   
         
@@ -17,7 +18,9 @@ export default {
     components:{
          'user':UserComponent,
          'product':ProductComponent,
-         'welcome':WelcomeComponent
+         'welcome':WelcomeComponent,
+    
+
     }
 }
 </script>

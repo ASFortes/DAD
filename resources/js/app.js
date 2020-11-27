@@ -7,20 +7,26 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+Vue.use(VueRouter)
+Vue.use(BootstrapVue);
 
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import ProductComponent from './components/product'
 import WelcomeComponent from './components/welcome'
 import BootstrapVue from 'bootstrap-vue'
+import LoginComponent from './components/login'
+import MySelf from './components/mySelf'
+import EditComponent from './components/userEdit'
 
-Vue.use(VueRouter)
-Vue.use(BootstrapVue);
 
 const routes = [
     { path: '/', redirect: '/home' },
     { path: '/products', component: ProductComponent },
-    { path: '/home', component:WelcomeComponent}
+    { path: '/login', component: LoginComponent },
+    { path: '/home', component:WelcomeComponent},
+    { path: '/myself', component:MySelf},
+    { path: '/userEdit', component:EditComponent},
    
         
    

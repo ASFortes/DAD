@@ -12,7 +12,7 @@
         </head>
         <body>
         <div class="container" id="app">
-           <h2>abd</h2>
+          
         </div>
      
      <script src="js/app.js"></script>

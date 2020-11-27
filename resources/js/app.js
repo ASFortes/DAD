@@ -16,13 +16,17 @@ import ProductComponent from './components/product'
 import WelcomeComponent from './components/welcome'
 import BootstrapVue from 'bootstrap-vue'
 import LoginComponent from './components/login'
+import MySelf from './components/mySelf'
+import EditComponent from './components/userEdit'
 
 
 const routes = [
     { path: '/', redirect: '/home' },
     { path: '/products', component: ProductComponent },
     { path: '/login', component: LoginComponent },
-    { path: '/home', component:WelcomeComponent}
+    { path: '/home', component:WelcomeComponent},
+    { path: '/myself', component:MySelf},
+    { path: '/userEdit', component:EditComponent},
    
         
    

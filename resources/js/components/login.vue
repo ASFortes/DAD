@@ -41,7 +41,7 @@ export default {
         email: "",
         password: "",
       },
-      errorMessage:"samba",
+      errorMessage:"",
       showMessage:false,
     };
   },
@@ -53,6 +53,7 @@ export default {
           .then((response) => {
            console.log(response.data.type)
             this.$router.push("/products");
+            console.log(this.$route.path);
             // if(response.data.type=='EM'||response.data.type=='EC'||response.data.type=='ED'){
                 
             // };

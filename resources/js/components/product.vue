@@ -6,11 +6,7 @@
           <div  >
           
 
-                <div class="top-right links">
-                     <a href="/#/home">Página Inicial</a>
-                        <a href="/#/login">Login</a>
-                            <a href="/#/register">Register</a>
-                </div>
+                <nav-bar></nav-bar>
          </div>
     
     <input  v-model="searchTerm" placeholder="Filtrar por nome">
@@ -78,6 +74,9 @@
 </template>
 
 <script>
+import NavBarComponent from './navBar'
+import NavBar from './navBar.vue';
+
 export default {
   data: function () {
     return {
@@ -142,7 +141,12 @@ export default {
     }
        
             
-  }
+  },
+    components:{
+        
+        'navBar':NavBarComponent,
+        
+  },
 
 }
 </script>

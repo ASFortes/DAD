@@ -18,6 +18,7 @@ import BootstrapVue from 'bootstrap-vue'
 import LoginComponent from './components/login'
 import MySelf from './components/mySelf'
 import EditComponent from './components/userEdit'
+import RegisterComponent from './components/register'
 
 
 const routes = [
@@ -27,6 +28,8 @@ const routes = [
     { path: '/home', component:WelcomeComponent},
     { path: '/myself', component:MySelf},
     { path: '/userEdit', component:EditComponent},
+    { path: '/register', component:RegisterComponent},
+
    
         
    

@@ -21,7 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route:: middleware('auth:sanctum')->get('users/me', [UserController::class, 'me']);
+Route::middleware('auth:sanctum')->get('users/me', [UserController::class, 'me']);
+Route::middleware('auth:sanctum')->post('profile/photo', [UserController::class, 'uploadPhoto']);
 
 //Route::middleware('auth:sanctum')->get('products', [ProductController::class, 'index']);
 Route::get('products', [ProductController::class, 'index']);
@@ -29,7 +30,7 @@ Route::get('products', [ProductController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
-
+Route::post('register', [UserController::class, 'store']);
 //Route::middleware('auth:sanctum')->post('logout',[AuthController::class, 'logout']);
 
 

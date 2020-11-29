@@ -3,12 +3,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Customer;
 use Hash;
 use Validator;
 
-use File;
+
 
 
 class UserController extends Controller
@@ -24,16 +26,17 @@ class UserController extends Controller
  {
 
      
-    
+   
 
      $validator = Validator::make($request->all(),[
               'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
               'email' => 'required|email|unique:users,email',
               'password' => 'required|min:3',
-              'nif' => 'digits:9',
-              'address'=>'required|min:10',
+             
+              'address'=>'required|min:5',
               'phone'=>'required|numeric|min:9',
-              //'photo'=>'mimes:jpeg,png|max:10000' 
+              'nif' => 'nullable|digits:9|unique:customers',
+              'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
               
           ]);
          
@@ -44,11 +47,11 @@ class UserController extends Controller
           
           $user = new User();
           $customer= new Customer();
-         var_dump($request);
+           
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->password = $request['password'];
-            $user->photo_url=$request['photo'];
+            // $user->photo_url=$request['photo'];
             $customer->nif = $request['nif'];
             $customer->address = $request['address'];
             $customer->phone = $request['phone'];
@@ -64,15 +67,31 @@ class UserController extends Controller
             
             $user->save();
             $customer->id=$user->id;
-            $path = $user->id . '.jpg';
-            $user->photo_url = $path;
+            // $path = $user->id . '.jpg';
+            // $user->photo_url = $path;
             
             $customer->save();
+            if ($request->hasfile('photo')) {
+                
+                $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
+                Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
+               // $request->file('photo')->move('app/public/storage/fotos', $nov_nome);362
+            //    Storage::putFileAs('app/public/storage/fotos',$request->file('photo'),$nov_nome);
+            //     $path = $request->file('photo')->storeAs(
+            //         $nov_nome,
+            //         $user->id,
+            //         storage_path('app/public/storage/fotos')
+            //     );
+                
+                
+                $user['photo_url'] = $nov_nome;
+            }
+            $user->update();
 
            
 
-
-     return response()->json( $user, 201);
+           return response()->json($user, 201);
+    // return response()->json( $user, 201);
  }
  
 

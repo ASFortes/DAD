@@ -56,7 +56,7 @@
                   <b-form-input
                     id="password"
                     v-model="form.password"
-                    type="text"
+                    type="password"
                     required
                     placeholder="Password"
                   ></b-form-input>
@@ -69,7 +69,7 @@
                   <b-form-input
                     id="confirmpassword"
                     v-model="form.confirmPassword"
-                    type="text"
+                    type="password"
                     required
                     placeholder="Confirm Password"
                   ></b-form-input>
@@ -100,24 +100,19 @@
                     id="nif"
                     v-model="form.nif"
                     type="text"
-                    placeholder="NIF (opcional)"
+                    placeholder="(Optional) NIF "
                   ></b-form-input>
                 </b-form-group>
-                 
-                <b-form-group  label="Foto" >
+
+                <b-form-group label="Photo">
                   <b-form-file
-                    v-model="file"
-                    :state="Boolean(file)"
-                    placeholder="(Opcional) Escolha um ficheiro ou arraste-o para aqui..."
+                    enctype="multipart/form-data"
+                    v-model="form.photo"
+                    :state="Boolean(form.photo)"
+                    placeholder="(Optional) Pick a file or drop it here..."
                     drop-placeholder="Drop file here..."
                   ></b-form-file>
-
-
                 </b-form-group>
-                <div class="form-group">
-                <b-button variant="secondary" size @click="uploadPhoto">Carregar Fotografia</b-button>
-                </div>
-              
 
                 <!-- <b-form-group label="Password:" label-for="password">
                   <b-form-input
@@ -128,7 +123,9 @@
                     placeholder="Password"
                   ></b-form-input>
                 </b-form-group> -->
-
+                <div class="alert alert-danger" role="alert" v-if="showMessage">
+                  {{ errorMessage }}
+                </div>
                 <b-button type="submit" variant="primary">Register</b-button>
                 <b-button to="/login" variant="secondary">Cancel</b-button>
               </b-form>
@@ -144,18 +141,19 @@ export default {
   data() {
     return {
       user: {},
-      file:null,
+      errorMessage: "",
+      showMessage: false,
       logged: false,
       form: {
         email: "",
         name: "",
-        nif: "",
+        nif: null,
         password: "",
         confirmPassword: "",
-        
+        file: null,
         phone: "",
         address: "",
-        
+        photo: null,
       },
 
       options: [
@@ -170,38 +168,61 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
 
-      
-    // if (this.password!=this.confirmPassword){
-        
-    // }
+      // const file = new Blob([this.file]);
+      // const formData = new FormData();
+      // formData.append("photo", file, this.email + "_photo");
+      // this.photo=this.email+"_photo";
+
+      const fd = new FormData();
+      fd.append("name", this.form.name);
+      fd.append("email", this.form.email);
+      fd.append("password", this.form.password);
+      fd.append("nif", this.form.nif);
+      fd.append("address", this.form.address);
+      fd.append("phone", this.form.phone);
+      if (this.form.photo != null) {
+        fd.append("photo", this.form.photo);
+      }
+
+      if (this.password != this.confirmPassword) {
+        this.showMessage = true;
+        this.errorMessage = "The passwords must match";
+      }
       axios
-        .post("api/register", this.form)
+        .post("api/register", fd, {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           this.$router.push("/login");
         })
         .catch((error) => {
+          console.log(error.response);
+          this.showMessage = true;
+          this.errorMessage =error.response.data.error;
           //this.$refs.msgref.showAlert(error.response.data.error, "danger");
         });
 
       //alert(JSON.stringify(this.form));
     },
 
-    uploadPhoto() {
-      const file = new Blob([this.file]);
-      const formData = new FormData();
-      formData.append("photo", this.file, this.nif + "_photo");
+    // uploadPhoto() {
+    //   const file = new Blob([this.file]);
+    //   const formData = new FormData();
+    //   formData.append("photo", this.file, this.nif + "_photo");
 
-      axios({
-        method: "post",
-        url: "/api/photo",
-        data: formData,
-        headers: {
-          "content-type": `multipart/form-data; boundary?${formData._boundary}`
-        }
-      }).then(response => {
-        this.$refs.msgref.showAlert("Photo saved sucessfully.", "success");
-      });
-    },
+    //   axios({
+    //     method: "post",
+    //     url: "/api/photo",
+    //     data: formData,
+    //     headers: {
+    //       "content-type": `multipart/form-data; boundary?${formData._boundary}`
+    //     }
+    //   }).then(response => {
+    //     this.$refs.msgref.showAlert("Photo saved sucessfully.", "success");
+    //   });
+    // },
     onReset(evt) {
       evt.preventDefault();
       // Reset our form values

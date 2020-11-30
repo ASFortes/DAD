@@ -13,11 +13,11 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             if(Auth::user()->blocked==1){
-                return response()->json(['message' => 'A sua conta encontra-se bloqueada.'], 403);
+                return response()->json(['message' => 'Your account is blocked.'], 403);
             }
             return Auth::user();
         } else {
-            return response()->json(['message' => 'Unauthenticated .'], 401);
+            return response()->json(['message' => 'Invalid login credentials.'], 401);
         }
     }
     public function logout()

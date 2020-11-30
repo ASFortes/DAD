@@ -31,6 +31,8 @@ Route::get('products', [ProductController::class, 'index']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [UserController::class, 'store']);
+Route::post('update', [UserController::class, 'update']);
+Route::put('password',[UserController::class, 'changePassword']);
 //Route::middleware('auth:sanctum')->post('logout',[AuthController::class, 'logout']);
 
 

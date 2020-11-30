@@ -151,8 +151,8 @@ export default {
         password: "",
         confirmPassword: "",
         file: null,
-        phone: "",
-        address: "",
+        phone: null,
+        address:null,
         photo: null,
       },
 
@@ -228,7 +228,7 @@ export default {
       // Reset our form values
       this.form.email = "";
       this.form.name = "";
-      this.form.nif = "";
+      this.form.nif = null;
       this.form.password = "";
       this.form.photo = null;
       // Trick to reset/clear native browser form validation state

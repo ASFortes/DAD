@@ -29,6 +29,7 @@
     </div>
     <div class="form-group">
       <a class="btn btn-default" v-on:click.prevent="login">Login</a>
+      <a href="/#/home" class="btn btn-default">Cancel</a>
     </div>
   </div>
   </div>

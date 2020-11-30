@@ -22,7 +22,8 @@ class Product extends JsonResource
         'email' => $this->email,
         'type' => $this->type,
         'blocked' => $this->blocked,
-        'photo' => $this->photo_url
+        'photo' => $this->photo_url,
+        'password' => $this->password
         
     ];
     }

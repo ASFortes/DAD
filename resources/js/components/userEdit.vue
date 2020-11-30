@@ -84,11 +84,9 @@
                     placeholder="(Optional) NIF "
                   ></b-form-input>
                 </b-form-group>
-             
-              
-    
-
-                <b-form-group label="Photo">
+                
+                
+                 <b-form-group label="Photo">
                        <img
                
                 class="img-usr-container rounded-circle"
@@ -200,10 +198,10 @@ export default {
         nif: null,
         file: null,
         phone:null,
-        address: null,
+        address:null ,
         photo: null,
         type:null,
-        photo_url:"",
+        photo_url:"user_undefined.png",
        
       },
        formPassword: {
@@ -233,9 +231,15 @@ export default {
       fd.append("name", this.form.name);
       fd.append("email", this.form.email);
       fd.append("password", this.form.password);
+      if(this.form.nif){
       fd.append("nif", this.form.nif);
+      }
+       if(this.form.address){
       fd.append("address", this.form.address);
+       }
+       if(this.form.phone){
       fd.append("phone", this.form.phone);
+       }
       if (this.form.photo != null) {
         fd.append("photo", this.form.photo);
       }
@@ -327,8 +331,13 @@ export default {
       this.form.name =response.data.name;
       this.form.nif = response.data.nif;
       this.form.password = response.data.password;
+      if(response.data.photo_url!=null){
       this.form.photo_url = response.data.photo_url;
+      }
+      
       this.form.type = response.data.type;
+      this.form.address=response.data.address;
+      this.form.phone=response.data.phone;
     });
    
 

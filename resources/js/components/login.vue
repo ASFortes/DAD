@@ -55,6 +55,7 @@ export default {
            console.log(response.data.type)
             this.$router.push("/products");
             console.log(this.$route.path);
+            
             // if(response.data.type=='EM'||response.data.type=='EC'||response.data.type=='ED'){
                 
             // };

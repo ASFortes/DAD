@@ -177,7 +177,9 @@ export default {
       fd.append("name", this.form.name);
       fd.append("email", this.form.email);
       fd.append("password", this.form.password);
+      if(this.form.nif){
       fd.append("nif", this.form.nif);
+      }
       fd.append("address", this.form.address);
       fd.append("phone", this.form.phone);
       if (this.form.photo != null) {

@@ -16,10 +16,29 @@ use Validator;
 class UserController extends Controller
 
 {
+
+    public function index()
+    {
+        return ProductResource::collection(Product::all());
+    }
+
+
  public function me(Request $request)
  {
     //return $request->user();
-    return Auth::user();
+    $user=Auth::user();
+
+
+
+    if($user->type=='C'){
+    $customer_id=$user->id;
+    $customer = Customer::findOrFail($customer_id);
+    $user->address=$customer->address;
+    $user->nif=$customer->nif;
+    $user->phone=$customer->phone;
+    }
+    
+    return response()->json($user, 201);
  }
 
  public function store(Request $request)
@@ -34,7 +53,7 @@ class UserController extends Controller
               'password' =>'required|min:3',
               'address'=>'required|min:5',
               'phone'=>'required|numeric|min:9',
-              'nif' => 'present|digits:9|nullable|unique:customers',
+              'nif' => 'nullable|digits:9|unique:customers',
               'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
 
           ]);
@@ -96,11 +115,11 @@ class UserController extends Controller
  public function update(Request $request)
  {
 
-            $user_id =  Auth::user()->id;
+            $user_id = Auth::user()->id;
             
             $customer_id=$user_id;
             $user = User::find($user_id);
-           
+            $customer = Customer::findOrFail($customer_id);
 
 
             
@@ -108,9 +127,9 @@ class UserController extends Controller
         'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
         'email' => 'required|email|unique:users,email,'.$user_id,
         'password' =>'required|min:3',
-        //'address'=>'nullable|min:5',
-        //'phone'=>'nullable|numeric|min:9',
-        //'nif' => 'nullable|digits:9|unique:customers,'.$customer_id,
+        'address'=>'nullable|min:5',
+        'phone'=>'nullable|numeric|min:9',
+        'nif' => 'nullable|digits:9|unique:customers,nif,'.$customer_id,
         'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
         
     ]);
@@ -121,17 +140,17 @@ class UserController extends Controller
 
             $user->name = $request['name'];
             $user->email = $request['email'];
-            $user->password = $request['password'];
-            // $user->photo_url=$request['photo'];
+         
+            $user->photo_url=$request['photo'];
             if($user->type=='C'){
-            $customer = Customer::findOrFail($customer_id);
+           
             var_dump($customer);
             $customer->nif = $request['nif'];
             $customer->address = $request['address'];
             $customer->phone = $request['phone'];
 
            
-            $customer->save();
+            //$customer->save();
             }
             $user->save();
             if ($request->hasfile('photo')) {

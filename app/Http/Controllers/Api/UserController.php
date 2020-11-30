@@ -96,15 +96,11 @@ class UserController extends Controller
  public function update(Request $request)
  {
 
-     
-   
-
-
-   
             $user_id =  Auth::user()->id;
+            
             $customer_id=$user_id;
             $user = User::find($user_id);
-            $customer = Customer::find($customer_id);
+           
 
 
             
@@ -122,44 +118,26 @@ class UserController extends Controller
           if ($validator->fails()) {
              return response()->json(['error' =>$validator->errors()->first()],400);
           }
-          
-         
-        
-           
+
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->password = $request['password'];
             // $user->photo_url=$request['photo'];
+            if($user->type=='C'){
+            $customer = Customer::findOrFail($customer_id);
+            var_dump($customer);
             $customer->nif = $request['nif'];
             $customer->address = $request['address'];
             $customer->phone = $request['phone'];
-           
-            $user->password = Hash::make($user->password);
-           
 
-         
-
-            
-            //$request->file('photo')->move(storage_path('app/public/storage/fotos'), $path);
-            
-            $user->update();
            
-            // $path = $user->id . '.jpg';
-            // $user->photo_url = $path;
-            
-            $customer->update();
+            $customer->save();
+            }
+            $user->save();
             if ($request->hasfile('photo')) {
                 
                 $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
                 Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
-               // $request->file('photo')->move('app/public/storage/fotos', $nov_nome);362
-            //    Storage::putFileAs('app/public/storage/fotos',$request->file('photo'),$nov_nome);
-            //     $path = $request->file('photo')->storeAs(
-            //         $nov_nome,
-            //         $user->id,
-            //         storage_path('app/public/storage/fotos')
-            //     );
-                
                 
                 $user['photo_url'] = $nov_nome;
             }

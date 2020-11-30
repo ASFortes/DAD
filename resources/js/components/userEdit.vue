@@ -176,8 +176,8 @@
                 <div class="alert alert-danger" role="alert" v-if="showMessage">
                   {{ errorMessage }}
                 </div>
-                <b-button type="submit" variant="primary">Update</b-button>
-                <b-button to="/home" variant="secondary">Cancel</b-button>
+                <b-button  type="submit" variant="primary" >Update</b-button>
+                <b-button  to="/home" variant="secondary">Cancel</b-button>
               </b-form>
             </div>
           </div>
@@ -253,12 +253,14 @@ export default {
           },
         })
         .then((response) => {
-          this.$router.push("/login");
+          this.$router.push("/home");
+           alert("User updated");
         })
         .catch((error) => {
           console.log(error.response);
           this.showMessage = true;
           this.errorMessage =error.response.data.error;
+         
           //this.$refs.msgref.showAlert(error.response.data.error, "danger");
         });
 

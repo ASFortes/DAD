@@ -119,7 +119,7 @@ class UserController extends Controller
             
             $customer_id=$user_id;
             $user = User::find($user_id);
-            $customer = Customer::findOrFail($customer_id);
+           
 
 
             
@@ -129,7 +129,7 @@ class UserController extends Controller
         'password' =>'required|min:3',
         'address'=>'nullable|min:5',
         'phone'=>'nullable|numeric|min:9',
-        'nif' => 'nullable|digits:9|unique:customers,nif,'.$customer_id,
+        'nif' => 'nullable|digits:9|unique:customers,nif,'.$user_id,
         'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
         
     ]);
@@ -143,7 +143,7 @@ class UserController extends Controller
          
             $user->photo_url=$request['photo'];
             if($user->type=='C'){
-           
+                $customer = User::find($user_id);
             var_dump($customer);
             $customer->nif = $request['nif'];
             $customer->address = $request['address'];

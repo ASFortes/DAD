@@ -18,6 +18,8 @@ import BootstrapVue from 'bootstrap-vue'
 import LoginComponent from './components/login'
 import EditComponent from './components/userEdit'
 import RegisterComponent from './components/register'
+import ShopCartComponent from './components/shopCart'
+import store from "./stores/global-storage"
 
 
 const routes = [
@@ -27,6 +29,8 @@ const routes = [
     { path: '/home', component:WelcomeComponent},
     { path: '/userEdit', component:EditComponent},
     { path: '/register', component:RegisterComponent},
+    { path: '/cart', component:ShopCartComponent},
+
 
    
         
@@ -47,8 +51,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     render:h=>h(App),
     router,
-    data:{
-        products:[],
-    },
+    store,
+     data:{
+         products:[],
+     },
   
 }).$mount('#app');

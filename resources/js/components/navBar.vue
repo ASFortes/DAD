@@ -1,11 +1,12 @@
 <template>
   <div class="top-right links">
-    <a v-if="this.$route.path == '/home'" href="/#/products">Menu</a>
-    <a v-if="this.$route.path == '/products'" href="/#/home">Home</a>
-    <a v-if="this.user==null" href="/#/login">Login</a>
-    <a v-if="this.user!=null" href="/#/home" @click.prevent="logout">Logout</a>
-    <a  v-if="this.user==null" href="/#/register">Register</a>
-    <a v-if="this.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
+    <a v-if="this.$route.path != '/home'" href="/#/home">Home</a>
+    <a v-if="this.$route.path != '/products'" href="/#/products">Menu</a>
+    <a v-if="this.$store.state.user==null" href="/#/login">Login</a>
+    <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
+    <a v-if="this.$store.state.user==null" href="/#/register">Register</a>
+    <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
+    <a v-if="this.$store.state.user!=null" href="/#/cart" >Cart</a>
   </div>
 </template>
 <script>
@@ -22,39 +23,44 @@ export default {
         .then((response) => {
           //   console.log("User has logged out");
          
+           this.$store.commit('clearUser');  
+           this.$store.commit('clearCart');
+           ro
            
-            this.user = null;
-          
         })
         .catch((error) => {
           console.log("Invalid Logout");
-        });
+        });    
+
     },
     myself(){
+      if(this.$store.state.user!=null){
       axios
         .get("/api/users/me")
         .then((response) => {
           console.log("User currently logged:");
           console.dir(response.data.name);
-          this.user=response;
+          this.user= this.$store.state.user;
           this.$router.push("/userEdit");
+          // this.$store.state.user.name + '<br>' +
+          // this.$store.state.user.email, { type: 'info' }
           
         })
         .catch((error) => {
           console.log("Invalid Request");
         });
+      }
+
+       
+
     }
  
   },
   
     mounted(){
-        console.log(window.localStorage);
+        //console.log(window.localStorage);
       
-    axios.get("api/users/me").then((response) => {
-      this.user = response.data;
-      console.log(this.user);
-    
-    });
+          
 
     //console.log(this.user);
   }

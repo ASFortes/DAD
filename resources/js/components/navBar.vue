@@ -1,9 +1,9 @@
 <template>
   <div class="top-right links">
-    <a v-if="this.$route.path == '/home'" href="/#/products">Menu</a>
-    <a v-if="this.$route.path == '/products'" href="/#/home">Home</a>
+    <a v-if="this.$route.path != '/home'" href="/#/home">Home</a>
+    <a v-if="this.$route.path != '/products'" href="/#/products">Menu</a>
     <a v-if="this.$store.state.user==null" href="/#/login">Login</a>
-    <a v-if="this.$store.state.user!=null" href="/#/home" @click.prevent="logout">Logout</a>
+    <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
     <a v-if="this.$store.state.user==null" href="/#/register">Register</a>
     <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
     <a v-if="this.$store.state.user!=null" href="/#/cart" >Cart</a>
@@ -24,6 +24,8 @@ export default {
           //   console.log("User has logged out");
          
            this.$store.commit('clearUser');  
+           this.$store.commit('clearCart');
+           ro
            
         })
         .catch((error) => {

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="mt-5 d-flex justify-content-center">
     <div class="alert alert-danger" role="alert" v-if="showMessage">
     {{errorMessage}}
     </div> 

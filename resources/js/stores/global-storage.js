@@ -37,6 +37,9 @@ export default new Vuex.Store({
       }
 
     },
+    clearCart(state){
+      state.shopCart=[];
+    }
 
 
   },

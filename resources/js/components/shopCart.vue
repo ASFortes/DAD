@@ -1,8 +1,13 @@
 <template>
-  <b-container class="bv-example-row bv-example-row-flex-cols">
-    <b-row align-h="center">
+<div class=" align-middle">
+  <b-row align-h="center">
+      
       <b-col>
         <div class="card mb-0 p-4" style="width: 100%; min-width: 400px">
+             <div>
+    <nav-bar></nav-bar>
+    </div>
+
           <div class="cart container mb-5">
             <b-jumbotron
               header="Food@Home"
@@ -12,14 +17,14 @@
             ></b-jumbotron>
            
             <b-jumbotron
-              v-if="this.products.length == 0"
+              v-if="this.products.length == 0 && this.$store.state.user!=null"
               lead="Your cart is empty"
               class="text-center mt-2"
               style="background: none !important"
             ></b-jumbotron>
 
             <b-table
-              v-if="this.products.length != 0"
+              v-if="this.products.length != 0 && this.$store.state.user!=null"
               class="table table-striped"
               id="my-table"
               :items="products"
@@ -30,23 +35,30 @@
             >
             <template #cell(actions)="data">
         <button   class="btn btn-sm btn-danger"  v-on:click.prevent="removeFromShoppingCart(data.item)">Remove</button>
-         <button   class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Add</button>
+        <button   class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Add</button>
         </template>
           
             </b-table>  
             <b-row>
-                <b-col colspan="4" class="text-right h3">Total: €{{Number(total).toFixed(2) + "€"}}</b-col>
+                <router-link class="h3" to="/products">Go shopping</router-link>
+                <b-col colspan="4" class="text-right h3">
+                  <button  v-if="this.$store.state.shopCart.length>0" v-on:click.prevent="clearCart()" class="  btn btn-sm btn-danger">Clear Cart </button> Total: €{{Number(total).toFixed(2) + "€"}}</b-col>
+                  <button   class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Confirm Order</button>
             </b-row>
 
-            <router-link to="/products">Go shopping</router-link>
+           
            </div>
         </div>
       </b-col>
     </b-row>
-  </b-container>
+  
+  </div>
 </template>
 <script>
+import NavBarComponent from "./navBar";
+import NavBar from './navBar.vue';
 export default {
+
   data: function () {
     return {
       products: [],
@@ -111,6 +123,15 @@ export default {
       this.products = this.$store.state.shopCart;
       
 
+    },
+    clearCart: function(){
+    
+      this.$store.commit('clearCart');
+      //alert("This item has been added to your cart");
+      console.log(this.$store.state.shopCart);
+      this.products = this.$store.state.shopCart;
+      
+
     }
   
   },
@@ -120,6 +141,10 @@ export default {
     this.products = this.$store.state.shopCart;
 
     //console.log(this.user);
+  },
+   components: {
+      navBar: NavBarComponent,
+      
   },
 };
 </script>

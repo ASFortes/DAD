@@ -9,18 +9,18 @@
             <div class="content">
                 <div class="title m-b-md">
                     Food@Home
-                   
                 </div>
                  <img class="center" src="\images\imagemInicial.jpg" />
-              
-
-        
-            </div>
+                     
+             </div>
+       
+               
         </div>
 </template>
 
 <script>
 import NavBarComponent from './navBar'
+import LoginComponent from './login'
 
 
 export default {
@@ -36,6 +36,7 @@ export default {
   components:{
         
         'navBar':NavBarComponent,
+        'login':LoginComponent,
   },
   
     NavBarmounted(){

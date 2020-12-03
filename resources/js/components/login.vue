@@ -48,29 +48,63 @@ export default {
   },
   methods: {
     login() {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios
-          .post("/api/login", this.credentials)
-          .then((response) => {
-           console.log(response.data.type)
-            this.$router.push("/products");
-            console.log(this.$route.path);
-            
-            // if(response.data.type=='EM'||response.data.type=='EC'||response.data.type=='ED'){
-                
-            // };
-           
-          })
 
-         
-          .catch((error) => {
+           this.$store.commit('clearUser')
+            axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/login', this.credentials).then(response => {
+            this.$store.commit('setUser', response.data)
+            //this.$toasted.show('User is authenticated successfully',{type:'success'})
+            this.$router.push("/products");
             
-            console.log(error.response);
+
+            })
+            .catch(error => {
+            //this.$toasted.show('Invalid Authentication', { type: 'error' })
             this.showMessage=true;
             this.errorMessage=error.response.data.message;
+            })
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // axios.get("/sanctum/csrf-cookie").then((response) => {
+      //   axios
+      //     .post("/api/login", this.credentials)
+      //     .then((response) => {
+      //      console.log(response.data.type)
+      //       this.$router.push("/products");
+      //       console.log(this.$route.path);
             
-          });
-      }); 
+      //       // if(response.data.type=='EM'||response.data.type=='EC'||response.data.type=='ED'){
+                
+      //       // };      
+
+            
+           
+      //     })
+
+         
+      //     .catch((error) => {
+            
+      //       console.log(error.response);
+      //       this.showMessage=true;
+      //       this.errorMessage=error.response.data.message;
+            
+      //     });
+      // }); 
     },
   },
 };

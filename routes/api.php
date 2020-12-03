@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->post('profile/photo', [UserController::class,
 
 //Route::middleware('auth:sanctum')->get('products', [ProductController::class, 'index']);
 Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{id}', [ProductController::class, 'showProduct']);
+
 
 
 Route::post('login', [AuthController::class, 'login']);

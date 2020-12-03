@@ -13,4 +13,18 @@ class ProductController extends Controller
     {
         return ProductResource::collection(Product::all());
     }
+
+
+
+  
+
+    public function showProduct($id)
+    {
+        $Product = Product::find($id);
+
+        if($Product==null)   
+            return response()->json("Product not found.", 404);
+        
+        return new Product($Product);
+    }
 }

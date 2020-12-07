@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource;
 use App\Models\Product;
 
+
+
 class ProductController extends Controller
 {
     public function index()
@@ -27,4 +29,8 @@ class ProductController extends Controller
         
         return new Product($Product);
     }
+
+
+
+
 }

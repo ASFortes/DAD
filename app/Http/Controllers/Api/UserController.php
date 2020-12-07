@@ -76,7 +76,7 @@ class UserController extends Controller
 
             $user->password = Hash::make($user->password);
             $user->blocked = 0;
-            $user->type=='C';
+            $user->type='C';
 
          
 

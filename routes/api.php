@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,28 +17,20 @@ use App\Http\Controllers\Api\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+//USERS
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::middleware('auth:sanctum')->get('users/me', [UserController::class, 'me']);
 Route::middleware('auth:sanctum')->post('profile/photo', [UserController::class, 'uploadPhoto']);
-
-//Route::middleware('auth:sanctum')->get('products', [ProductController::class, 'index']);
-Route::get('products', [ProductController::class, 'index']);
-Route::get('products/{id}', [ProductController::class, 'showProduct']);
-
-
-
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [UserController::class, 'store']);
 Route::post('update', [UserController::class, 'update']);
 Route::put('password',[UserController::class, 'changePassword']);
-//Route::middleware('auth:sanctum')->post('logout',[AuthController::class, 'logout']);
 
 
+//PRODUCTS
 Route::get('fotos/{filename}', function ($filename)
 {
     $path = storage_path('app/public/products/' . $filename);
@@ -49,4 +42,13 @@ Route::get('fotos/{filename}', function ($filename)
     $response->header("Content-Type", $type);
 
     return $response;
- })->name('fotos_url');
+})->name('fotos_url');
+Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{id}', [ProductController::class, 'showProduct']);
+
+
+
+//ORDERS
+
+
+Route::post('orderStore', [OrderController::class, 'storeOrder']);

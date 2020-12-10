@@ -32,9 +32,11 @@ class User extends JsonResource
     ];
     }
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+   
+
+    
+
+
+
 }
 

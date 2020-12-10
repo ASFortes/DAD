@@ -4,7 +4,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    shopCart: [],
+    shopCart: {products:[],notes:""},
 
   },
   mutations: {
@@ -15,9 +15,9 @@ export default new Vuex.Store({
       state.user = user
     },
     addToCart(state, product) {
-      const record = state.shopCart.find(p => p.product.id === product.id)
+      const record = state.shopCart.products.find(p => p.product.id === product.id)
       if (!record) {
-        state.shopCart.push({
+        state.shopCart.products.push({
           product,
           quantity: 1
 
@@ -27,18 +27,19 @@ export default new Vuex.Store({
       }
     },
     removeFromCart(state, product) {
-      const record = state.shopCart.find(p => p.product.id === product.id)
+      const record = state.shopCart.products.find(p => p.product.id === product.id)
       if (record) {
         if (record.quantity == 1) {
-          state.shopCart.splice(state.shopCart.indexOf(record), 1)
+          state.shopCart.products.splice(state.shopCart.products.indexOf(record), 1)
         }else{
-        state.shopCart[state.shopCart.indexOf(record)].quantity--
+        state.shopCart[state.shopCart.products.indexOf(record)].quantity--
         }
       }
 
     },
     clearCart(state){
-      state.shopCart=[];
+      state.shopCart.products=[];
+      state.shopCart.notes="";
     }
 
 

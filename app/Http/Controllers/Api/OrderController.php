@@ -19,7 +19,7 @@ class OrderController extends Controller
            
                 $user_id=Auth::user()->id;
                 $order = new Order();
-                $order_Items= new OrderItems();
+                
                 $order->status='H';
                 $order->notes=$request['notes'];
                 $order->customer_id=$user_id;
@@ -29,7 +29,10 @@ class OrderController extends Controller
                     $produto_id[$i]=$request['products'][$i]['product']['id'];
                     $quantidade[$i]=$request['products'][$i]['quantity'];
                  };
-                $products=Product::whereIn('id',$produto_id)->get();
+                     
+                
+                $products=Product::whereIn('id',$produto_id)->get('price');
+                
                 for($i=0;$i<count($products);$i++){
                         $total=$total+$products[$i]['price']*$quantidade[$i];
                  };
@@ -40,16 +43,16 @@ class OrderController extends Controller
                 $order->current_status_at=date('Y-m-d H:i:s');
                 $order->updated_at=date('Y-m-d H:i:s');
                 $order->save();
-
+                //return response()->json($order->id, 201);
                 
                 for($i=0;$i<count($produto_id);$i++){
+                        $order_Items= new OrderItems();
                         $order_Items->product_id=$produto_id[$i];
                         $order_Items->quantity=$quantidade[$i];
                         $order_Items->unit_price=$products[$i]['price'];
                         $order_Items->sub_total_price=$quantidade[$i]*$products[$i]['price'];
-                
-                      // $order_Items->$order_id=['id'];
-                      // $order_Items->save();
+                        $order_Items->order_id=$order->id;
+                        $order_Items->save();
 
                 }
                

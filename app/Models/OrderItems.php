@@ -14,19 +14,20 @@ class OrderItems extends Model
         'quantity' ,
         'unit_price'  ,
         'sub_total_price' ,
+        
       
          ];
     
-
+         public $timestamps = false;
 
     public function product_id(){
         return $this->belongsTo(Product::class);
     }
 
-    public function order_id()
-    {
-        return $this->HasOne(Order::class);
-    }
+    // public function order_id()
+    // {
+    //     return $this->HasOne(Order::class);
+    // }
 
    
 

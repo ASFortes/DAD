@@ -25,7 +25,7 @@ export default {
          
            this.$store.commit('clearUser');  
            this.$store.commit('clearCart');
-           ro
+           
            
         })
         .catch((error) => {

@@ -4,15 +4,28 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    shopCart: {products:[],notes:""},
+    shopCart: { products: [], notes: "" },
 
   },
   mutations: {
     clearUser(state) {
+
+      if (state.user) {
+        this._vm.$socket.emit('user_logged_out', state.user)
+      }
       state.user = null
     },
     setUser(state, user) {
-      state.user = user
+      // if state.user is the same as the new user, do nothing
+            if (state.user !== user) {
+                if (state.user) {
+                    this._vm.$socket.emit('user_logged_out', state.user)
+                }
+                state.user = user
+                if (state.user) {
+                    this._vm.$socket.emit('user_logged', state.user)
+                }
+            }
     },
     addToCart(state, product) {
       const record = state.shopCart.products.find(p => p.product.id === product.id)
@@ -31,19 +44,30 @@ export default new Vuex.Store({
       if (record) {
         if (record.quantity == 1) {
           state.shopCart.products.splice(state.shopCart.products.indexOf(record), 1)
-        }else{
-        state.shopCart[state.shopCart.products.indexOf(record)].quantity--
+        } else {
+          state.shopCart[state.shopCart.products.indexOf(record)].quantity--
         }
       }
 
     },
-    clearCart(state){
-      state.shopCart.products=[];
-      state.shopCart.notes="";
+    clearCart(state) {
+      state.shopCart.products = [];
+      state.shopCart.notes = "";
     }
 
 
   },
+  actions: {
+    loadUserLogged(context) {
+      axios.get('/api/users/me')
+        .then(response => {
+          context.commit('setUser', response.data)
+        })
+        .catch(error => {
+          context.commit('clearUser')
+        })
+    }
+  }
 
 
 

@@ -10,6 +10,15 @@ window.Vue = require('vue');
 Vue.use(VueRouter)
 Vue.use(BootstrapVue);
 
+
+import VueSocketIO from "vue-socket.io"
+Vue.use(
+ new VueSocketIO({
+ debug: true,
+ connection: "http://127.0.0.1:8080"
+ })
+)
+
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import ProductComponent from './components/product'
@@ -55,5 +64,11 @@ const app = new Vue({
      data:{
          products:[],
      },
+     created () {
+        this.$store.dispatch('loadUserLogged')
+    }
   
 }).$mount('#app');
+
+
+

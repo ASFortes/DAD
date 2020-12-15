@@ -148,10 +148,10 @@ export default {
   },
   mounted() {
     this.getProducts();
-      console.log("ramstein");
-       console.log("ramstein");
+      
+    
       console.log(this.$store.state.user);
-      console.log("ramstein");
+     
     
   },
   computed: {

@@ -29,6 +29,7 @@ import EditComponent from './components/userEdit'
 import RegisterComponent from './components/register'
 import ShopCartComponent from './components/shopCart'
 import store from "./stores/global-storage"
+import OrdersInProgress from "./components/ordersInProgress"
 
 
 const routes = [
@@ -39,6 +40,7 @@ const routes = [
     { path: '/userEdit', component:EditComponent},
     { path: '/register', component:RegisterComponent},
     { path: '/cart', component:ShopCartComponent},
+    { path: '/ordersInProgress', component:OrdersInProgress},
 
 
    

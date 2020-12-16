@@ -14,5 +14,13 @@ class Order extends JsonResource
      */
     public function toArray($request)
     {
+        return [
+            'id'   => $this->id,
+            'status' =>$this->status,
+            'customer_id' => $this->customer_id,
+            'date' =>$this->date,
+            'notes' =>$this->notes,
+            'total_price' =>$this->total_price    
+        ];
     }
 }

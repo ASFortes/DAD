@@ -7,6 +7,7 @@
     <a v-if="this.$store.state.user==null" href="/#/register">Register</a>
     <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
     <a v-if="this.$store.state.user!=null" href="/#/cart" >Cart</a>
+    <a v-if="this.$store.state.user!=null" href="/#/ordersInProgress" >My orders</a>
   </div>
 </template>
 <script>

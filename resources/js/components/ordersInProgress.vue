@@ -19,6 +19,17 @@
         :fields="fields">
 
       </b-table>
+      
+      <b-table
+        class="table table-striped"
+        id="my-table"
+        :items="orderedProducts"
+        :per-page="perPage"
+        :current-page="currentPage"
+        small
+        :fields="fields">
+
+      </b-table>
        <p class="mt-3">Current Page: {{ currentPage }}</p>
        <b-pagination
         v-model="currentPage"
@@ -71,8 +82,15 @@ export default {
                this.orders=response.data;
                 this.rows = this.orders.length;
         });
+        
      
-    },
+    },  
+    
+
+
+
+        
+    
     
   },
   mounted() {
@@ -83,22 +101,35 @@ export default {
      
     
   },
-  computed: {
-    // filteredProducts() {
-    //   var filteredProducts = this.products.filter((product) => {
-    //     return (
-    //       product.type.toLowerCase().includes(this.searchType.toLowerCase()) &&
-    //       product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    //     );
-    //   });
+ 
 
-    //   let orderedProducts = filteredProducts.sort((a, b) => {
-    //     return b - a;
+  computed: {
+    // orderedProducts() {
+    //   // var filteredOrders = this.orders.filter((order) => {
+    //   //   return (
+    //   //     order.date.toLowerCase().includes(this.searchType.toLowerCase()) &&
+    //   //     product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    //   //   );
+    //   // });
+
+    //   let orderedProducts = this.orders.sort((a, b) => {
+    //     return b-a;
     //   });
-    //   this.rows = orderedProducts.length;
+    //   console.log(orderedProducts);
     //   return orderedProducts;
     
     // },
+     orderedProducts(){
+       
+            this.orders.sort(function(a, b) {
+              return b.id - a.id;
+            });
+            
+            },
+            
+    
+   
+    
   },
   components: {
     navBar: NavBarComponent,

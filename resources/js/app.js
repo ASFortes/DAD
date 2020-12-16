@@ -10,6 +10,15 @@ window.Vue = require('vue');
 Vue.use(VueRouter)
 Vue.use(BootstrapVue);
 
+
+import VueSocketIO from "vue-socket.io"
+Vue.use(
+ new VueSocketIO({
+ debug: true,
+ connection: "http://127.0.0.1:8080"
+ })
+)
+
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import ProductComponent from './components/product'
@@ -20,6 +29,7 @@ import EditComponent from './components/userEdit'
 import RegisterComponent from './components/register'
 import ShopCartComponent from './components/shopCart'
 import store from "./stores/global-storage"
+import OrdersInProgress from "./components/ordersInProgress"
 
 
 const routes = [
@@ -30,6 +40,7 @@ const routes = [
     { path: '/userEdit', component:EditComponent},
     { path: '/register', component:RegisterComponent},
     { path: '/cart', component:ShopCartComponent},
+    { path: '/ordersInProgress', component:OrdersInProgress},
 
 
    
@@ -55,5 +66,11 @@ const app = new Vue({
      data:{
          products:[],
      },
+     created () {
+        this.$store.dispatch('loadUserLogged')
+    }
   
 }).$mount('#app');
+
+
+

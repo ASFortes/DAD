@@ -147,7 +147,7 @@ export default {
     confirmOrder:function(){
       this.$store.state.shopCart.notes=this.notes;
       console.log(this.$store.state.shopCart.products);
-     
+    
       axios
         .post("api/orderStore",this.$store.state.shopCart, {
           
@@ -161,6 +161,8 @@ export default {
           console.log(error);
          
         });
+         this.$router.push("/products");
+        this.$store.commit("clearCart");
     },
   },
   mounted() {

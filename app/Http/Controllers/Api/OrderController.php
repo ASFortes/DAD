@@ -5,14 +5,27 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Order;
+
 use App\Models\OrderItems;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Http\Resources\Order as OrderResource;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
+
+        public function getOrders($id)
+        {
+      
+                $orders=Order::where('customer_id', $id)->get();
+        
+                return response()->json($orders, 201);
+
+        }
+
+
     //
     public function storeOrder(Request $request)
         {           
@@ -24,6 +37,10 @@ class OrderController extends Controller
                 $order->notes=$request['notes'];
                 $order->customer_id=$user_id;
                 $total=0;
+
+                if(count($request['products'][0])==0){
+                        return response()->json(['error'=>"O carrinho está vazio"], 400);
+                };
                 
                 for($i=0;$i<count($request['products'][0]);$i++){
                     $produto_id[$i]=$request['products'][$i]['product']['id'];

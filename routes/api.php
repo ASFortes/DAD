@@ -52,3 +52,4 @@ Route::get('products/{id}', [ProductController::class, 'showProduct']);
 
 
 Route::post('orderStore', [OrderController::class, 'storeOrder']);
+Route::get('orders/{id}', [OrderController::class, 'getOrders']);

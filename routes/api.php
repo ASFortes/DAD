@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderItemsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +55,8 @@ Route::get('products/{id}', [ProductController::class, 'showProduct']);
 
 Route::post('orderStore', [OrderController::class, 'storeOrder']);
 Route::get('orders/{id}', [OrderController::class, 'getOrders']);
+
+//ORDER ITEMS 
+
+
+Route::get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);

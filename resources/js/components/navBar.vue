@@ -3,11 +3,11 @@
     <a v-if="this.$route.path != '/home'" href="/#/home">Home</a>
     <a v-if="this.$route.path != '/products'" href="/#/products">Menu</a>
     <a v-if="this.$store.state.user==null" href="/#/login">Login</a>
-    <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
     <a v-if="this.$store.state.user==null" href="/#/register">Register</a>
+    <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='C'" href="/#/cart" >Cart</a>
+    <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='C'" href="/#/ordersInProgress" >My orders</a>
     <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
-    <a v-if="this.$store.state.user!=null" href="/#/cart" >Cart</a>
-    <a v-if="this.$store.state.user!=null" href="/#/ordersInProgress" >My orders</a>
+    <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
   </div>
 </template>
 <script>

@@ -29,6 +29,7 @@ class OrderController extends Controller
     //
     public function storeOrder(Request $request)
         {           
+                
            
                 $user_id=Auth::user()->id;
                 $order = new Order();
@@ -49,7 +50,7 @@ class OrderController extends Controller
                      
                 
                 $products=Product::whereIn('id',$produto_id)->get('price');
-                
+                $products1=Product::whereIn('id',$produto_id)->get('name');
                 for($i=0;$i<count($products);$i++){
                         $total=$total+$products[$i]['price']*$quantidade[$i];
                  };
@@ -69,6 +70,8 @@ class OrderController extends Controller
                         $order_Items->unit_price=$products[$i]['price'];
                         $order_Items->sub_total_price=$quantidade[$i]*$products[$i]['price'];
                         $order_Items->order_id=$order->id;
+                       // $order_Items->product_name=$products1[$i];
+
                         $order_Items->save();
 
                 }

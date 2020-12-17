@@ -162,7 +162,7 @@ export default {
          
         });
          this.$router.push("/products");
-        this.$store.commit("clearCart");
+       // this.$store.commit("clearCart");
     },
   },
   mounted() {

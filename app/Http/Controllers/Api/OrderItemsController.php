@@ -20,11 +20,12 @@ class OrderItemsController extends Controller
             $ordersItems=OrderItems::where('order_id', $id)->get();
             $ordersItemsIDs=OrderItems::where('order_id', $id)->get('product_id');
             $products=Product::whereIn('id',$ordersItemsIDs)->get('name');
+            
           //
          
-            // for($i=0;$i<count($ordersItems);$i++){
-            //     $ordersItems[$i]->product_name=$products[$i];
-            //  };
+             for($i=0;$i<count($ordersItems);$i++){
+                $ordersItems[$i]->product_name=$products[$i];
+             };
             
 
                 return response()->json($ordersItems, 201);

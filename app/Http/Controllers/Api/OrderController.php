@@ -30,7 +30,7 @@ class OrderController extends Controller
     public function storeOrder(Request $request)
         {           
                 
-           
+                
                 $user_id=Auth::user()->id;
                 $order = new Order();
                 

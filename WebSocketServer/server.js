@@ -42,39 +42,10 @@ io.on('connection', function (socket) {
         }
     })
 
+    socket.on('cooker_ready',(id)=>{
+        socket.broadcast.emit('cooker_ready', id)
+        console.log('Cooker Id ' + id)
+    })
+
 })
 
-
-/*
-
-
-
-io.on('connection', function (socket) {
- console.log('Client has connected. Socket ID = ' + socket.id)
- 
-    socket.on('disconnect', (reason) => {
-        sessions.removeSocketIDSession(socket.id)
-        console.log('Disconnect  Socket ID= ' + socket.id)
-        console.log('  -> Total Sessions= ' + sessions.users.size)
-});
-
-
-
-io.on('user_logged', (user) => {
-    if (user) {
-        console.log("estamos aqui a tentar e isto nada de dar")
-        sessions.addUserSession(user, socket.id)
-        socket.join(user.type)
-        console.log('User Logged: UserID= ' + user.id + ' Socket ID= ' + socket.id)
-        console.log('  -> Total Sessions= ' + sessions.users.size)
-    }
-})
-io.on('user_logged_out', (user) => {
-    if (user) {
-        socket.leave(user.type)
-        sessions.removeUserSession(user.id)
-        console.log('User Logged OUT: UserID= ' + user.id + ' Socket ID= ' + socket.id)
-        console.log('  -> Total Sessions= ' + sessions.users.size)
-    }
-})
-})*/

@@ -153,8 +153,9 @@ export default {
         .post("api/orderStore",this.$store.state.shopCart, {
           })
         .then((response) => {
-          
+          ("post feito");
           this.$store.commit("clearCart");
+
         })
         .catch((error) => {
           console.log("erro");

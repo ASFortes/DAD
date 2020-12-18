@@ -52,9 +52,15 @@ Route::get('products/{id}', [ProductController::class, 'showProduct']);
 
 //ORDERS
 
-
+Route::put('assignCook/{id}/{idOrder}', [OrderController::class, 'assignCook']);
 Route::post('orderStore', [OrderController::class, 'storeOrder']);
-Route::get('orders/{id}', [OrderController::class, 'getOrders']);
+Route::get('orders', [OrderController::class, 'getAllOrders']);//orders a espera 'H'
+Route::get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar
+Route::get('ordersNot/{id}', [OrderController::class, 'getOrdersNot']);//orders cutomer entregues
+Route::get('ordersUncooked', [OrderController::class, 'getOrdersUncooked']);//orders para o cozinheiro
+Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//orders do cozinheiro
+Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
+
 
 //ORDER ITEMS 
 

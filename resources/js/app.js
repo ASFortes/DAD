@@ -30,6 +30,7 @@ import RegisterComponent from './components/register'
 import ShopCartComponent from './components/shopCart'
 import store from "./stores/global-storage"
 import OrdersInProgress from "./components/ordersInProgress"
+import OrdersNotInProgress from "./components/ordersNotInProgress"
 
 
 const routes = [
@@ -41,6 +42,8 @@ const routes = [
     { path: '/register', component:RegisterComponent},
     { path: '/cart', component:ShopCartComponent},
     { path: '/ordersInProgress', component:OrdersInProgress},
+    { path: '/ordersNotInProgress', component:OrdersNotInProgress},
+    
 
 
    
@@ -58,10 +61,12 @@ const router = new VueRouter({
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('orderSocketCooker', require('./components/ordersH.vue'));
 
 const app = new Vue({
     render:h=>h(App),
     router,
+
     store,
      data:{
          products:[],

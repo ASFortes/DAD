@@ -17,6 +17,7 @@
         striped
         hover
         responsive="sm"
+        ref="orderTable"
       >
         <template #cell(actions)="data">
           <b-button
@@ -30,32 +31,36 @@
             >Ver detalhes</b-button
           >
           <b-modal id="my-modal" v-model="show">
-            
-      <b-table
-        id="my-table"
-        :items="orderItems"
-        :per-page="perPage"
-        :current-page="currentPage"
-        small
-        :fields="fields1"
-        striped
-        hover
-        responsive="sm"
-      >
-      </b-table>
+            <b-table
+              id="my-table"
+              :items="orderItems"
+              :per-page="perPage"
+              :current-page="currentPage"
+              small
+              :fields="fields1"
+              striped
+              hover
+              responsive="sm"
+            >
+            </b-table>
           </b-modal>
-    
         </template>
       </b-table>
 
-
       <p class="mt-3">Current Page: {{ currentPage }}</p>
-      <b-pagination
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
-      ></b-pagination>
+      <b-row>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="my-table"
+        ></b-pagination>
+      </b-row>
+      <div class="text-right">
+        <b-button cols="12" href="/#/ordersNotInProgress"
+          >Order History</b-button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -67,7 +72,7 @@ import NavBar from "./navBar.vue";
 export default {
   data: function () {
     return {
-       show: false,
+      show: false,
       user: null,
       products: [],
       orderItems: [],
@@ -85,13 +90,7 @@ export default {
         { key: "date", sortable: true },
         { key: "actions", label: " " },
       ],
-      fields1:[
-        'product_name',
-        'quantity',
-        
-
-      ]
-   
+      fields1: ["product_name", "quantity", "unit_price", "sub_total_price"],
     };
   },
   methods: {
@@ -115,24 +114,25 @@ export default {
       //alert("This item has been added to your cart");
 
       axios.get("api/orderItems/" + id).then((response) => {
-       
         this.orderItems = response.data;
         console.log(response);
-
       });
-     
-      
-    
-
     },
-    
   },
+  
   mounted() {
     this.getOrders();
-    //  
+  
 
     console.log(this.$store.state.user);
   },
+
+  sockets: {
+        cooker_ready(iD) {
+          const index = this.orders.findIndex(item => item.id === iD);
+          this.orders[index].status='P';
+        },
+    },
 
   computed: {
     // orderedProducts() {

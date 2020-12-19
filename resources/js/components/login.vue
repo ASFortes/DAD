@@ -39,7 +39,7 @@ import orderSocketCookera from "./ordersH";
 export default {
   data: function () {
     return {
-      ordersH:[],
+      ordersH: [],
       credentials: {
         email: "",
         password: "",
@@ -51,8 +51,8 @@ export default {
   components: {
     orderSocketCooker: orderSocketCookera,
   },
-  mounted(){
-     axios
+  mounted() {
+    axios
       .get("api/orders")
       .then((response) => {
         console.log(response);
@@ -81,8 +81,10 @@ export default {
                   if (response.data.length == 0) {
                     axios
                       .put(
-                        "api/assignCook/" +this.$store.state.user.id+"/"+
-                       this.ordersH[0].id
+                        "api/assignCook/" +
+                          this.$store.state.user.id +
+                          "/" +
+                          this.ordersH[0].id
                       )
                       .then((response) => {
                         console.log(response);
@@ -92,10 +94,7 @@ export default {
                         console.log("erro aquii");
                         console.log(error);
                       });
-                    this.$socket.emit(
-                      "cooker_ready",
-                      this.ordersH[0].id
-                    );
+                    this.$socket.emit("cooker_ready", this.ordersH[0].id);
                   }
                 })
                 .catch((error) => {
@@ -105,7 +104,13 @@ export default {
             }
 
             //this.$toasted.show('User is authenticated successfully',{type:'success'})
-            this.$router.push("/products");
+            if (this.$store.state.user.type != "EC") {
+              this.$router.push("/products");
+            }
+            if (this.$store.state.user.type == "EC") {
+              this.$router.push("/cookOrders");
+              
+            }
           })
           .catch((error) => {
             //this.$toasted.show('Invalid Authentication', { type: 'error' })
@@ -113,7 +118,6 @@ export default {
             this.errorMessage = error.response.data.message;
           });
       });
-
     },
   },
 };

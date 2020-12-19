@@ -23,6 +23,7 @@ class User extends Authenticatable
         'type',
         'blocked',
         'photo_url',
+        'available_at'
      
     ];
 

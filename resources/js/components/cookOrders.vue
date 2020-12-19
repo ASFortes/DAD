@@ -35,6 +35,17 @@
               "
               >See details</b-button
             >
+
+            <b-button
+              id="show-btn"
+              v-if="$store.state.user != null && $store.state.user.type == 'EC'"
+              class="btn btn-sm btn-success"
+              @click.prevent="
+                show = true;
+                changeStatusToReady(data.item.id);
+              "
+              >Ready</b-button
+            >
           </template>
         </b-table>
 
@@ -46,19 +57,19 @@
           aria-controls="my-table"
         ></b-pagination>
         <b-modal id="my-modal" v-model="show">
-            <b-table
-              id="my-table"
-              :items="orderItems"
-              :per-page="perPage"
-              :current-page="currentPage"
-              small
-              :fields="fields1"
-              striped
-              hover
-              responsive="sm"
-            >
-            </b-table>
-          </b-modal>
+          <b-table
+            id="my-table"
+            :items="orderItems"
+            :per-page="perPage"
+            :current-page="currentPage"
+            small
+            :fields="fields1"
+            striped
+            hover
+            responsive="sm"
+          >
+          </b-table>
+        </b-modal>
       </div>
     </div>
   </div>
@@ -123,7 +134,6 @@ export default {
         .then((response) => {
           this.orders = response.data;
           this.rows = this.orders.length;
-      
         });
     },
 
@@ -132,6 +142,21 @@ export default {
         this.orderItems = response.data;
         console.log(response.data);
       });
+    },
+
+    changeStatusToReady: function (id) {
+      axios
+        .put(
+          "api/changeOrderPtoR/" + id
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log("erro aquii");
+          console.log(error);
+        });
+      // this.$socket.emit("cooker_ready", this.ordersH[0].id);
     },
 
     calcula_data: function (current_status_time) {
@@ -147,9 +172,7 @@ export default {
     console.log(this.$store.state.user);
   },
 
-  computed: {
-   
-  },
+  computed: {},
   components: {
     navBar: NavBarComponent,
   },

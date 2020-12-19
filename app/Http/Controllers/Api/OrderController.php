@@ -15,21 +15,87 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
+        public function getAllOrders()//o cozinheiro vai buscar todas as orders em holding
+        {
+      
+                $orders=Order::where('status','H')->get(); 
+        
+                return response()->json($orders, 201);
 
+        }
         public function getOrders($id)
         {
       
-                $orders=Order::where('customer_id', $id)->get();
+                $orders=Order::where('customer_id', $id)->whereIn('status',['H','P','R','T'])->get(); 
+        
+                return response()->json($orders, 201);
+
+        }
+        public function getOrdersNot($id)
+        {
+      
+                $orders=Order::where('customer_id', $id)->whereIn('status',['D','C'])->get(); 
+        
+                return response()->json($orders, 201);
+
+        }
+        
+        public function getOrdersUncooked($id)
+        {
+      
+                $orders=Order::where('customer_id', $id)->whereIn('status','H')->get(); 
         
                 return response()->json($orders, 201);
 
         }
 
+        public function getCookOrders($id)
+        {
+                $orders = Order::where('prepared_by', $id)->where('status', 'P')->get();
+                for($i=0;$i<count($orders);$i++){
+                        $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                };
+                for($i=0;$i<count($orders);$i++){
+                        $orders[$i]->customer_name=$user[$i]['name'];
+                };
+
+                return response()->json($orders, 201);
+        }
+     
+
+        public function getCookOrdersInProgress($id)
+        {
+                $orders = Order::where('prepared_by', $id)->where('status','P')->get();
+                for($i=0;$i<count($orders);$i++){
+                        $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                };
+                for($i=0;$i<count($orders);$i++){
+                        $orders[$i]->customer_name=$user[$i]['name'];
+                };
+
+                return response()->json($orders, 201);
+        }
+
+        public function assignCook($id,$idOrder)
+        {
+                $order= Order::find($idOrder);
+                $order->prepared_by=$id;
+                $order->status='P';
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->save();
+                
+
+                return response()->json($order, 201);
+        }
+
+
+
 
     //
     public function storeOrder(Request $request)
         {           
-           
+                
+                
                 $user_id=Auth::user()->id;
                 $order = new Order();
                 
@@ -49,7 +115,7 @@ class OrderController extends Controller
                      
                 
                 $products=Product::whereIn('id',$produto_id)->get('price');
-                
+                $products1=Product::whereIn('id',$produto_id)->get('name');
                 for($i=0;$i<count($products);$i++){
                         $total=$total+$products[$i]['price']*$quantidade[$i];
                  };
@@ -69,6 +135,8 @@ class OrderController extends Controller
                         $order_Items->unit_price=$products[$i]['price'];
                         $order_Items->sub_total_price=$quantidade[$i]*$products[$i]['price'];
                         $order_Items->order_id=$order->id;
+                       // $order_Items->product_name=$products1[$i];
+
                         $order_Items->save();
 
                 }

@@ -145,16 +145,17 @@ export default {
       this.products = this.$store.state.shopCart.products;
     },
     confirmOrder:function(){
+    // async function confirmOrder(){
       this.$store.state.shopCart.notes=this.notes;
-      console.log(this.$store.state.shopCart.products);
+     
     
       axios
         .post("api/orderStore",this.$store.state.shopCart, {
-          
-        })
+          })
         .then((response) => {
-          console.log("reposta")
-          console.log(response);
+          ("post feito");
+          this.$store.commit("clearCart");
+
         })
         .catch((error) => {
           console.log("erro");
@@ -162,7 +163,9 @@ export default {
          
         });
          this.$router.push("/products");
-        this.$store.commit("clearCart");
+         
+        //this.clearCart();
+       
     },
   },
   mounted() {

@@ -9,7 +9,7 @@
 
       <b-jumbotron
         v-if="this.orders.length == 0"
-        lead="You don't have orders at the moment"
+        lead="You don't have any orders at the moment. Please wait!"
         class="text-center mt-2"
         style="background: none !important"
       ></b-jumbotron>
@@ -23,6 +23,7 @@
           :current-page="currentPage"
           small
           :fields="fields"
+          ref="table"
         >
           <template #cell(actions)="data">
             <b-button
@@ -40,10 +41,7 @@
               id="show-btn"
               v-if="$store.state.user != null && $store.state.user.type == 'EC'"
               class="btn btn-sm btn-success"
-              @click.prevent="
-                show = true;
-                changeStatusToReady(data.item.id);
-              "
+              @click.prevent="changeStatusToReady(data.item.id)"
               >Ready</b-button
             >
           </template>
@@ -86,6 +84,7 @@ export default {
       current_status_at: null,
       products: [],
       orders: [],
+      ordersH: [],
       //filteredProducts:[],
       currentPage: 1,
       perPage: 10,
@@ -146,17 +145,56 @@ export default {
 
     changeStatusToReady: function (id) {
       axios
-        .put(
-          "api/changeOrderPtoR/" + id
-        )
+        .put("api/changeOrderPtoR/" + id)
         .then((response) => {
           console.log(response);
+          this.orders = [];
+          axios
+            .get("api/orders")
+            .then((response) => {
+              console.log(response);
+              this.ordersH = response.data;
+                   axios
+            .get("api/cookOrdersInProgress/" + this.$store.state.user.id)
+            .then((response) => {
+              console.log(response.data);
+              if (response.data.length == 0) {
+                axios
+                  .put(
+                    "api/assignCook/" +
+                      this.$store.state.user.id +
+                      "/" +
+                      this.ordersH[0].id
+                  )
+                  .then((response) => {
+                   
+                    this.getOrders();
+                  
+                   // this.$router.go();
+                  })
+                  .catch((error) => {
+                    console.log("erro aquii");
+                    console.log(error);
+                  });
+                this.$socket.emit("cooker_ready", this.ordersH[0].id);
+              }
+            })
+            .catch((error) => {
+              console.log("erro no login");
+              console.log(error);
+            });
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+            });
+     
         })
         .catch((error) => {
           console.log("erro aquii");
           console.log(error);
         });
-      // this.$socket.emit("cooker_ready", this.ordersH[0].id);
+      this.$socket.emit("order_cooked", this.orders[0].id);
     },
 
     calcula_data: function (current_status_time) {

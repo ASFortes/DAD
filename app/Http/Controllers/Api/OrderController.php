@@ -90,9 +90,10 @@ class OrderController extends Controller
 
         public function changeOrderPtoR($id)
         {
-                $order= Order::find($idOrder);
+                
+                $order= Order::find($id);
                 $order->status='R';
-                $order->$order->current_status_at
+                $order->preparation_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
                 $order->current_status_at=date('Y-m-d H:i:s');
                 $order->save();
                 

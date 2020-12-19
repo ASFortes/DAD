@@ -49,7 +49,7 @@ io.on('connection', function (socket) {
 
     socket.on('order_cooked',(id)=>{
         socket.broadcast.emit('order_cooked', id)
-        console.log('Cooker Id ' + id)
+        console.log('Order Id ' + id)
     })
 
 

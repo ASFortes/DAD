@@ -31,6 +31,7 @@ import ShopCartComponent from './components/shopCart'
 import store from "./stores/global-storage"
 import OrdersInProgress from "./components/ordersInProgress"
 import OrdersNotInProgress from "./components/ordersNotInProgress"
+import CookOrders from "./components/cookOrders"
 
 
 const routes = [
@@ -43,6 +44,7 @@ const routes = [
     { path: '/cart', component:ShopCartComponent},
     { path: '/ordersInProgress', component:OrdersInProgress},
     { path: '/ordersNotInProgress', component:OrdersNotInProgress},
+    { path: '/cookOrders', component:CookOrders},
     
 
 

@@ -51,7 +51,7 @@ class OrderController extends Controller
 
         public function getCookOrders($id)
         {
-                $orders = Order::where('prepared_by', $id)->get();
+                $orders = Order::where('prepared_by', $id)->where('status', 'P')->get();
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
                 };
@@ -61,6 +61,7 @@ class OrderController extends Controller
 
                 return response()->json($orders, 201);
         }
+     
 
         public function getCookOrdersInProgress($id)
         {

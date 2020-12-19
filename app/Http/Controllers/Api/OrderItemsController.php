@@ -19,9 +19,10 @@ class OrderItemsController extends Controller
             $ordersItems=OrderItems::where('order_id', $id)->get();
             $ordersItemsIDs=OrderItems::where('order_id', $id)->get('product_id');
             $products=Product::whereIn('id',$ordersItemsIDs)->get('name');
-
+            $products_description=Product::whereIn('id',$ordersItemsIDs)->get('description');
              for($i=0;$i<count($ordersItems);$i++){
                 $ordersItems[$i]->product_name=$products[$i]['name'];
+                $ordersItems[$i]->product_description=$products_description[$i]['description'];
              };
             
 

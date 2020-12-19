@@ -28,7 +28,7 @@
               show = true;
               seeOrderDetails(data.item.id);
             "
-            >Ver detalhes</b-button
+            >See Details</b-button
           >
           <b-modal id="my-modal" v-model="show">
             <b-table

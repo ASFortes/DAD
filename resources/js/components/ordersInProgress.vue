@@ -132,6 +132,11 @@ export default {
           const index = this.orders.findIndex(item => item.id === iD);
           this.orders[index].status='P';
         },
+        order_cooked(iD) {
+          const index = this.orders.findIndex(item => item.id === iD);
+          this.orders[index].status='R';
+        },
+
     },
 
   computed: {

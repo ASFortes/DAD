@@ -30,6 +30,7 @@ class Order extends Model
         'opened_at',
         'current_status_at',
         'closed_at',
+        'preparation_time',
         'updated_at',
 
         

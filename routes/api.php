@@ -60,7 +60,7 @@ Route::get('ordersNot/{id}', [OrderController::class, 'getOrdersNot']);//orders 
 Route::get('ordersUncooked', [OrderController::class, 'getOrdersUncooked']);//orders para o cozinheiro
 Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//orders do cozinheiro
 Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
-
+Route::put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR']);
 
 //ORDER ITEMS 
 

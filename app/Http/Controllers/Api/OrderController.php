@@ -88,6 +88,19 @@ class OrderController extends Controller
                 return response()->json($order, 201);
         }
 
+        public function changeOrderPtoR($id)
+        {
+                
+                $order= Order::find($id);
+                $order->status='R';
+                $order->preparation_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->save();
+                
+
+                return response()->json($order, 201);
+        }
+
 
 
 

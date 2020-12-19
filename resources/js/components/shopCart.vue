@@ -55,7 +55,7 @@
             <router-link class="h3" to="/products">Go shopping</router-link>
            
               <b-col colspan="4" class="text-right h3">
-                Total: €{{ Number(total).toFixed(2) + "€" }}</b-col
+                Total: {{ Number(total).toFixed(2) + "€" }}</b-col
               >
               <button
                 v-if="this.$store.state.shopCart.products.length > 0"
@@ -147,13 +147,14 @@ export default {
     confirmOrder:function(){
     // async function confirmOrder(){
       this.$store.state.shopCart.notes=this.notes;
-     
-    
+      console.log("debug confirmar pedido");
+      console.log(this.$store.state.shopCart);    
       axios
         .post("api/orderStore",this.$store.state.shopCart, {
           })
         .then((response) => {
           ("post feito");
+        
           this.$store.commit("clearCart");
 
         })

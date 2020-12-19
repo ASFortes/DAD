@@ -107,8 +107,8 @@ class OrderController extends Controller
                 if(count($request['products'][0])==0){
                         return response()->json(['error'=>"O carrinho está vazio"], 400);
                 };
-                
-                for($i=0;$i<count($request['products'][0]);$i++){
+               
+                for($i=0;$i<count($request['products']);$i++){
                     $produto_id[$i]=$request['products'][$i]['product']['id'];
                     $quantidade[$i]=$request['products'][$i]['quantity'];
                  };

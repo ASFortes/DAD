@@ -47,5 +47,22 @@ io.on('connection', function (socket) {
         console.log('Cooker Id ' + id)
     })
 
+
+
+
+
+
+
+
+
+
+
+
+   
+    socket.on('deliveryMan_ready',(id)=>{
+        socket.broadcast.emit('deliveryMan_ready', id)
+        console.log('delivery Id ' + id)
+    })
+
 })
 

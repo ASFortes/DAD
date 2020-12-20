@@ -66,3 +66,13 @@ Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersI
 
 
 Route::get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);
+
+
+
+
+
+
+//ORDERS DELIVERYMAN//////////////////////////////////////
+
+Route::get('deliveryManOrders/', [OrderController::class, 'getDeliveryManOrders']);//orders do deliveryman
+Route::put('assignDeliveryMan/{id}/{idOrder}', [OrderController::class, 'assignDeliveryMan']);

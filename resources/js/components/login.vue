@@ -104,6 +104,42 @@ export default {
                 });
             }
 
+
+            /*if (this.$store.state.user.type == "ED") {
+              //ver se o cooker tem alguma order
+              axios
+                .get("api/deliveryManOrders/" + this.$store.state.user.id)
+                .then((response) => {
+                  console.log(response.data);
+                  if (response.data.length == 0) {
+                    axios
+                      .put(
+                        "api/assignDeliveryMan/" +this.$store.state.user.id+"/"+
+                       this.ordersH[0].id
+                      )
+                      .then((response) => {
+                        console.log(response);
+                        this.orders = response.data;
+                      })
+                      .catch((error) => {
+                        console.log("erro aquii");
+                        console.log(error);
+                      });
+                    this.$socket.emit(
+                      "deliveryMan_ready",
+                      this.ordersH[0].id
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.log("erro no login");
+                  console.log(error);
+                });
+            }*/
+
+
+            
+
             //this.$toasted.show('User is authenticated successfully',{type:'success'})
             this.$router.push("/products");
           })

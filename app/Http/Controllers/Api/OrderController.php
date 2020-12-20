@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Http\Resources\Order as OrderResource;
 use App\Models\Order;
+use App\Models\Customer;
 
 class OrderController extends Controller
 {
@@ -147,4 +148,44 @@ class OrderController extends Controller
 
                 return response()->json($order, 201);
         }
+
+
+
+        //////////GETTER PARA O DELIVERYMAN
+        public function getDeliveryManOrders()
+        {
+                //$orders=Order::where('customer_id', $id)->where('status','R')->get();                 
+                //$orders = Order::where('delivered_by', $id)->where('status', 'R')->get();
+                $orders=Order::where('status','R')->get(); 
+                for($i=0;$i<count($orders);$i++){
+                        $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                        $user1[$i] = Customer::findOrFail($orders[$i]->customer_id);
+                        
+                        
+                        
+                };
+                for($i=0;$i<count($orders);$i++){
+                        $orders[$i]->customer_name=$user[$i]['name'];
+                        $orders[$i]->customer_address=$user1[$i]['address'];
+                };
+
+                return response()->json($orders, 201);
+        }
+
+
+        ////atribuir deliveryMan 
+        public function assignDeliveryMan($id,$idOrder)
+        {
+                $order= Order::find($idOrder);
+                $order->prepared_by=$id;
+                $order->status='R';
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->save();
+                
+
+                return response()->json($order, 201);
+        }
+
+     
+
 }

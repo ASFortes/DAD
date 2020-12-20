@@ -34,6 +34,15 @@ import OrdersNotInProgress from "./components/ordersNotInProgress"
 import CookOrders from "./components/cookOrders"
 
 
+
+
+
+
+
+
+import DeliveryManOrders from "./components/deliveryManOrders"
+
+
 const routes = [
     { path: '/', redirect: '/home' },
     { path: '/products', component: ProductComponent },
@@ -45,6 +54,15 @@ const routes = [
     { path: '/ordersInProgress', component:OrdersInProgress},
     { path: '/ordersNotInProgress', component:OrdersNotInProgress},
     { path: '/cookOrders', component:CookOrders},
+
+
+
+
+
+
+
+
+    { path: '/deliveryManOrders', component:DeliveryManOrders},
     
 
 

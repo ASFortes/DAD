@@ -159,14 +159,17 @@ class OrderController extends Controller
                 $orders=Order::where('status','R')->get(); 
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
-                        $user1[$i] = Customer::findOrFail($orders[$i]->customer_id);
+                        $userCustomer[$i] = Customer::findOrFail($orders[$i]->customer_id);
                         
                         
                         
                 };
                 for($i=0;$i<count($orders);$i++){
                         $orders[$i]->customer_name=$user[$i]['name'];
-                        $orders[$i]->customer_address=$user1[$i]['address'];
+                        $orders[$i]->customer_address=$userCustomer[$i]['address'];
+                        $orders[$i]->customer_phone=$userCustomer[$i]['phone'];
+                        $orders[$i]->customer_email=$user[$i]['email'];
+                        $orders[$i]->customer_photo=$user[$i]['photo_url'];
                 };
 
                 return response()->json($orders, 201);

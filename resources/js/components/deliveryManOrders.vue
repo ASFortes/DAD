@@ -36,6 +36,16 @@
               >See details</b-button
             >
           </template>
+
+
+          <template #cell(customer_photo)="data">
+          <img
+            class="img-usr-container"
+            :src="'storage/fotos/' + getPhoto(data.item.customer_photo)"
+            height="50"
+            width="50"
+          />
+        </template>
         </b-table>
 
         <p class="mt-3">Current Page: {{ currentPage }}</p>
@@ -84,11 +94,16 @@ export default {
       searchTerm: "",
       searchType: "",
       show: false,
+      photo_url:"user_undefined.png",
       fields: [
         "id",
         "opened_at",
         "customer_name",
         "customer_address",
+        "customer_phone",
+        "customer_email",
+         "customer_photo", 
+        
         {
           key: "notes",
           label: "Notes",
@@ -100,14 +115,14 @@ export default {
           },
         },
 
-        {
+        /* {
           key: "tempo",
           label: "Tempo",
           formatter: (stempo, key, item) => {
             stempo = this.calcula_data(item.current_status_at);
             return Math.floor(stempo / 60) + " min";
           },
-        },
+        }, */
         { key: "actions", label: " " },
       ],
       fields1: ["product_name", "quantity", "product_description"],
@@ -124,16 +139,37 @@ export default {
             this.currentPage
         )
         .then((response) => {
+            console.log(response.data);
+            
+            /* for (let index = 0; index < response.data.length; index++) {
+                 if(response.data[index].customer_photo!=null){
+      this.photo_url = response.data[index].customer_photo;
+                
+            }
+              
+
+      } */
           this.orders = response.data;
           this.rows = this.orders.length;
       
         });
+
+        
+
     },
+
+    getPhoto(photo){
+            if(photo != null){
+                return photo;
+            }
+            return this.photo_url;
+        },
 
     seeOrderDetails: function (id) {
       axios.get("api/orderItems/" + id).then((response) => {
         this.orderItems = response.data;
         console.log(response.data);
+      
       });
     },
 

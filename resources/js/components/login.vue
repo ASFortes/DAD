@@ -39,7 +39,7 @@ import orderSocketCookera from "./ordersH";
 export default {
   data: function () {
     return {
-      ordersH: [],
+      order: null,
       credentials: {
         email: "",
         password: "",
@@ -52,16 +52,7 @@ export default {
     orderSocketCooker: orderSocketCookera,
   },
   mounted() {
-    axios
-      .get("api/orders")
-      .then((response) => {
-        console.log(response);
-        this.ordersH = response.data;
-      })
-      .catch((error) => {
-        console.log("erro aquii");
-        console.log(error);
-      });
+    
   },
   methods: {
     login() {
@@ -72,35 +63,27 @@ export default {
           .then((response) => {
             this.$store.commit("setUser", response.data);
 
-            if (this.$store.state.user.type == "EC") {
-              //ver se o cooker tem alguma order
-              axios
-                .get("api/cookOrdersInProgress/" + this.$store.state.user.id)
-                .then((response) => {
-                  console.log(response.data);
-                  if (response.data.length == 0) {
+            if (this.$store.state.user.type == "EC" ) {
+              
                     axios
                       .put(
                         "api/assignCook/" +
-                          this.$store.state.user.id +
-                          "/" +
-                          this.ordersH[0].id
+                          this.$store.state.user.id 
+              
                       )
                       .then((response) => {
                         console.log(response);
-                        this.orders = response.data;
+                        this.order = response.data;
+                        if(this.order!=null){
+                        this.$socket.emit("cooker_ready", this.order.id);
+                        }
+            
                       })
                       .catch((error) => {
                         console.log("erro aquii");
                         console.log(error);
                       });
-                    this.$socket.emit("cooker_ready", this.ordersH[0].id);
-                  }
-                })
-                .catch((error) => {
-                  console.log("erro no login");
-                  console.log(error);
-                });
+                    
             }
 
             //this.$toasted.show('User is authenticated successfully',{type:'success'})
@@ -114,6 +97,7 @@ export default {
           })
           .catch((error) => {
             //this.$toasted.show('Invalid Authentication', { type: 'error' })
+            console.log(error);
             this.showMessage = true;
             this.errorMessage = error.response.data.message;
           });

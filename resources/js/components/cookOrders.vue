@@ -162,13 +162,11 @@ export default {
                 axios
                   .put(
                     "api/assignCook/" +
-                      this.$store.state.user.id +
-                      "/" +
-                      this.ordersH[0].id
+                      this.$store.state.user.id
                   )
                   .then((response) => {
                     alert("New order assigned to you");
-                    this.getOrders();
+                    this.orders=response.data;
                   
                    // this.$router.go();
                   })
@@ -205,9 +203,7 @@ export default {
     },
   },
   mounted() {
-    this.getOrders();
-    // console.log(this.$orders[id].current_status_at);
-    console.log(this.$store.state.user);
+    
   },
 
   computed: {},

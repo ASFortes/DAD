@@ -31,6 +31,7 @@ Route::post('register', [UserController::class, 'store']);
 Route::post('update', [UserController::class, 'update']);
 Route::put('password',[UserController::class, 'changePassword']);
 
+Route::put('changeStatusToAvailable/{id}',[OrderController::class, 'changeStatusToAvailable']);
 
 //PRODUCTS
 Route::get('fotos/{filename}', function ($filename)
@@ -52,7 +53,7 @@ Route::get('products/{id}', [ProductController::class, 'showProduct']);
 
 //ORDERS
 
-Route::put('assignCook/{id}/{idOrder}', [OrderController::class, 'assignCook']);
+Route::put('assignCook/{id}', [OrderController::class, 'assignCook']);
 Route::post('orderStore', [OrderController::class, 'storeOrder']);
 Route::get('orders', [OrderController::class, 'getAllOrders']);//orders a espera 'H'
 Route::get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar

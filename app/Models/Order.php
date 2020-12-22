@@ -49,4 +49,7 @@ class Order extends Model
     public function customer_id(){
         return $this->belongsTo(Customer::class);
     }
+    public function prepared_by(){
+        return $this->hasOne(User::class);
+    }
 }

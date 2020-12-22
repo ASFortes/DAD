@@ -76,16 +76,31 @@ class OrderController extends Controller
                 return response()->json($orders, 201);
         }
 
-        public function assignCook($id,$idOrder)
+        public function assignCook($id)
         {
-                $order= Order::find($idOrder);
-                $order->prepared_by=$id;
-                $order->status='P';
-                $order->current_status_at=date('Y-m-d H:i:s');
-                $order->save();
+                $user=User::find($id);
+                $user->available_at=date('Y-m-d H:i:s');
+                $user->save();  
+                $orderHold= Order::where('status','H')->orderBy('opened_at')->first();
+                $cookOrdersInProgress = Order::where('prepared_by', $id)->where('status','P')->count();
+                if($cookOrdersInProgress==0 && $orderHold!=null){
+                $orderHold->prepared_by=$id;
+                $orderHold->status='P';
+                $orderHold->current_status_at=date('Y-m-d H:i:s');
+                $orderHold->save();
+                $user->available_at=null;
+                }
+                $user->save();
+                return response()->json($orderHold, 201);
                 
+                
+        }
+        public function changeStatusToAvailable($id){
+                $user=User::find($id);
+                $user->available_at=date('Y-m-d H:i:s');
+                $user->save();
 
-                return response()->json($order, 201);
+
         }
 
         public function changeOrderPtoR($id)

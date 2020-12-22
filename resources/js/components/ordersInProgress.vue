@@ -30,6 +30,7 @@
             "
             >See Details</b-button
           >
+          
           <b-modal id="my-modal" v-model="show">
             <b-table
               id="my-table"
@@ -44,6 +45,13 @@
             >
             </b-table>
           </b-modal>
+           <b-button
+              id="show-btn"
+              v-if="$store.state.user != null && $store.state.user.type == 'EC'"
+              class="btn btn-sm btn-success"
+              @click.prevent="changeStatusToReady(data.item.id)"
+              >Ready</b-button
+            >
         </template>
       </b-table>
 
@@ -136,12 +144,15 @@ export default {
 
 
 
-
+         order_delivered(iD) {
+          const index = this.orders.findIndex(item => item.id === iD);
+          this.orders[index].status='D';
+        },
 
         
         deliveryMan_ready(iD) {
           const index = this.orders.findIndex(item => item.id === iD);
-          this.orders[index].status='R';
+          this.orders[index].status='T';
         },
         order_cooked(iD) {
           const index = this.orders.findIndex(item => item.id === iD);

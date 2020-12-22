@@ -76,3 +76,6 @@ Route::get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);
 
 Route::get('deliveryManOrders/', [OrderController::class, 'getDeliveryManOrders']);//orders do deliveryman
 Route::put('assignDeliveryMan/{id}/{idOrder}', [OrderController::class, 'assignDeliveryMan']);
+Route::put('changeOrderRtoT/{id}', [OrderController::class, 'changeOrderRtoT']);
+Route::put('changeOrderTtoD/{id}', [OrderController::class, 'changeOrderTtoD']);
+Route::get('getDeliveryOrdersInProgress/{id}', [OrderController::class, 'getDeliveryOrdersInProgress']);//orders do deliveryman current

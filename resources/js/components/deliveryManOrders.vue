@@ -35,7 +35,27 @@
               "
               >See details</b-button
             >
+            
           </template>
+
+
+
+          <template #cell(actions1)="data">
+           
+            
+                       <b-button
+              id="show-btn"
+              v-if="$store.state.user != null && $store.state.user.type == 'ED'"
+              class="btn btn-sm btn-success"
+              @click.prevent="changeStatusToTransit(data.item.id)"
+              >Deliver</b-button
+            > 
+               
+          </template>
+        
+
+
+
 
 
           <template #cell(customer_photo)="data">
@@ -45,6 +65,9 @@
             height="50"
             width="50"
           />
+
+       
+
         </template>
         </b-table>
 
@@ -69,6 +92,7 @@
             >
             </b-table>
           </b-modal>
+          
       </div>
     </div>
   </div>
@@ -80,6 +104,7 @@
 import NavBarComponent from "./navBar";
 import NavBar from "./navBar.vue";
 
+
 export default {
   data: function () {
     return {
@@ -87,6 +112,7 @@ export default {
       current_status_at: null,
       products: [],
       orders: [],
+      ordersAUX: [],
       //filteredProducts:[],
       currentPage: 1,
       perPage: 10,
@@ -117,13 +143,14 @@ export default {
 
         /* {
           key: "tempo",
-          label: "Tempo",
+          label: "StartD_Tempo",
           formatter: (stempo, key, item) => {
             stempo = this.calcula_data(item.current_status_at);
             return Math.floor(stempo / 60) + " min";
           },
         }, */
         { key: "actions", label: " " },
+        { key: "actions1", label: " " },
       ],
       fields1: ["product_name", "quantity", "product_description"],
       orderItems: [],
@@ -173,6 +200,85 @@ export default {
       });
     },
 
+    
+
+
+    changeStatusToTransit: function (id) {
+      axios
+        .put("api/changeOrderRtoT/" + id)
+        .then((response) => {
+          console.log(response);
+          this.orders =[];
+          axios
+            .get("api/deliveryManOrders")
+            .then((response) => {
+              console.log(response);
+              this.ordersAUX = response.data;
+          
+                   axios
+            .get("api/getDeliveryOrdersInProgress/" + this.$store.state.user.id)
+            .then((response) => {
+              console.log(response.data);
+              if (response.data.length == 0) {
+                axios
+                  .put(
+                    "api/assignDeliveryMan/" +
+                      this.$store.state.user.id +
+                      "/" +
+                      this.orders[0].id
+                  )
+                  .then((response) => {
+                   
+                    this.getOrders();
+                  
+                   // this.$router.go();
+                  })
+                  .catch((error) => {
+                    console.log("erro aquii");
+                    console.log(error);
+                  });
+                this.$socket.emit("deliveryMan_ready", this.ordersAUX[0].id);
+              }
+            })
+             .catch((error) => {
+              console.log("erro no login");
+              console.log(error);
+            });
+            })
+            .catch((error) => {
+              console.log("ERRO AQUI NESTE GET api/getDeliveryOrdersInProgress/");
+              console.log(error);
+            });
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+       
+        });
+      
+    },
+
+
+
+    changeStatusToDelivered: function (id) {
+      axios
+        .put("api/changeOrderTtoD/" + id)
+        .then((response) => {
+          console.log(response);
+          this.orders = [];
+           this.getOrders();
+          
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+       
+        });
+      this.$socket.emit("order_delivered", this.orders[0].id);
+    },
+
+
+
     calcula_data: function (current_status_time) {
       var diff = Math.abs(
         new Date() - new Date(current_status_time.replace(/-/g, "/"))
@@ -192,7 +298,19 @@ export default {
   components: {
     navBar: NavBarComponent,
   },
+
+  sockets:{
+       deliveryMan_ready(iD) {
+          const index = this.orders.findIndex(item => item.id === iD);
+          this.orders[index].status='T';
+        },
+    
+},
 };
+
+
+
+
 </script>
 
 <style scoped>

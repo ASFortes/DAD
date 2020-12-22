@@ -202,6 +202,52 @@ class OrderController extends Controller
                 return response()->json($order, 201);
         }
 
+
+        public function changeOrderRtoT($id)
+        {
+                
+                $order= Order::find($id);
+                $order->status='T';
+                //$order->preparation_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->save();
+                
+
+                return 
+                response()->json($order, 201);
+        }
+
+
+        public function changeOrderTtoD($id)
+        {
+                
+                $order= Order::find($id);
+                $order->status='D';
+                $order->delivery_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->closed_at=date('Y-m-d H:i:s');
+                
+                $order->save();
+                
+
+                return response()->json($order, 201);
+        }
+
+
+        public function getDeliveryOrdersInProgress($id)
+        {
+                $orders = Order::where('delivered_by', $id)->where('status','T')->get();
+                for($i=0;$i<count($orders);$i++){
+                        $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                };
+                for($i=0;$i<count($orders);$i++){
+                        $orders[$i]->customer_name=$user[$i]['name'];
+                };
+
+                return response()->json($orders, 201);
+        }
+
+
      
 
 }

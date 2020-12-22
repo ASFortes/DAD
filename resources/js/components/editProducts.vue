@@ -168,15 +168,17 @@ export default {
     },
   },
   mounted() {
+    console.log("aqui em baixo menino");
     console.log(this.product);
     this.form.id = this.product.id;
     this.form.name = this.product.name;
     this.form.type = this.product.type;
     this.form.description = this.product.description;
     this.form.price = this.product.price;
-    if (this.product.photo != null) {
-      this.form.photo_url = this.product.photo;
-    }
+    this.form.photo_url = this.product.photo;
+    // if (this.product.photo != null) {
+      
+    // }
   },
   components: {},
 };

@@ -156,6 +156,8 @@ export default {
     },
 
     updateTable: function(produto){
+console.log("aqui estou eu cheio de pinta");
+      console.log(this.filteredProducts[1]);
       this.productToEdit=false;
       
       const index = this.filteredProducts.findIndex(item => item.id === produto.id);
@@ -163,7 +165,7 @@ export default {
       this.filteredProducts[index].description=produto.description;
       this.filteredProducts[index].type=produto.type;
       this.filteredProducts[index].price=produto.price;
-      this.filteredProducts[index].photo_url=produto.photo;
+      this.filteredProducts[index].photo=produto.photo_url;
     },
 
     editProducts: function(item){

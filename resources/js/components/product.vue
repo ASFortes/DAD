@@ -43,7 +43,7 @@
         </template>
         <template #cell(actions)="data">
         <button v-if="$store.state.user!=null && $store.state.user.type =='C'"  class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Add</button>
-        <a v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="addToShoppingCart(data.item)">Edit</a>
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="editProducts(data.item)">Edit</button>
         </template>
 
         <template #cell(type)="data">
@@ -83,19 +83,28 @@
         :per-page="perPage"
         aria-controls="my-table"
       ></b-pagination>
+
+      <edit-products
+      :product="productToEdit"
+      v-if="productToEdit"
+      @updated="updateTable"
+      >
+      </edit-products>
     </div>
   </div>
 </template>
 
 <script>
 import NavBarComponent from "./navBar";
-import NavBar from "./navBar.vue";
+import NavBar from "./navBar";
+import EditProducts from "./editProducts";
 
 export default {
   data: function () {
     return {
       user:null,
       products: [],
+      productToEdit: null,
       //filteredProducts:[],
       currentPage: 1,
       perPage: 10,
@@ -144,8 +153,26 @@ export default {
       console.log(this.$store.state.shopCart);
       
 
+    },
+
+    updateTable: function(produto){
+      this.productToEdit=false;
+      
+      const index = this.filteredProducts.findIndex(item => item.id === produto.id);
+      this.filteredProducts[index].name=produto.name;
+      this.filteredProducts[index].description=produto.description;
+      this.filteredProducts[index].type=produto.type;
+      this.filteredProducts[index].price=produto.price;
+      this.filteredProducts[index].photo_url=produto.photo;
+    },
+
+    editProducts: function(item){
+      this.productToEdit=item;
+      
     }
   },
+
+  
   mounted() {
     this.getProducts();
       
@@ -173,6 +200,7 @@ export default {
   },
   components: {
     navBar: NavBarComponent,
+    'edit-products' : EditProducts,
   },
 };
 </script>

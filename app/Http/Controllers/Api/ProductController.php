@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource;
 use App\Models\Product;
+use Validator;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -17,7 +19,53 @@ class ProductController extends Controller
     }
 
 
+    public function updateProducts(Request $request)
+    {
 
+        // return response()->json($request, 201);
+            //    $user_id = Auth::user()->id;
+               
+            //    $customer_id=$user_id;
+                $product = Product::find($request['id']);
+                
+
+               $validator = Validator::make($request->all(),[
+                'price'=>'numeric',
+              
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' =>$validator->errors()->first()],400);
+             }
+   
+               $product->name = $request['name'];
+               $product->type = $request['type'];
+               $product->price = $request['price'];
+                
+              
+               //$customer->save();
+               //}
+            //    $user->save();
+               if ($request->hasfile('photo')) {
+                   
+                   $nov_nome = $product->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
+            
+                    Storage::putFileAs("products", $request->file('photo'), $nov_nome);//364
+                   $product['photo_url'] = $nov_nome;
+               }
+               $product->save();
+               return response()->json($product, 201);
+   
+            //    $user->update();
+   
+              
+   
+            //   return response()->json($user, 201);
+       // return response()->json( $user, 201);
+    }
+
+
+    
   
 
     public function showProduct($id)

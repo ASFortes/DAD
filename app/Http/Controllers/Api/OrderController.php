@@ -80,8 +80,14 @@ class OrderController extends Controller
         {
                 $user=User::find($id);
                 $user->available_at=date('Y-m-d H:i:s');
-                $user->save();  
                 $orderHold= Order::where('status','H')->orderBy('opened_at')->first();
+                
+                if(empty($orderHold)){
+                        $user->available_at=date('Y-m-d H:i:s');
+                        $user->save();
+                        return response()->json( [], 201);
+                }
+               
                 $cookOrdersInProgress = Order::where('prepared_by', $id)->where('status','P')->count();
                 if($cookOrdersInProgress==0 && $orderHold!=null){
                 $orderHold->prepared_by=$id;
@@ -89,8 +95,10 @@ class OrderController extends Controller
                 $orderHold->current_status_at=date('Y-m-d H:i:s');
                 $orderHold->save();
                 $user->available_at=null;
+                
                 }
                 $user->save();
+                
                 return response()->json($orderHold, 201);
                 
                 

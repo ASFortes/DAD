@@ -72,9 +72,10 @@ export default {
               
                       )
                       .then((response) => {
-                        console.log(response);
+                        console.log("ganda cafeteira");
+                        console.log(response.data);
                         this.order = response.data;
-                        if(this.order!=null){
+                        if(this.order.length!=0){
                         this.$socket.emit("cooker_ready", this.order.id);
                         }
             

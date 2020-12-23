@@ -109,7 +109,7 @@ export default {
 
         {
           key: "tempo",
-          label: "Tempo",
+          label: "Time",
           formatter: (stempo, key, item) => {
             stempo = this.calcula_data(item.current_status_at);
             return Math.floor(stempo / 60) + " min";

@@ -30,7 +30,7 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [UserController::class, 'store']);
 Route::post('update', [UserController::class, 'update']);
 Route::put('password',[UserController::class, 'changePassword']);
-
+Route::put('userUnavailable/{id}', [UserController::class, 'updateUserToUnavailable']);
 
 //PRODUCTS
 Route::get('fotos/{filename}', function ($filename)
@@ -52,7 +52,7 @@ Route::get('products/{id}', [ProductController::class, 'showProduct']);
 
 //ORDERS
 
-Route::put('assignCook/{id}/{idOrder}', [OrderController::class, 'assignCook']);
+Route::put('assignCook/{id}', [OrderController::class, 'assignCook']);
 Route::post('orderStore', [OrderController::class, 'storeOrder']);
 Route::get('orders', [OrderController::class, 'getAllOrders']);//orders a espera 'H'
 Route::get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar
@@ -61,6 +61,7 @@ Route::get('ordersUncooked', [OrderController::class, 'getOrdersUncooked']);//or
 Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//orders do cozinheiro
 Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
 Route::put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR']);
+Route::put('assignOnlineCook/{id}', [OrderController::class, 'assignOnlineCook']);
 
 //ORDER ITEMS 
 

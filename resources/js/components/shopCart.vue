@@ -153,9 +153,13 @@ export default {
         .post("api/orderStore",this.$store.state.shopCart, {
           })
         .then((response) => {
-          ("post feito");
+          console.log("post feito");
+          console.log("o ramses esta aqui a tentar ver o que acontece");
+          console.log(response.data);
+          this.$socket.emit("new_order", response.data.id);
         
           this.$store.commit("clearCart");
+          console.log("o ramses esta aqui a tentar ver o que acontece");
 
         })
         .catch((error) => {

@@ -121,21 +121,14 @@ export default {
       orderItems: [],
     };
   },
-  methods: {
-    getOrders: function () {
-      axios
-        .get(
-          "api/cookOrders/" +
-            this.$store.state.user.id +
-            "?page=" +
-            this.currentPage
-        )
-        .then((response) => {
-          this.orders = response.data;
-          this.rows = this.orders.length;
-        });
-    },
+  sockets: {
+        new_order(iD) {
+        this.orderReceived(iD);
+        },
+       
+  },
 
+  methods: {
     seeOrderDetails: function (id) {
       axios.get("api/orderItems/" + id).then((response) => {
         this.orderItems = response.data;
@@ -149,49 +142,27 @@ export default {
         .then((response) => {
           console.log(response);
           this.orders = [];
+
           axios
-            .get("api/orders")
+            .put("api/assignCook/" + this.$store.state.user.id)
             .then((response) => {
-              console.log(response);
-              this.ordersH = response.data;
-                   axios
-            .get("api/cookOrdersInProgress/" + this.$store.state.user.id)
-            .then((response) => {
-              console.log(response.data);
               if (response.data.length == 0) {
-                axios
-                  .put(
-                    "api/assignCook/" +
-                      this.$store.state.user.id +
-                      "/" +
-                      this.ordersH[0].id
-                  )
-                  .then((response) => {
-                   
-                    this.getOrders();
-                  
-                   // this.$router.go();
-                  })
-                  .catch((error) => {
-                    console.log("erro aquii");
-                    console.log(error);
-                  });
-                this.$socket.emit("cooker_ready", this.ordersH[0].id);
+                this.orders = [];
+              } else {
+                alert("New order assigned to you");
+                this.orders = [];
+                this.orders[0] = response.data;
+                this.$socket.emit("order_cooked", this.orders.id);
               }
-            })
-            .catch((error) => {
-              console.log("erro no login");
-              console.log(error);
-            });
             })
             .catch((error) => {
               console.log("erro aquii");
               console.log(error);
             });
-     
+          console.log(this.orders);
         })
         .catch((error) => {
-          console.log("erro aquii");
+          console.log("erro aquii1");
           console.log(error);
         });
       this.$socket.emit("order_cooked", this.orders[0].id);
@@ -203,9 +174,39 @@ export default {
       );
       return Math.floor(diff / 1000);
     },
+    orderReceived : function (id){
+         axios
+            .put("api/assignOnlineCook/"+id)
+            .then((response) => {
+              this.orders = [];
+              this.orders[0] = response.data;
+              // if (response.data.length == 0) {
+              //   this.orders = [];
+              // } else {
+              //   alert("New order assigned to you");
+              //   this.orders = [];
+              //   this.orders[0] = response.data;
+              //   this.$socket.emit("order_cooked", this.orders.id);
+              // }
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+            });
+
+    }
   },
   mounted() {
-    this.getOrders();
+    axios
+      .get("api/cookOrders/" + this.$store.state.user.id)
+      .then((response) => {
+        console.log(response);
+        this.orders = response.data;
+      })
+      .catch((error) => {
+        console.log("erro aquii");
+        console.log(error);
+      });
     // console.log(this.$orders[id].current_status_at);
     console.log(this.$store.state.user);
   },

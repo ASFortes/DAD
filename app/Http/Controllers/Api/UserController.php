@@ -203,6 +203,14 @@ public function changePassword(Request $request)
 
         return response()->json(new UserResource($user), 201);
     }
+    
+    public function updateUserToUnavailable($id){
+        $user=User::find($id);
+        $user->available_at=null;
+        $user->update();
+
+
+}
 
 
 

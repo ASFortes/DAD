@@ -179,6 +179,7 @@ export default {
             .put("api/assignOnlineCook/"+id)
             .then((response) => {
               this.orders = [];
+              alert("New order assigned to you");
               this.orders[0] = response.data;
               // if (response.data.length == 0) {
               //   this.orders = [];

@@ -22,6 +22,14 @@
         <b-dropdown-item @click="changeType('')">All</b-dropdown-item>
       </b-dropdown>
 
+      <b-button
+            id="show-btn"
+            v-if="$store.state.user != null && $store.state.user.type == 'EM'"
+            href="/#/addProduct"
+            class="btn btn-sm btn-info"
+            >Add Product</b-button
+          >
+
       <b-table
         class="table table-striped"
         id="my-table"

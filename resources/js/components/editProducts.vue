@@ -114,7 +114,7 @@ export default {
       logged: false,
       form: {
         id: "",
-        name: "abcd",
+        name: "",
         type: "",
         description: null,
         price: null,

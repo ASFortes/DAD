@@ -32,7 +32,8 @@ import store from "./stores/global-storage"
 import OrdersInProgress from "./components/ordersInProgress"
 import OrdersNotInProgress from "./components/ordersNotInProgress"
 import CookOrders from "./components/cookOrders"
-import EditProducts from "./components/editProducts"
+
+import AddProduct from "./components/addProduct"
 
 
 const routes = [
@@ -46,7 +47,7 @@ const routes = [
     { path: '/ordersInProgress', component:OrdersInProgress},
     { path: '/ordersNotInProgress', component:OrdersNotInProgress},
     { path: '/cookOrders', component:CookOrders},
-    { path: '/editProducts', component:EditProducts}
+    { path: '/addProduct', component:AddProduct}
 
 
    

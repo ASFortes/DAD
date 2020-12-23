@@ -169,6 +169,15 @@ class OrderController extends Controller
         {
                 //$orders=Order::where('customer_id', $id)->where('status','R')->get();                 
                 //$orders = Order::where('delivered_by', $id)->where('status', 'R')->get();
+                $deliveryMan_id = Auth::user()->id;
+                $orderInTransit = Order::where('status','T')->where('delivered_by',$deliveryMan_id)->get(); 
+                //return response()->json($orderInTransit, 201);
+               
+                //return response()->json(empty($orderInTransit[0]), 201);
+               
+                if(empty($orderInTransit[0])){
+
+                
                 $orders=Order::where('status','R')->get(); 
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
@@ -184,24 +193,55 @@ class OrderController extends Controller
                         $orders[$i]->customer_email=$user[$i]['email'];
                         $orders[$i]->customer_photo=$user[$i]['photo_url'];
                 };
+                
+
 
                 return response()->json($orders, 201);
+                 }else{
+                         $user = User::findOrFail($orderInTransit[0]->customer_id);
+                         $userCustomer = Customer::findOrFail($orderInTransit[0]->customer_id);
+
+                        $orderInTransit[0]->customer_name=$user['name'];
+                        $orderInTransit[0]->customer_address=$userCustomer['address'];
+                        $orderInTransit[0]->customer_phone=$userCustomer['phone'];
+                        $orderInTransit[0]->customer_email=$user['email'];
+                        $orderInTransit[0]->customer_photo=$user['photo_url'];
+                         return response()->json($orderInTransit, 201);
+                 }
         }
 
 
         ////atribuir deliveryMan 
-        public function assignDeliveryMan($id,$idOrder)
-        {
-                $order= Order::find($idOrder);
-                $order->prepared_by=$id;
-                $order->status='R';
+        public function assignDeliveryMan($id)
+        {       
+               
+                $user_id = Auth::user()->id;
+                $order= Order::find($id);
+                $user = User::findOrFail($order->customer_id);
+                $userCustomer = Customer::findOrFail($order->customer_id);
+                $order->delivered_by=$user_id;
+                $order->status='T';
                 $order->current_status_at=date('Y-m-d H:i:s');
+
+                //$order->$this->changeOrderRtoT($id);
+                
+               
+
+
                 $order->save();
+
+                $order->customer_name=$user['name'];
+                $order->customer_address=$userCustomer['address'];
+                $order->customer_phone=$userCustomer['phone'];
+                $order->customer_email=$user['email'];
+                $order->customer_photo=$user['photo_url'];
+
+
+                
                 
 
-                return response()->json($order, 201);
+                return   response()->json($order, 201); //&& $this->changeOrderRtoT($id)
         }
-
 
         public function changeOrderRtoT($id)
         {

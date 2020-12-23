@@ -40,18 +40,41 @@
 
 
 
-          <template #cell(actions1)="data">
+          <template  #cell(actions1)="data">
            
             
                        <b-button
               id="show-btn"
-              v-if="$store.state.user != null && $store.state.user.type == 'ED'"
+              v-if="$store.state.user != null && $store.state.user.type == 'ED' && showFlag == 0 "
               class="btn btn-sm btn-success"
               @click.prevent="changeStatusToTransit(data.item.id)"
               >Deliver</b-button
             > 
+
+            
+                       <b-button
+              id="show-btn"
+              v-if="$store.state.user != null && $store.state.user.type == 'ED' && showFlag == 1"
+              class="btn btn-sm btn-success"
+              show = true;
+              @click.prevent="changeStatusToDelivered(data.item.id)"
+              >DeliveREDDDDDDD</b-button
+            > 
                
           </template>
+
+
+           <template v-if="show == true"  #cell(tempo)>
+           
+            
+             
+              
+              
+               
+          </template>
+
+
+          
         
 
 
@@ -109,6 +132,7 @@ export default {
   data: function () {
     return {
       user: null,
+      showFlag:0,
       current_status_at: null,
       products: [],
       orders: [],
@@ -141,19 +165,20 @@ export default {
           },
         },
 
-        /* {
+         {
           key: "tempo",
-          label: "StartD_Tempo",
+          label: "Time",
           formatter: (stempo, key, item) => {
             stempo = this.calcula_data(item.current_status_at);
             return Math.floor(stempo / 60) + " min";
           },
-        }, */
+        }, 
         { key: "actions", label: " " },
         { key: "actions1", label: " " },
       ],
       fields1: ["product_name", "quantity", "product_description"],
       orderItems: [],
+      
     };
   },
   methods: {
@@ -167,7 +192,11 @@ export default {
         )
         .then((response) => {
             console.log(response.data);
-            
+            if(response.data[0]['status'] == 'T'){
+            this.showFlag = 1;
+            }else{
+              this.showFlag = 0;
+            }
             /* for (let index = 0; index < response.data.length; index++) {
                  if(response.data[index].customer_photo!=null){
       this.photo_url = response.data[index].customer_photo;
@@ -204,57 +233,24 @@ export default {
 
 
     changeStatusToTransit: function (id) {
-      axios
-        .put("api/changeOrderRtoT/" + id)
+       axios
+        .put("api/assignDeliveryMan/" + id)
         .then((response) => {
-          console.log(response);
-          this.orders =[];
-          axios
-            .get("api/deliveryManOrders")
-            .then((response) => {
-              console.log(response);
-              this.ordersAUX = response.data;
+          console.log(response.data);
+           this.$socket.emit("deliveryMan_ready", id);
+          this.orders = [];
+          this.orders[0] = response.data;
+           console.log(this.orders);
+           this.showFlag = 1;
           
-                   axios
-            .get("api/getDeliveryOrdersInProgress/" + this.$store.state.user.id)
-            .then((response) => {
-              console.log(response.data);
-              if (response.data.length == 0) {
-                axios
-                  .put(
-                    "api/assignDeliveryMan/" +
-                      this.$store.state.user.id +
-                      "/" +
-                      this.orders[0].id
-                  )
-                  .then((response) => {
-                   
-                    this.getOrders();
-                  
-                   // this.$router.go();
-                  })
-                  .catch((error) => {
-                    console.log("erro aquii");
-                    console.log(error);
-                  });
-                this.$socket.emit("deliveryMan_ready", this.ordersAUX[0].id);
-              }
-            })
-             .catch((error) => {
-              console.log("erro no login");
-              console.log(error);
-            });
+          
             })
             .catch((error) => {
-              console.log("ERRO AQUI NESTE GET api/getDeliveryOrdersInProgress/");
-              console.log(error);
-            });
-            })
-            .catch((error) => {
-              console.log("erro aquii");
+              console.log("erro aquiiXXXXXXXXXXXXX");
               console.log(error);
        
         });
+       
       
     },
 
@@ -265,7 +261,7 @@ export default {
         .put("api/changeOrderTtoD/" + id)
         .then((response) => {
           console.log(response);
-          this.orders = [];
+           this.$socket.emit("order_delivered", id);
            this.getOrders();
           
             })
@@ -274,7 +270,7 @@ export default {
               console.log(error);
        
         });
-      this.$socket.emit("order_delivered", this.orders[0].id);
+      
     },
 
 
@@ -302,7 +298,9 @@ export default {
   sockets:{
        deliveryMan_ready(iD) {
           const index = this.orders.findIndex(item => item.id === iD);
-          this.orders[index].status='T';
+          this.orders.splice(index,1);
+         // array.splice(index, 1);
+          //this.orders[index].status='T';
         },
     
 },

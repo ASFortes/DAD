@@ -15,7 +15,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return ProductResource::collection(Product::all());
+
+        return ProductResource::collection(Product::where('deleted_at',null)->get());
+        // $products = Product::where('deleted_at',null)->get();
+        return response()->json($products, 201);
+        // return ProductResource::collection();
+
+        // $Product = Product::where('id',$id)->where('deleted_at','=',null);
     }
 
 
@@ -111,6 +117,15 @@ class ProductController extends Controller
 
               return response()->json($product, 201);
        // return response()->json( $user, 201);
+    }
+
+    public function deleteProduct($id)
+    {
+        $Product = Product::find($id);
+        
+        $Product->deleted_at=date('Y-m-d H:i:s');
+        $Product->update();
+        return response()->json($Product, 201);
     }
 
 

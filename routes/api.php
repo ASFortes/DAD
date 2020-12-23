@@ -49,7 +49,7 @@ Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{id}', [ProductController::class, 'showProduct']);
 Route::post('updateProducts', [ProductController::class, 'updateProducts']);
 Route::post('newProduct', [ProductController::class, 'newProduct']);
-
+Route::put('deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
 
 
 //ORDERS

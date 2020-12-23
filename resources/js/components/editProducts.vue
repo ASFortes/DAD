@@ -94,7 +94,7 @@
                   {{ errorMessage }}
                 </div>
                 <b-button type="submit" variant="primary">Update</b-button>
-                <b-button to="/products" variant="secondary">Cancel</b-button>
+                <b-button @click="cancel()" to="/products" variant="secondary">Cancel</b-button>
               </b-form>
             </div>
           </div>
@@ -133,6 +133,9 @@ export default {
       this.form.type = type;
     },
 
+    cancel: function () {
+      this.$emit("canceled");
+    },
 
     onSubmit(evt) {
       evt.preventDefault();

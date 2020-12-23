@@ -54,6 +54,10 @@
         <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="editProducts(data.item)">Edit</button>
         </template>
 
+        <template #cell(actions1)="data">
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-danger" v-on:click.prevent="deleteProducts(data.item.id)">Delete</button>
+        </template>
+
         <template #cell(type)="data">
           <span
             v-if="data.item.type == 'drink'"
@@ -96,6 +100,7 @@
       :product="productToEdit"
       v-if="productToEdit"
       @updated="updateTable"
+      @canceled="hideEdit"
       >
       </edit-products>
     </div>
@@ -134,6 +139,7 @@ export default {
           },},
 
           { key: 'actions', label:" " }, 
+          { key: 'actions1', label:" " }, 
         ]
       
     };
@@ -146,6 +152,7 @@ export default {
     getProducts: function () {
       if (this.$root.products.length === 0) {
         axios.get("api/products?page=" + this.currentPage).then((response) => {
+          console.log(response.data.data);
           this.$root.products = response.data.data;
           this.products = this.$root.products;
           this.rows = this.products.length;
@@ -176,9 +183,24 @@ console.log("aqui estou eu cheio de pinta");
       this.filteredProducts[index].photo=produto.photo_url;
     },
 
+    hideEdit: function(){
+      this.productToEdit=false;
+      
+    },
+
     editProducts: function(item){
       this.productToEdit=item;
       
+    },
+
+    deleteProducts: function(id){
+        axios
+        .put(
+          "api/deleteProduct/" + id)
+        .then((response) => {
+          window.location.reload(true);
+
+        });
     }
   },
 

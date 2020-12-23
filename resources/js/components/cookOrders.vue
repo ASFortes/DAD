@@ -121,6 +121,13 @@ export default {
       orderItems: [],
     };
   },
+  sockets: {
+        new_order(iD) {
+        this.orderReceived(iD);
+        },
+       
+  },
+
   methods: {
     seeOrderDetails: function (id) {
       axios.get("api/orderItems/" + id).then((response) => {
@@ -145,7 +152,7 @@ export default {
                 alert("New order assigned to you");
                 this.orders = [];
                 this.orders[0] = response.data;
-                this.$socket.emit("cooker_ready", this.orders.id);
+                this.$socket.emit("order_cooked", this.orders.id);
               }
             })
             .catch((error) => {
@@ -167,6 +174,27 @@ export default {
       );
       return Math.floor(diff / 1000);
     },
+    orderReceived : function (id){
+         axios
+            .put("api/assignOnlineCook/"+id)
+            .then((response) => {
+              this.orders = [];
+              this.orders[0] = response.data;
+              // if (response.data.length == 0) {
+              //   this.orders = [];
+              // } else {
+              //   alert("New order assigned to you");
+              //   this.orders = [];
+              //   this.orders[0] = response.data;
+              //   this.$socket.emit("order_cooked", this.orders.id);
+              // }
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+            });
+
+    }
   },
   mounted() {
     axios

@@ -51,6 +51,10 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('order_cooked', id)
         console.log('Order Id ' + id)
     })
+    socket.on('new_order',(id)=>{
+        socket.broadcast.emit('new_order', id)
+        console.log('Order Id ' + id+'aqui')
+    })
 
 
 })

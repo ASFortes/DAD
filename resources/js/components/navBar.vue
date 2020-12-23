@@ -19,8 +19,12 @@ export default {
       }
     },
   methods: {
-    logout() {
+        logout() {
       axios
+        .put("/api/userUnavailable/"+this.$store.state.user.id)
+        .then((response) => {
+          //   console.log("User has logged out");
+         axios
         .post("/api/logout")
         .then((response) => {
           //   console.log("User has logged out");
@@ -33,8 +37,16 @@ export default {
         .catch((error) => {
           console.log("Invalid Logout");
         });    
+           
+        })
+        .catch((error) => {
+          console.log("unavailable didnt change");
+        });    
 
-    },
+      
+
+    }
+  ,
     myself(){
       if(this.$store.state.user!=null){
       axios

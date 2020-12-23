@@ -103,13 +103,27 @@ class OrderController extends Controller
                 
                 
         }
-        public function changeStatusToAvailable($id){
-                $user=User::find($id);
-                $user->available_at=date('Y-m-d H:i:s');
-                $user->save();
-
-
+        public function assignOnlineCook($id)
+        {
+               
+                $cooker=User::where('available_at','<>',null)->where('type','EC')->orderBy('available_at','asc')->first();
+                  
+                if(empty($cooker)){
+                 return response()->json( [], 201);
+                }
+               
+                $order= Order::find($id);
+                $cooker->available_at=null;
+                $order->prepared_by=$cooker->id;
+                $order->status='P';
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->save();
+                $cooker->save();
+                
+                return response()->json($order, 201);
+         
         }
+      
 
         public function changeOrderPtoR($id)
         {

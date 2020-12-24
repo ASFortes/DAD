@@ -31,6 +31,7 @@ Route::post('register', [UserController::class, 'store']);
 Route::post('update', [UserController::class, 'update']);
 Route::put('password',[UserController::class, 'changePassword']);
 Route::put('userUnavailable/{id}', [UserController::class, 'updateUserToUnavailable']);
+Route::get('users', [UserController::class, 'users']);
 
 //PRODUCTS
 Route::get('fotos/{filename}', function ($filename)

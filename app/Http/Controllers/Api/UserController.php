@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Customer;
 use Hash;
 use Validator;
+use App\Http\Resources\User as UserResource; 
 
 
 
@@ -211,6 +212,17 @@ public function changePassword(Request $request)
 
 
 }
+
+public function users()
+    {
+
+        return UserResource::collection(User::where('deleted_at',null)->get());
+        // $products = Product::where('deleted_at',null)->get();
+        return response()->json($users, 201);
+        // return ProductResource::collection();
+
+        // $Product = Product::where('id',$id)->where('deleted_at','=',null);
+    }
 
 
 

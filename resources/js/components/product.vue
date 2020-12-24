@@ -22,6 +22,14 @@
         <b-dropdown-item @click="changeType('')">All</b-dropdown-item>
       </b-dropdown>
 
+      <b-button
+            id="show-btn"
+            v-if="$store.state.user != null && $store.state.user.type == 'EM'"
+            href="/#/addProduct"
+            class="btn btn-sm btn-info"
+            >Add Product</b-button
+          >
+
       <b-table
         class="table table-striped"
         id="my-table"
@@ -43,7 +51,11 @@
         </template>
         <template #cell(actions)="data">
         <button v-if="$store.state.user!=null && $store.state.user.type =='C'"  class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Add</button>
-        <a v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="addToShoppingCart(data.item)">Edit</a>
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="editProducts(data.item)">Edit</button>
+        </template>
+
+        <template #cell(actions1)="data">
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-danger" v-on:click.prevent="deleteProducts(data.item.id)">Delete</button>
         </template>
 
         <template #cell(type)="data">
@@ -83,19 +95,29 @@
         :per-page="perPage"
         aria-controls="my-table"
       ></b-pagination>
+
+      <edit-products
+      :product="productToEdit"
+      v-if="productToEdit"
+      @updated="updateTable"
+      @canceled="hideEdit"
+      >
+      </edit-products>
     </div>
   </div>
 </template>
 
 <script>
 import NavBarComponent from "./navBar";
-import NavBar from "./navBar.vue";
+import NavBar from "./navBar";
+import EditProducts from "./editProducts";
 
 export default {
   data: function () {
     return {
       user:null,
       products: [],
+      productToEdit: null,
       //filteredProducts:[],
       currentPage: 1,
       perPage: 10,
@@ -117,6 +139,7 @@ export default {
           },},
 
           { key: 'actions', label:" " }, 
+          { key: 'actions1', label:" " }, 
         ]
       
     };
@@ -129,6 +152,7 @@ export default {
     getProducts: function () {
       if (this.$root.products.length === 0) {
         axios.get("api/products?page=" + this.currentPage).then((response) => {
+          console.log(response.data.data);
           this.$root.products = response.data.data;
           this.products = this.$root.products;
           this.rows = this.products.length;
@@ -144,8 +168,43 @@ export default {
       console.log(this.$store.state.shopCart);
       
 
+    },
+
+    updateTable: function(produto){
+console.log("aqui estou eu cheio de pinta");
+      console.log(this.filteredProducts[1]);
+      this.productToEdit=false;
+      
+      const index = this.filteredProducts.findIndex(item => item.id === produto.id);
+      this.filteredProducts[index].name=produto.name;
+      this.filteredProducts[index].description=produto.description;
+      this.filteredProducts[index].type=produto.type;
+      this.filteredProducts[index].price=produto.price;
+      this.filteredProducts[index].photo=produto.photo_url;
+    },
+
+    hideEdit: function(){
+      this.productToEdit=false;
+      
+    },
+
+    editProducts: function(item){
+      this.productToEdit=item;
+      
+    },
+
+    deleteProducts: function(id){
+        axios
+        .put(
+          "api/deleteProduct/" + id)
+        .then((response) => {
+          window.location.reload(true);
+
+        });
     }
   },
+
+  
   mounted() {
     this.getProducts();
       
@@ -173,6 +232,7 @@ export default {
   },
   components: {
     navBar: NavBarComponent,
+    'edit-products' : EditProducts,
   },
 };
 </script>

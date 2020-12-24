@@ -33,6 +33,8 @@ import OrdersInProgress from "./components/ordersInProgress"
 import OrdersNotInProgress from "./components/ordersNotInProgress"
 import CookOrders from "./components/cookOrders"
 
+import AddProduct from "./components/addProduct"
+
 
 
 
@@ -54,6 +56,7 @@ const routes = [
     { path: '/ordersInProgress', component:OrdersInProgress},
     { path: '/ordersNotInProgress', component:OrdersNotInProgress},
     { path: '/cookOrders', component:CookOrders},
+<<<<<<< HEAD
 
 
 
@@ -64,6 +67,9 @@ const routes = [
 
     { path: '/deliveryManOrders', component:DeliveryManOrders},
     
+=======
+    { path: '/addProduct', component:AddProduct}
+>>>>>>> US16
 
 
    

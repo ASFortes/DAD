@@ -29,7 +29,7 @@ export default {
       }
     },
   methods: {
-        logout() {
+       logout() {
       axios
         .put("/api/userUnavailable/"+this.$store.state.user.id)
         .then((response) => {
@@ -38,22 +38,22 @@ export default {
         .post("/api/logout")
         .then((response) => {
           //   console.log("User has logged out");
-         
-           this.$store.commit('clearUser');  
+
+           this.$store.commit('clearUser');
            this.$store.commit('clearCart');
-           
-           
+
+
         })
         .catch((error) => {
           console.log("Invalid Logout");
-        });    
-           
+        });
+
         })
         .catch((error) => {
           console.log("unavailable didnt change");
-        });    
+        });
 
-      
+
 
     }
   ,

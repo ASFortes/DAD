@@ -46,6 +46,10 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('cooker_ready', id)
         console.log('Cooker Id ' + id)
     })
+    socket.on('cooker_online',(order)=>{
+        socket.broadcast.emit('cooker_online', order)
+        console.log( order)
+    })
 
 
 

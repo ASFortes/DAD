@@ -58,7 +58,7 @@
               class="btn btn-sm btn-success"
               show = true;
               @click.prevent="changeStatusToDelivered(data.item.id)"
-              >DeliveREDDDDDDD</b-button
+              >Delivered</b-button
             > 
                
           </template>

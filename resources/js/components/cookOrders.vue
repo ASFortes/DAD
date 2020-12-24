@@ -125,6 +125,15 @@ export default {
         new_order(iD) {
         this.orderReceived(iD);
         },
+          cooker_online(order) {
+            console.log("caffffe")
+            console.log(order)
+            if(this.$store.state.user.id == order.prepared_by){
+              alert("New order assigned to you");
+                this.orders = [];
+                this.orders[0] = order;
+            }
+        },
        
   },
 
@@ -178,17 +187,26 @@ export default {
          axios
             .put("api/assignOnlineCook/"+id)
             .then((response) => {
+               /* console.log(response.data);
               this.orders = [];
               alert("New order assigned to you");
-              this.orders[0] = response.data;
-              // if (response.data.length == 0) {
-              //   this.orders = [];
-              // } else {
-              //   alert("New order assigned to you");
-              //   this.orders = [];
-              //   this.orders[0] = response.data;
-              //   this.$socket.emit("order_cooked", this.orders.id);
-              // }
+              console.log
+              this.orders[0] = response.data; */
+               console.log("pls cafeteira")
+              console.log(response)
+              console.log(response.data)
+              if (response.data.length == 0) {
+                
+              } else {
+               /*  alert("New order assigned to you");
+                this.orders = [];
+                this.orders[0] = response.data;
+                this.$socket.emit("cooker_ready", this.orders.id); */
+                 console.log("cafeteira'????????????")
+                console.log(response.data)
+                 this.$socket.emit("cooker_online", response.data);
+
+              }
             })
             .catch((error) => {
               console.log("erro aquii");
@@ -201,8 +219,14 @@ export default {
     axios
       .get("api/cookOrders/" + this.$store.state.user.id)
       .then((response) => {
-        console.log(response);
-        this.orders = response.data;
+        console.log("pequena cafeiteira");
+        console.log(response.data.length);
+        console.log("ainda mais pequena cafeiteira");
+        this.orders = [];
+        if(response.data.length > 0){
+        this.orders[0] = response.data[0];
+        console.log(this.orders[0]);
+        }
       })
       .catch((error) => {
         console.log("erro aquii");

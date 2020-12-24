@@ -53,6 +53,7 @@ class OrderController extends Controller
         public function getCookOrders($id)
         {
                 $orders = Order::where('prepared_by', $id)->where('status', 'P')->get();
+                //return response()->json($orders, 201);
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
                 };
@@ -80,7 +81,7 @@ class OrderController extends Controller
         public function assignCook($id)
         {
                 $user=User::find($id);
-                $user->available_at=date('Y-m-d H:i:s');
+              //  $user->available_at=date('Y-m-d H:i:s');
                 $orderHold= Order::where('status','H')->orderBy('opened_at')->first();
                 
                 if(empty($orderHold)){
@@ -90,7 +91,7 @@ class OrderController extends Controller
                 }
                
                 $cookOrdersInProgress = Order::where('prepared_by', $id)->where('status','P')->count();
-                if($cookOrdersInProgress==0 && $orderHold!=null){
+                if(empty($cookOrdersInProgress) && !empty($orderHold)){
                 $orderHold->prepared_by=$id;
                 $orderHold->status='P';
                 $orderHold->current_status_at=date('Y-m-d H:i:s');
@@ -120,6 +121,14 @@ class OrderController extends Controller
                 $order->current_status_at=date('Y-m-d H:i:s');
                 $order->save();
                 $cooker->save();
+
+               
+               
+                        $user = User::findOrFail($order->customer_id);
+               
+                
+                        $order->customer_name=$user['name'];
+                
                 
                 return response()->json($order, 201);
          

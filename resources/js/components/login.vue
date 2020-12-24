@@ -64,73 +64,39 @@ export default {
             this.$store.commit("setUser", response.data);
 
             if (this.$store.state.user.type == "EC" ) {
-              
+
                     axios
                       .put(
                         "api/assignCook/" +
                           this.$store.state.user.id 
-              
+
                       )
                       .then((response) => {
                         console.log("ganda cafeteira");
                         console.log(response.data);
                         this.order = response.data;
+                        console.log("media cafeteira");
+                        console.log(this.order);
+                        
                         if(this.order.length!=0){
                         this.$socket.emit("cooker_ready", this.order.id);
+                        
                         }
-            
+                        this.$router.push("/cookOrders");
+
                       })
                       .catch((error) => {
                         console.log("erro aquii");
                         console.log(error);
                       });
-                    
+
             }
-
-
-            /*if (this.$store.state.user.type == "ED") {
-              //ver se o cooker tem alguma order
-              axios
-                .get("api/deliveryManOrders/" + this.$store.state.user.id)
-                .then((response) => {
-                  console.log(response.data);
-                  if (response.data.length == 0) {
-                    axios
-                      .put(
-                        "api/assignDeliveryMan/" +this.$store.state.user.id+"/"+
-                       this.ordersH[0].id
-                      )
-                      .then((response) => {
-                        console.log(response);
-                        this.orders = response.data;
-                      })
-                      .catch((error) => {
-                        console.log("erro aquii");
-                        console.log(error);
-                      });
-                    this.$socket.emit(
-                      "deliveryMan_ready",
-                      this.ordersH[0].id
-                    );
-                  }
-                })
-                .catch((error) => {
-                  console.log("erro no login");
-                  console.log(error);
-                });
-            }*/
-
-
-            
 
             //this.$toasted.show('User is authenticated successfully',{type:'success'})
             if (this.$store.state.user.type != "EC") {
               this.$router.push("/products");
             }
-            if (this.$store.state.user.type == "EC") {
-              this.$router.push("/cookOrders");
-              
-            }
+            
           })
           .catch((error) => {
             //this.$toasted.show('Invalid Authentication', { type: 'error' })

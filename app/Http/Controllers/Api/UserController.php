@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Customer;
 use Hash;
 use Validator;
+use App\Http\Resources\User as UserResource; 
 
 
 
@@ -212,6 +213,127 @@ public function changePassword(Request $request)
 
 }
 
+public function users()
+    {
+
+        return UserResource::collection(User::where('deleted_at',null)->get());
+        // $products = Product::where('deleted_at',null)->get();
+        return response()->json($users, 201);
+        // return ProductResource::collection();
+
+        // $Product = Product::where('id',$id)->where('deleted_at','=',null);
+    }
+
+    public function managerUpdateUsers(Request $request)
+    {
+
+        //  return response()->json($request, 201);
+               $user_id = Auth::user()->id;
+               
+            //    $customer_id=$user_id;
+                $user = User::find($request['id']);
+                
+
+               $validator = Validator::make($request->all(),[
+                'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+                'email' => 'required|email|unique:users,email,'.$user_id,
+                'photo'=>'sometimes|required|mimes:jpeg,png|max:10000',
+                'type'=>'required'
+              
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' =>$validator->errors()->first()],400);
+             }
+   
+               $user->name = $request['name'];
+               $user->type = $request['type'];
+               $user->email = $request['email'];
+                
+              
+               //$customer->save();
+               //}
+            //    $user->save();
+               if ($request->hasfile('photo')) {
+                   
+                   $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
+            
+                    Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
+                   $user['photo_url'] = $nov_nome;
+               }
+               $user->save();
+               return response()->json($user, 201);
+   
+            //    $user->update();
+   
+              
+   
+            //   return response()->json($user, 201);
+       // return response()->json( $user, 201);
+    }
+
+
+    public function managerCreateUser(Request $request)
+ {
+
+     $validator = Validator::make($request->all(),[
+              'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+              'email' => 'required|email|unique:users,email',
+              'type'=> 'required',
+              'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
+
+          ]);
+         
+
+          if ($validator->fails()) {
+             return response()->json(['error' =>$validator->errors()->first()],400);
+          }
+          
+          $user = new User();
+           
+            $user->name = $request['name'];
+            $user->email = $request['email'];
+            $user->type = $request['type'];
+            $user->password = '123';
+            $user->password = Hash::make($user->password);
+
+
+
+            $user->save();
+            
+            if ($request->hasfile('photo')) {
+                
+                $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
+                Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
+                
+                
+                $user['photo_url'] = $nov_nome;
+            }
+            $user->update();
+
+           
+
+           return response()->json($user, 201);
+    // return response()->json( $user, 201);
+ }
+
+ public function deleteUser($id, $type)
+ {
+     $User = User::find($id);
+     $customer = Customer::find($id);
+     if($id==Auth::user()->id){
+        return response()->json(['error'=>"You can't delete yourself"], 400);
+     }
+     if($User->type='C'){
+        $customer->deleted_at=date('Y-m-d H:i:s');
+        $customer->update();
+     }
+     
+     $User->deleted_at=date('Y-m-d H:i:s');
+     $User->type='1';
+     $User->update();
+     return response()->json($User, 201);
+ }
 
 
 }

@@ -175,7 +175,9 @@ console.log("aqui estou eu cheio de pinta");
       console.log(this.filteredProducts[1]);
       this.productToEdit=false;
       
+      console.log("yeaaaaaaaaaaaahhhhh");
       const index = this.filteredProducts.findIndex(item => item.id === produto.id);
+      console.log(index);
       this.filteredProducts[index].name=produto.name;
       this.filteredProducts[index].description=produto.description;
       this.filteredProducts[index].type=produto.type;

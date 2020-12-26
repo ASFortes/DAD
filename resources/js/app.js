@@ -35,6 +35,7 @@ import CookOrders from "./components/cookOrders"
 
 import AddProduct from "./components/addProduct"
 import ManageUsers from "./components/manageUsers"
+import AddUser from "./components/addUser"
 
 
 
@@ -61,7 +62,8 @@ const routes = [
     { path: '/deliveryManOrders', component:DeliveryManOrders},
     
     { path: '/addProduct', component:AddProduct},
-    { path: '/manageUsers', component:ManageUsers}
+    { path: '/manageUsers', component:ManageUsers},
+    { path: '/addUser', component:AddUser}
 
 
    

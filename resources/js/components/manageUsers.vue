@@ -8,74 +8,69 @@
       <input v-model="searchTerm" placeholder="Filtrar por nome" />
 
       <b-dropdown id="dropdown-1" text="Filter By Role" variant="primary" class="m-2">
-        <b-dropdown-item @click="changeType('drink')">Managers</b-dropdown-item>
-        <b-dropdown-item @click="changeType('dessert')">Cookers</b-dropdown-item>
-        <b-dropdown-item @click="changeType('hot dish')">Deliverers</b-dropdown-item>
+        <b-dropdown-item @click="changeType('EM')">Managers</b-dropdown-item>
+        <b-dropdown-item @click="changeType('EC')">Cookers</b-dropdown-item>
+        <b-dropdown-item @click="changeType('ED')">Deliverers</b-dropdown-item>
+        <b-dropdown-item @click="changeType('C')">Customers</b-dropdown-item>
         <b-dropdown-item @click="changeType('')">All</b-dropdown-item>
       </b-dropdown>
 
       <b-button
             id="show-btn"
             v-if="$store.state.user != null && $store.state.user.type == 'EM'"
-            href="/#/addProduct"
+            href="/#/addUser"
             class="btn btn-sm btn-info"
-            >Add Product</b-button
+            >Add User</b-button
           >
 
       <b-table
         class="table table-striped"
         id="my-table"
-        :items="users"
+        :items="filteredUsers"
         :per-page="perPage"
         :current-page="currentPage"
         small
-        :fields="fields"
->
+        :fields="fields">
       
 
         <template #cell(photo)="data">
           <img
             class="img-usr-container"
-            :src="'storage/products/' + data.item.photo"
+            :src="'storage/fotos/' + data.item.photo"
             height="50"
-            width="50"
-          />
+            width="50"/>
         </template>
         <template #cell(actions)="data">
         <button v-if="$store.state.user!=null && $store.state.user.type =='C'"  class="btn btn-sm btn-success"  v-on:click.prevent="addToShoppingCart(data.item)">Add</button>
-        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-success" v-on:click.prevent="editProducts(data.item)">Edit</button>
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM' && data.item.type!='C'" class="btn btn-sm btn-success" v-on:click.prevent="editUsers(data.item)">Edit</button>
         </template>
 
         <template #cell(actions1)="data">
-        <button v-if="$store.state.user!=null && $store.state.user.type =='EM'" class="btn btn-sm btn-danger" v-on:click.prevent="deleteProducts(data.item.id)">Delete</button>
+        <button v-if="$store.state.user!=null && $store.state.user.type =='EM' && $store.state.user.id!=data.item.id" class="btn btn-sm btn-danger" v-on:click.prevent="deleteUser(data.item.id, data.item.type)">Delete</button>
         </template>
 
         <template #cell(type)="data">
           <span
-            v-if="data.item.type == 'drink'"
+            v-if="data.item.type == 'EC'"
             class="badge badge-pill badge-info text-center"
-            >{{ data.item.type }}</span
+            >Cooker</span
           >
           <span
-            v-if="data.item.type == 'hot dish'"
+            v-if="data.item.type == 'C'"
             class="badge badge-pill badge-danger text-center"
-            >{{ data.item.type }}</span
+            >Customer</span
           >
           <span
-            v-if="data.item.type == 'dish'"
+            v-if="data.item.type == 'ED'"
             class="badge badge-pill badge-success text-center"
-            >{{ data.item.type }}</span
+            >Delivery Man</span
           >
           <span
-            v-if="data.item.type == 'cold dish'"
+            v-if="data.item.type == 'EM'"
             class="badge badge-pill badge-primary text-center"
-            >{{ data.item.type }}</span
+            >Manager</span
           >
-          <span
-            v-if="data.item.type == 'dessert'"
-            class="badge badge-pill badge-warning text-center"
-            >{{ data.item.type }}</span
-          >
+        
         </template>
        
       </b-table>
@@ -88,13 +83,13 @@
         aria-controls="my-table"
       ></b-pagination>
 
-      <edit-products
-      :product="productToEdit"
-      v-if="productToEdit"
+      <edit-users
+      :userEdit="userToEdit"
+      v-if="userToEdit"
       @updated="updateTable"
       @canceled="hideEdit"
       >
-      </edit-products>
+      </edit-users>
     </div>
   </div>
 </template>
@@ -102,15 +97,14 @@
 <script>
 import NavBarComponent from "./navBar";
 import NavBar from "./navBar";
-import EditProducts from "./editProducts";
+import editUsers from "./managerEditUsers";
 
 export default {
   data: function () {
     return {
       user:null,
       users: [],
-      products: [],
-      productToEdit: null,
+      userToEdit: null,
       //filteredUsers:[],
       currentPage: 1,
       perPage: 10,
@@ -118,15 +112,11 @@ export default {
       searchTerm: "",
       searchType: "",
        fields: [
-        
+         { key: 'id', label:" " }, 
+        'photo',
         'name',
         'email',
-        'password',
         'type',
-        'blocked',
-        'photo_url',
-        'available_at',
-        'deleted_at',
          
         //   {
         //   key: "price",
@@ -157,33 +147,33 @@ export default {
     },
 
 
-    updateTable: function(produto){
+    updateTable: function(userEdit){
     console.log("aqui estou eu cheio de pinta");
-      console.log(this.filteredUsers[1]);
-      this.productToEdit=false;
-      
-      const index = this.filteredUsers.findIndex(item => item.id === produto.id);
-      this.filteredUsers[index].name=produto.name;
-      this.filteredUsers[index].description=produto.description;
-      this.filteredUsers[index].type=produto.type;
-      this.filteredUsers[index].price=produto.price;
-      this.filteredUsers[index].photo=produto.photo_url;
+      console.log(this.filteredUsers[0]);
+      this.userToEdit=false;
+      console.log("antes");
+      const index = this.filteredUsers.findIndex(item => item.id === userEdit.id);
+      console.log(index);
+      this.filteredUsers[index].name=userEdit.name;
+      this.filteredUsers[index].type=userEdit.type;
+      this.filteredUsers[index].email=userEdit.email;
+      this.filteredUsers[index].photo=userEdit.photo_url;
     },
 
     hideEdit: function(){
-      this.productToEdit=false;
+      this.userToEdit=false;
       
     },
 
-    editProducts: function(item){
-      this.productToEdit=item;
+    editUsers: function(item){
+      this.userToEdit=item;
       
     },
 
-    deleteProducts: function(id){
+    deleteUser: function(id, type){
         axios
         .put(
-          "api/deleteProduct/" + id)
+          "api/deleteUser/" + id + "/" + type)
         .then((response) => {
           window.location.reload(true);
 
@@ -202,24 +192,24 @@ export default {
   },
   computed: {
     filteredUsers() {
-      var filteredUsers = this.products.filter((product) => {
+      var filteredUsers = this.users.filter((user) => {
         return (
-          product.type.toLowerCase().includes(this.searchType.toLowerCase()) &&
-          product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+          user.type.toLowerCase().includes(this.searchType.toLowerCase()) &&
+          user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       });
 
-      let orderedProducts = filteredUsers.sort((a, b) => {
+      let orderedUsers = filteredUsers.sort((a, b) => {
         return b - a;
       });
-      this.rows = orderedProducts.length;
-      return orderedProducts;
+      this.rows = orderedUsers.length;
+      return orderedUsers;
     
     },
   },
   components: {
     navBar: NavBarComponent,
-    'edit-products' : EditProducts,
+    'edit-users' : editUsers,
   },
 };
 </script>

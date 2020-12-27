@@ -324,13 +324,35 @@ public function users()
      if($id==Auth::user()->id){
         return response()->json(['error'=>"You can't delete yourself"], 400);
      }
-     if($User->type='C'){
+     if($User->type=='C'){
         $customer->deleted_at=date('Y-m-d H:i:s');
         $customer->update();
      }
      
      $User->deleted_at=date('Y-m-d H:i:s');
      $User->type='1';
+     $User->update();
+     return response()->json($User, 201);
+ }
+ public function blockUser($id)
+ {
+     $User = User::find($id);
+     
+     if($id==Auth::user()->id){
+        return response()->json(['error'=>"You can't block yourself"], 400);
+     }
+    
+     
+     $User->blocked=1;
+     
+     $User->update();
+     return response()->json($User, 201);
+ }
+ public function unblockUser($id)
+ {
+     $User = User::find($id);
+     $User->blocked=0;
+     
      $User->update();
      return response()->json($User, 201);
  }

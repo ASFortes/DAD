@@ -50,7 +50,11 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('cooker_online', order)
         console.log( order)
     })
-
+    
+    socket.on('user_blocked',(id)=>{
+        socket.broadcast.emit('user_blocked', id)
+        console.log( 'user blocked:'+id)
+    })
 
 
 

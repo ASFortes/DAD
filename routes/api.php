@@ -35,6 +35,8 @@ Route::get('users', [UserController::class, 'users']);
 Route::post('managerUpdateUsers', [UserController::class, 'managerUpdateUsers']);
 Route::post('managerCreateUser', [UserController::class, 'managerCreateUser']);
 Route::put('deleteUser/{id}/{type}', [UserController::class, 'deleteUser']);
+Route::put('blockUser/{id}', [UserController::class, 'blockUser']);
+Route::put('unblockUser/{id}', [UserController::class, 'unblockUser']);
 
 //PRODUCTS
 Route::get('fotos/{filename}', function ($filename)

@@ -30,6 +30,15 @@ export default {
       user:null,
       }
     },
+    sockets:{
+      user_blocked(iD) {
+        if(this.$store.state.user.id==iD){
+          alert("Your account has been blocked");
+          this.logout();
+        }
+        },
+    }
+    ,
   methods: {
        logout() {
       axios

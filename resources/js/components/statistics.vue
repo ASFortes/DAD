@@ -69,15 +69,21 @@
                 </div>
                 </div>
 
-            <div class="col text-center" style="width: 100%; min-width: 400px;">
+                
+
+            <!-- <div class="col text-center" style="width: 100%; min-width: 400px;">
                 <h6>Amount in Transactions</h6>
                 <div class="card text-center">
-                <apexcharts class="mt-2" :options="yearMovsByMonth" :series="yearMovsByMonth.series"></apexcharts>
+                <apexcharts class="mt-2" :options="spentByMonth" :series="spentByMonth.series"></apexcharts>
                 </div>
-            </div>
-            
+            </div> -->
+
+            <div id="chart">
+        <apexchart type="line" height="350" :options="spentByMonth.chartOptions" :series="spentByMonth.series"></apexchart>
+      </div>
+
             <div class="mb-3">
-              <small class="text-secondary">Expenses and incomes represent last year</small>
+              <small class="text-secondary">Sales of the past year</small>
             </div>
           </div>
         </b-col>
@@ -113,46 +119,40 @@ export default {
       revenue: 0,
       avgtime:0,
       wall: {},
-      myYear: {
-        chartOptions: {
-          chart: {
-            id: "vuechart-year",
-            height: 350,
-            type: "line",
-            zoom: {
+      spentByMonth: {
+          chartOptions: {
+            chart: {
+              height: 350,
+              type: 'line',
+              zoom: {
+                enabled: false
+              }
+            },
+            dataLabels: {
               enabled: false
+            },
+            stroke: {
+              curve: 'straight'
+            },
+            title: {
+              text: 'Last Year Sales by Month',
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             }
           },
-          stroke: {
-            curve: "straight"
-          },
-          grid: {
-            row: {
-              colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-              opacity: 0.7
-            }
-          },
-          xaxis: {
-            categories: [
-              "jan",
-              "fev",
-              "mar",
-              "apr",
-              "may",
-              "june",
-              "july",
-              "aug",
-              "sept",
-              "oct",
-              "nov",
-              "dec"
-            ]
-          }
-        },
+          
         series: [
           {
             name: "Euros",
-            data: [30, 40, 45, 50, 49, 60, 70, 91, 2, 3, 1, 3]
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }
         ]
       },
@@ -194,7 +194,7 @@ export default {
               enabled: false
             }
           },
-          labels: ["Bank Transfer", "MB Payent", "Credit"]
+          labels: [0, 0, 0]
         },
         series: [0, 0, 0]
       },
@@ -212,50 +212,6 @@ export default {
         },
         series: [0, 0, 0]
       },
-      yearMovsByMonth: {
-        series: [
-          {
-            name: "Debits",
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-          },
-          {
-            name: "Credits",
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-          }
-        ],
-        chart: {
-          height: 350,
-          type: "area"
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "smooth"
-        },
-        xaxis: {
-          type: "string",
-          categories: [
-            "jan",
-            "fev",
-            "mar",
-            "apr",
-            "may",
-            "june",
-            "july",
-            "aug",
-            "sept",
-            "oct",
-            "nov",
-            "dec"
-          ]
-        },
-        tooltip: {
-          x: {
-            format: "dd/MM/yy HH:mm"
-          }
-        }
-      }
     };
   },
   methods: {
@@ -316,7 +272,7 @@ export default {
     },
     getAverageTimeSpent: function() {
       axios.get("api/avgtime").then(response => {
-         console.log(response.data);
+        //  console.log(response.data);
           this.avgtime.series = [
             response.data.medPrep,
             response.data.medDeliver
@@ -325,20 +281,16 @@ export default {
         });
     },
     getStats: function() {
-      axios.get("api/movementspermonth").then(response => {
-          //console.log("STATS: " + response.data);
-        var series = [
+      axios.get("api/salespermonth").then(response => {
+          console.log(response.data.data);
+        this.spentByMonth.series = [
           {
             name: "Debits",
-            data: response.data.data.debits
-          },
-          {
-            name: "Credits",
-            data: response.data.data.credits
+            data: response.data.data.total_price
           }
         ];
 
-        this.yearMovsByMonth.series = series;
+        // this.yearMovsByMonth.series = series;
       });
     },
     viewAllMyMovements() {
@@ -354,7 +306,7 @@ export default {
     this.getAverageSpentCustomer();
     this.getAverageTimeSpent();
     //this.getMovements();
-    //this.getStats(); 
+    this.getStats(); 
   },
   components: {
     apexcharts: VueApexCharts

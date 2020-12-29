@@ -17,6 +17,7 @@ use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\StatsPerMonth as StatsPerMonth;
 
 
 class StatisticsController extends Controller
@@ -27,6 +28,11 @@ class StatisticsController extends Controller
     // {
     //     return Order::where('date', '>=', date("Y-m-d", strtotime("-1 week")))->get()->count();
     // }
+
+    public function salespermonth()
+    {
+        return new StatsPerMonth(Order::find(444));
+    }
 
     
 
@@ -105,8 +111,8 @@ class StatisticsController extends Controller
         $vet_med['medDeliver'] = $medDeliver;
 
         return $vet_med;
-
     }
+
 
 }
 

@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+
 
 class Order extends Model
 {
@@ -52,4 +54,22 @@ class Order extends Model
     public function prepared_by(){
         return $this->hasOne(User::class);
     }
+
+
+
+
+
+        //stats  
+        public function sellsPerMonthYear($year) {
+            $sellsPerYear = $this->sellsSumPerYearAndMonth($year);
+            return $sellsPerYear == null ? "" : $sellsPerYear;
+        }
+    
+        private function sellsSumPerYearAndMonth($year) {
+            return Order::selectRaw("month(DATE) AS MONTH, SUM(total_price) AS TOTAL")
+                         ->whereYear('date','=', $year)
+                         ->groupBy(DB::raw('month(date)'))
+                         ->orderBy(DB::raw('month(date)'))
+                         ->get();
+        }
 }

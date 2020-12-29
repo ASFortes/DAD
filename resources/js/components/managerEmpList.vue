@@ -592,7 +592,7 @@ export default {
            
         // },
 
-        new_order(iD) {
+        new_order() {
         window.location.reload(true);
         },
 

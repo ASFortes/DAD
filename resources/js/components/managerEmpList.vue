@@ -515,7 +515,8 @@ export default {
     sockets:{
        create_user_socket(iD) {
           const index = this.users.findIndex(item => item.id === iD);
-          this.$set(this.users,index,iD);
+          this.users.splice(this.users.length,0,iD);
+          //this.$set(this.users,index,iD);
          // this.$set(this.users,index);
          // array.splice(index, 1);
           //this.orders[index].status='T';

@@ -56,23 +56,33 @@ class OrderController extends Controller
                 //return response()->json($orders, 201);
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                        $userCustomer[$i] = Customer::findOrFail($orders[$i]->customer_id);
                 };
                 for($i=0;$i<count($orders);$i++){
                         $orders[$i]->customer_name=$user[$i]['name'];
+                        $orders[$i]->customer_address=$userCustomer[$i]['address'];
+                        $orders[$i]->customer_phone=$userCustomer[$i]['phone'];
+                        $orders[$i]->customer_email=$user[$i]['email'];
+                        $orders[$i]->customer_photo=$user[$i]['photo_url'];
                 };
 
                 return response()->json($orders, 201);
         }
      
-
+        ///////////////NAO USADA////////////////
         public function getCookOrdersInProgress($id)
         {
                 $orders = Order::where('prepared_by', $id)->where('status','P')->get();
                 for($i=0;$i<count($orders);$i++){
                         $user[$i] = User::findOrFail($orders[$i]->customer_id);
+                        $userCustomer[$i] = Customer::findOrFail($orders[$i]->customer_id);
                 };
                 for($i=0;$i<count($orders);$i++){
                         $orders[$i]->customer_name=$user[$i]['name'];
+                        $orders[$i]->customer_address=$userCustomer[$i]['address'];
+                        $orders[$i]->customer_phone=$userCustomer[$i]['phone'];
+                        $orders[$i]->customer_email=$user[$i]['email'];
+                        $orders[$i]->customer_photo=$user[$i]['photo_url'];
                 };
 
                 return response()->json($orders, 201);
@@ -80,6 +90,9 @@ class OrderController extends Controller
 
         public function assignCook($id)
         {
+
+              
+
                 $user=User::find($id);
               //  $user->available_at=date('Y-m-d H:i:s');
                 $orderHold= Order::where('status','H')->orderBy('opened_at')->first();

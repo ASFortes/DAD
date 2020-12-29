@@ -128,7 +128,7 @@ changeType: function (type) {
         })
         .then((response) => {
           console.log(response);
-          this.$socket.emit("create_user_socket", this.user.id);
+          this.$socket.emit("create_user_socket", this.user[0]);
           this.$router.push("/manageUsers");
         })
         .catch((error) => {

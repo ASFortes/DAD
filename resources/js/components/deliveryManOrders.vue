@@ -148,7 +148,7 @@ export default {
       photo_url:"user_undefined.png",
       fields: [
         "id",
-        "opened_at",
+    {key:"opened_at",sortable: true},
         "customer_name",
         "customer_address",
         "customer_phone",

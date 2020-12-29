@@ -61,6 +61,8 @@ export default {
         axios
           .post("/api/login", this.credentials)
           .then((response) => {
+            //axios.put()
+            
             this.$store.commit("setUser", response.data);
 
             if (this.$store.state.user.type == "EC" ) {

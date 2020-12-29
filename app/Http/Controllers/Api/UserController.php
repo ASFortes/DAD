@@ -7,6 +7,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Customer;
+use App\Models\Order;
 use Hash;
 use Validator;
 use App\Http\Resources\User as UserResource; 
@@ -38,7 +39,7 @@ class UserController extends Controller
     $user->nif=$customer->nif;
     $user->phone=$customer->phone;
     }
-    
+   
     return response()->json($user, 201);
  }
 
@@ -219,6 +220,68 @@ public function users()
         return UserResource::collection(User::where('deleted_at',null)->get());
         // $products = Product::where('deleted_at',null)->get();
         return response()->json($users, 201);
+        // return ProductResource::collection();
+
+        // $Product = Product::where('id',$id)->where('deleted_at','=',null);
+    }
+
+    public function usersEmp()
+    {
+        //$orders=Order::where(); 
+       $users_id= array();
+        $users =User::where('deleted_at',null)->whereIn('type',['ED','EC','EM'])->get();
+
+      
+
+        for ($i=0; $i < count($users) ; $i++) { 
+            $users_id[$i] = $users[$i]->id;
+        }
+
+        //return response()->json($users_id, 201);
+       // $orders = Order::whereIn('status',['T','P'])->whereIn('delivered_by',$users_id)->orwhereIn('prepared_by',$users_id)->get();
+      
+        
+        
+        //$orders = Order::whereIn('status',['T','P'])->whereIn('delivered_by',$users_id)->orwhereIn('prepared_by',$users_id)->get();
+        $orders = Order::whereIn('status',['T','P'])->whereIn('delivered_by',$users_id)->orwhereIn('status',['T','P'])->whereIn('prepared_by',$users_id)->get();
+        $ordersActive = Order::whereIn('status',['T','P','H','R'])->get();
+        $ordersCooker = Order::where('status','P')->get();
+        $ordersDeliveryMan = Order::where('status','T')->get();
+
+        
+
+        for($i=0;$i<count($ordersActive);$i++){
+           // $cooker[$i] = User::findOrFail($ordersActive[$i]->prepared_by);
+
+            for ($j=0; $j < count($ordersCooker) ; $j++) { 
+                
+               if($ordersActive[$i]->id == $ordersCooker[$j]->id){
+                   
+               
+               $ordersActive[$i]->name = User::where('id',$ordersActive[$i]->prepared_by)->get('name')[0]['name'];
+               }
+            };
+           // return response()->json($ordersActive, 201);
+
+            for ($h=0; $h < count($ordersDeliveryMan) ; $h++) { 
+
+                if($ordersActive[$i]->id == $ordersDeliveryMan[$h]->id){
+                $ordersActive[$i]->name = User::where('id',$ordersActive[$i]->delivered_by)->get('name')[0]['name'];
+                }
+               
+            };
+            //return response()->json($ordersActive, 201);
+            //$userCustomer[$i] = Customer::findOrFail($orders[$i]->customer_id);
+            
+            
+            
+    };
+
+   
+       // $ordersCook =Order::whereIn('prepared_by',$users_id)->get();
+        // $products = Product::where('deleted_at',null)->get();
+      
+        return response()->json(["users"=>$users, "orders"=>$orders, "ordersActive"=>$ordersActive],201);
         // return ProductResource::collection();
 
         // $Product = Product::where('id',$id)->where('deleted_at','=',null);

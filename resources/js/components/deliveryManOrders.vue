@@ -16,6 +16,7 @@
 
       <div v-if="this.orders.length > 0">
         <b-table
+          
           class="table table-striped"
           id="my-table"
           :items="orders"
@@ -301,6 +302,14 @@ export default {
           this.orders.splice(index,1);
          // array.splice(index, 1);
           //this.orders[index].status='T';
+        },
+        order_cooked(iD) {
+          const index = this.orders.findIndex(item => item.id === iD);
+          
+          this.orders[index].status='R';
+         // this.$refs.table.refresh();
+          this.rows.push(this.orders[index],index)
+          
         },
     
 },

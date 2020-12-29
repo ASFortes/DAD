@@ -32,6 +32,7 @@ Route::post('update', [UserController::class, 'update']);
 Route::put('password',[UserController::class, 'changePassword']);
 Route::put('userUnavailable/{id}', [UserController::class, 'updateUserToUnavailable']);
 Route::get('users', [UserController::class, 'users']);
+Route::get('usersEmp', [UserController::class, 'usersEmp']);
 Route::post('managerUpdateUsers', [UserController::class, 'managerUpdateUsers']);
 Route::post('managerCreateUser', [UserController::class, 'managerCreateUser']);
 Route::put('deleteUser/{id}/{type}', [UserController::class, 'deleteUser']);

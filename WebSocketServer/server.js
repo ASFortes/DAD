@@ -65,22 +65,27 @@ io.on('connection', function (socket) {
    
     socket.on('deliveryMan_ready',(id)=>{
         socket.broadcast.emit('deliveryMan_ready', id)
-        console.log('delivery Id ' + id)
+        console.log('delivery Id ASSIGN DELIVERYMEN' + id)
     })
 
 
     socket.on('order_delivered',(id)=>{
         socket.broadcast.emit('order_delivered', id)
-        console.log('Order Id ' + id)
+        console.log('Order Id DELIVERED ' + id)
     })
 
     socket.on('order_cooked',(id)=>{
         socket.broadcast.emit('order_cooked', id)
-        console.log('Order Id ' + id)
+        console.log('Order Id COOK ' + id)
     })
     socket.on('new_order',(id)=>{
         socket.broadcast.emit('new_order', id)
-        console.log('Order Id ' + id+'aqui')
+        console.log('Order Id NEW ORDER ' + id+'aqui')
+    })
+
+    socket.on('create_user_socket',(id)=>{
+        socket.broadcast.emit('create_user_socket', id)
+        console.log('Created USER ' + id+'aqui')
     })
 
 

@@ -260,7 +260,7 @@ class OrderController extends Controller
         ////atribuir deliveryMan 
         public function assignDeliveryMan($id)
         {       
-               
+                $userWorker=User::where('available_at','<>',null)->where('type','ED')->first();
                 $user_id = Auth::user()->id;
                 $order= Order::find($id);
                 $user = User::findOrFail($order->customer_id);
@@ -268,13 +268,14 @@ class OrderController extends Controller
                 $order->delivered_by=$user_id;
                 $order->status='T';
                 $order->current_status_at=date('Y-m-d H:i:s');
-
+                $userWorker->available_at=null;
                 //$order->$this->changeOrderRtoT($id);
                 
                
 
-
+                
                 $order->save();
+                $userWorker->save();
 
                 $order->customer_name=$user['name'];
                 $order->customer_address=$userCustomer['address'];
@@ -308,12 +309,15 @@ class OrderController extends Controller
         {
                 
                 $order= Order::find($id);
+                $userWorker=User::where('available_at',null)->where('type','ED')->where('id',$order->delivered_by)->first();
+                
                 $order->status='D';
                 $order->delivery_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
                 $order->current_status_at=date('Y-m-d H:i:s');
                 $order->closed_at=date('Y-m-d H:i:s');
-                
+                $userWorker->available_at=date('Y-m-d H:i:s');
                 $order->save();
+                $userWorker->save();
                 
 
                 return response()->json($order, 201);

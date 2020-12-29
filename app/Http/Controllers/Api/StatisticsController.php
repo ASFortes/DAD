@@ -94,5 +94,19 @@ class StatisticsController extends Controller
         return $typeOfCateg;
     }
 
+
+    public function avgtime()
+    {
+        $vet_med = [];
+        $num_orders = count(Order::all());
+        $medPrep = Order::all()->sum('preparation_time') / $num_orders;
+        $medDeliver = Order::all()->sum('delivery_time') / $num_orders;
+        $vet_med['medPrep'] = $medPrep;
+        $vet_med['medDeliver'] = $medDeliver;
+
+        return $vet_med;
+
+    }
+
 }
 

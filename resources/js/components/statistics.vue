@@ -37,13 +37,17 @@
                     </div>
                 </div>
                 <div class="col mb-4 text-center">
-                    <div class="col mb-4 text-center">
-                    <h6>Average € Spent per User</h6>
-                    <div class="card text-center container d-flex align-items-center justify-content-center">
-                        <span class="text-center" style="font-size: 36px; color: #008ffb"> {{ format(averageSpentCostumers) }} €</span>
+                    <h6>Average time of preparation</h6>
+                    <div class="card">
+                        <apexcharts
+                            class="mt-2"
+                            height="200"
+                            :options="avgtime.chartOptions"
+                            :series="avgtime.series"
+                        ></apexcharts>
                     </div>
                 </div>
-                </div>
+    
                 <div class="col mb-4 text-center">
                     <h6>Top Type Selled Products</h6>
                     <div class="card">
@@ -56,12 +60,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col mb-4 text-center">
+                    <div class="col mb-4 text-center">
+                    <h6>Average € Spent per User</h6>
+                    <div class="card text-center container d-flex align-items-center justify-content-center">
+                        <span class="text-center" style="font-size: 36px; color: #008ffb"> {{ format(averageSpentCostumers) }} €</span>
+                    </div>
+                </div>
+                </div>
+
             <div class="col text-center" style="width: 100%; min-width: 400px;">
                 <h6>Amount in Transactions</h6>
                 <div class="card text-center">
                 <apexcharts class="mt-2" :options="yearMovsByMonth" :series="yearMovsByMonth.series"></apexcharts>
                 </div>
             </div>
+            
             <div class="mb-3">
               <small class="text-secondary">Expenses and incomes represent last year</small>
             </div>
@@ -97,6 +111,7 @@ export default {
       numberOfUsers: 0,
       numberoforders: 0,
       revenue: 0,
+      avgtime:0,
       wall: {},
       myYear: {
         chartOptions: {
@@ -183,6 +198,20 @@ export default {
         },
         series: [0, 0, 0]
       },
+      avgtime:{
+          chartOptions: {
+          chart: {
+            id: "avgtime",
+            height: 150,
+            type: "donut",
+            zoom: {
+              enabled: false
+            }
+          },
+          labels: ["Cookers AVG Time", "Deliverers AVG Time"]
+        },
+        series: [0, 0, 0]
+      },
       yearMovsByMonth: {
         series: [
           {
@@ -263,7 +292,7 @@ export default {
     },
     getTypeOfCategoryStats: function() {
       axios.get("api/typeofcategory").then(response => {
-console.log(response);
+      // console.log(response);
         this.type_of_product.series = [
             response.data.drink,
             response.data.dessert,
@@ -275,22 +304,24 @@ console.log(response);
 
     teste: function() {
       axios.get("api/numberoforders").then(response => {
-        console.log(response);
+        // console.log(response);
       });
     },
     /////////////////////
     getAverageSpentCustomer: function() {
       axios.get("api/averageSpentCustomer").then(response => {
-          console.log(response)
+          // console.log(response);
         this.averageSpentCostumers = response.data;
       });
     },
-    getMovements: function() {
-      axios
-        .get("api/movements")
-        .then(response => {
-          this.movs = response.data.data;
-          //console.log(this.movs);
+    getAverageTimeSpent: function() {
+      axios.get("api/avgtime").then(response => {
+         console.log(response.data);
+          this.avgtime.series = [
+            response.data.medPrep,
+            response.data.medDeliver
+        ];
+          
         });
     },
     getStats: function() {
@@ -319,12 +350,11 @@ console.log(response);
     //
     this.getUserStats();
     
-    
     this.getTypeOfCategoryStats();
     this.getAverageSpentCustomer();
-    //
+    this.getAverageTimeSpent();
     //this.getMovements();
-    // this.getStats();
+    //this.getStats(); 
   },
   components: {
     apexcharts: VueApexCharts

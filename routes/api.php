@@ -98,4 +98,6 @@ Route::get('numberoforders', [StatisticsController::class, 'numberoforders']);
 Route::get('revenue', [StatisticsController::class, 'revenue']);
 Route::get('typeofcategory', [StatisticsController::class, 'typeofcategory']);
 Route::get('averageSpentCustomer', [StatisticsController::class, 'averageSpentCustomer']);
+Route::get('avgtime', [StatisticsController::class, 'avgtime']);
+
 

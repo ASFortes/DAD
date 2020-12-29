@@ -36,6 +36,7 @@ import CookOrders from "./components/cookOrders"
 import AddProduct from "./components/addProduct"
 import ManageUsers from "./components/manageUsers"
 import AddUser from "./components/addUser"
+import Statistics from "./components/statistics"
 
 
 
@@ -58,6 +59,7 @@ const routes = [
     { path: '/ordersInProgress', component:OrdersInProgress},
     { path: '/ordersNotInProgress', component:OrdersNotInProgress},
     { path: '/cookOrders', component:CookOrders},
+    { path: '/statistics', component:Statistics},
 
 
 

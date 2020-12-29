@@ -1,4 +1,9 @@
 <template>
+<div>
+      <div>
+        <nav-bar></nav-bar>
+      </div>
+      <br><br><br>
   <div>
     <b-container class="bv-example-row bv-example-row-flex-cols">
       <b-row align-v="center">
@@ -81,15 +86,23 @@
             <div id="chart">
         <apexchart type="line" height="350" :options="spentByMonth.chartOptions" :series="spentByMonth.series"></apexchart>
       </div>
+                  <div class="mb-3">
+              <small class="text-secondary">Sales of the past year</small>
+            </div>
+
+      <div id="chart_order">
+        <apexchart type="line" height="350" :options="ordersByMonth.chartOptions" :series="ordersByMonth.series"></apexchart>
+      </div>
 
             <div class="mb-3">
-              <small class="text-secondary">Sales of the past year</small>
+              <small class="text-secondary">Orders of the past year</small>
             </div>
           </div>
         </b-col>
       </b-row>
     </b-container>
   </div>
+</div>
 </template>
 
 <script>
@@ -97,8 +110,10 @@
 // Vue.component("pagination", require("laravel-vue-pagination"));
 
 // import store from "../../stores/global-store";
-
+import NavBarComponent from "./navBar";
+import NavBar from "./navBar";
 import Vue from 'vue';
+
 // https://github.com/apexcharts/vue-apexcharts
 import VueApexCharts from 'vue-apexcharts'
 Vue.use(VueApexCharts)
@@ -156,6 +171,49 @@ export default {
           }
         ]
       },
+
+
+ordersByMonth: {
+          chartOptions: {
+            chart: {
+              height: 350,
+              type: 'line',
+              zoom: {
+                enabled: false
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'straight'
+            },
+            title: {
+              text: 'Last Year Orders by Month',
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            }
+          },
+          
+        series: [
+          {
+            name: "Euros",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+          }
+        ]
+      },
+
+
+
+
       users_operators_admins: {
         chartOptions: {
           chart: {
@@ -285,14 +343,21 @@ export default {
           console.log(response.data.data);
         this.spentByMonth.series = [
           {
-            name: "Debits",
+            name: "Number of Sales(€)",
             data: response.data.data.total_price
           }
         ];
-
+        this.ordersByMonth.series = [
+          {
+            name: "Number of Orders",
+            data: response.data.data.total_order
+          }
+        ];
         // this.yearMovsByMonth.series = series;
       });
     },
+
+
     viewAllMyMovements() {
       this.$router.push('/my/movements/');
     }
@@ -305,10 +370,10 @@ export default {
     this.getTypeOfCategoryStats();
     this.getAverageSpentCustomer();
     this.getAverageTimeSpent();
-    //this.getMovements();
     this.getStats(); 
   },
   components: {
+    navBar: NavBarComponent,
     apexcharts: VueApexCharts
   }
 };

@@ -24,12 +24,14 @@ class StatisticsController extends Controller
 {
     
 
-    // public function numberofmovements()
-    // {
-    //     return Order::where('date', '>=', date("Y-m-d", strtotime("-1 week")))->get()->count();
-    // }
-
+    //stats sales per month year
     public function salespermonth()
+    {
+        return new StatsPerMonth(Order::find(444));
+    }
+
+    //stats orders per month year
+    public function ordersPerMonthYear()
     {
         return new StatsPerMonth(Order::find(444));
     }

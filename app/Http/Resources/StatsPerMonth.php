@@ -17,17 +17,23 @@ class StatsPerMonth extends JsonResource
         $year = date("Y");
 
         $totalSells    = $this->sellsPerMonthYear($year);
+        $totalorders    = $this->ordersPerMonthYear($year);
 
         $graphFormattedSells = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $orderFormated = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         foreach ($totalSells as $key=>$value) {
             $graphFormattedSells[$value->MONTH-1] = (float)($value->TOTAL);
         }
 
+        foreach ($totalorders as $key=>$value) {
+            $orderFormated[$value->MONTH-1] = (float)($value->ORDERS);
+        }
+
         return [
-            // 'wallet_id' => $this->id,
             'year'          => $year,
-            'total_price'   => $graphFormattedSells
+            'total_price'   => $graphFormattedSells,
+            'total_order'   => $orderFormated
         ];
     }
 }

@@ -56,10 +56,7 @@ class Order extends Model
     }
 
 
-
-
-
-        //stats  
+        //stats sales per month year
         public function sellsPerMonthYear($year) {
             $sellsPerYear = $this->sellsSumPerYearAndMonth($year);
             return $sellsPerYear == null ? "" : $sellsPerYear;
@@ -72,4 +69,20 @@ class Order extends Model
                          ->orderBy(DB::raw('month(date)'))
                          ->get();
         }
+
+        //stats orders per month year
+        public function ordersPerMonthYear($year) {
+            $ordersPerYear = $this->ordersSumPerYearAndMonth($year);
+            return $ordersPerYear == null ? "" : $ordersPerYear;
+        }
+    
+        private function ordersSumPerYearAndMonth($year) {
+            return Order::selectRaw("month(DATE) AS MONTH, COUNT(id) AS ORDERS")
+                         ->whereYear('date','=', $year)
+                         ->groupBy(DB::raw('month(date)'))
+                         ->orderBy(DB::raw('month(date)'))
+                         ->get();
+        }
+
+
 }

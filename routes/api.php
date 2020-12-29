@@ -100,5 +100,6 @@ Route::get('typeofcategory', [StatisticsController::class, 'typeofcategory']);
 Route::get('averageSpentCustomer', [StatisticsController::class, 'averageSpentCustomer']);
 Route::get('avgtime', [StatisticsController::class, 'avgtime']);
 Route::get('salespermonth', [StatisticsController::class, 'salespermonth']);
+Route::get('ordersPerMonthYear', [StatisticsController::class, 'ordersPerMonthYear']);
 
 

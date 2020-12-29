@@ -512,27 +512,95 @@ export default {
     
     }, 
 
+    
+  },
+
+
     sockets:{
        create_user_socket(iD) {
-          const index = this.users.findIndex(item => item.id === iD);
+          //const index = this.users.findIndex(item => item.id === iD);
           this.users.splice(this.users.length,0,iD);
           //this.$set(this.users,index,iD);
          // this.$set(this.users,index);
          // array.splice(index, 1);
           //this.orders[index].status='T';
         },
-        order_cooked(iD) {
-          const index = this.orders.findIndex(item => item.id === iD);
-          this.orders[index].status='R';
+        ////////////////A DAR/////////////////////
+        cooker_ready(iD) {
+          const index = this.activeOrders.findIndex(item => item.id === iD);
+          this.activeOrders[index].status='P';
+          //window.location.reload(true);
         },
 
-        deliveryMan_ready(iD) {
-          const index = this.orders.findIndex(item => item.id === iD);
-          this.orders[index].status='T';
+        //////////////////A DAR ////////////////////
+        order_cooked(iD) {
+          const index = this.activeOrders.findIndex(item => item.id === iD);
+          this.activeOrders[index].status='R';
+          //window.location.reload(true);
         },
+        ////////////A DAR /////////////////////
+        deliveryMan_ready(iD) {
+          const index = this.activeOrders.findIndex(item => item.id === iD);
+          this.activeOrders[index].status='T';
+          
+        },
+        ////////////A DAR /////////////////////
+        change_Status_To_D(iD) {
+          const index = this.activeOrders.findIndex(item => item.id === iD);
+           this.activeOrders.splice(index,1);
+            window.location.reload(true);
+        },
+         user_cooking(iD) {
+          const index = this.users.findIndex(item => item.id === iD);
+           this.users[index].state = 'cooking'
+           window.location.reload(true);
+           // this.addStateToUser();
+           
+        },
+        //////////////////////done/////////////////////
+        user_delivering(iD) {
+          const index = this.users.findIndex(item => item.id === iD);
+           this.users[index].state = 'delivering';
+           window.location.reload(true);
+           // this.addStateToUser();
+           
+        },
+        ///////done/////////////
+         user_offline(iD) {
+            
+          const index = this.users.findIndex(item => item.id === iD);
+           this.users[index].state = 'offline';
+            window.location.reload(true);
+           
+            //this.addStateToUser();
+           
+        },
+        ////////////done///////////////////
+        user_available(iD) {
+          const index = this.users.findIndex(item => item.id === iD);
+           this.users[index].state = 'available';
+            window.location.reload(true);
+            //this.addStateToUser();
+           
+        },
+
+        //  cook_back_avaiable(iD) {
+        //   const index = this.users.findIndex(item => item.id === iD);
+        //    this.users[index].state = 'available';
+        //     window.location.reload(true);
+        //     //this.addStateToUser();
+           
+        // },
+
+        new_order(iD) {
+        window.location.reload(true);
+        },
+
     
 },
-  },
+
+
+
   components: {
     navBar: NavBarComponent,
     

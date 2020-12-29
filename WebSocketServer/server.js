@@ -97,6 +97,41 @@ io.on('connection', function (socket) {
         console.log('Created USER ' + id+'aqui')
     })
 
+    // socket.on('change_Status_To_P',(id)=>{
+    //     socket.broadcast.emit('change_Status_To_P', id)
+    //     console.log(' MUDANÇA PARA [P]: ' + id+'aqui')
+    // })
+
+    socket.on('change_Status_To_D',(id)=>{
+        socket.broadcast.emit('change_Status_To_D', id)
+        console.log(' MUDANÇA PARA [D]: ' + id+'aqui')
+    })
+    socket.on('user_cooking',(id)=>{
+        socket.broadcast.emit('user_cooking', id)
+        console.log(' USER_COZINHAR [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_delivering',(id)=>{
+        socket.broadcast.emit('user_delivering', id)
+        console.log(' USER_ENTREGAR [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_offline',(id)=>{
+        socket.broadcast.emit('user_offline', id)
+        console.log(' USER_LOGOUT [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_available',(id)=>{
+        socket.broadcast.emit('user_available', id)
+        console.log(' USER_LOGGED IN [user]: ' + id+'aqui')
+    })
+
+    socket.on('cook_back_avaiable',(id)=>{
+        socket.broadcast.emit('cook_back_avaiable', id)
+        console.log('cook_back_avai [user]: ' + id+'aqui')
+    })
+
+
 
 })
 

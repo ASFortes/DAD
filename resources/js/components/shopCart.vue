@@ -157,6 +157,7 @@ export default {
           console.log("o ramses esta aqui a tentar ver o que acontece");
           console.log(response.data);
           this.$socket.emit("new_order", response.data.id);
+          
         
           this.$store.commit("clearCart");
           console.log("o ramses esta aqui a tentar ver o que acontece");

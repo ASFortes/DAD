@@ -69,7 +69,7 @@ class OrderController extends Controller
                 return response()->json($orders, 201);
         }
      
-        ///////////////NAO USADA////////////////
+        
         public function getCookOrdersInProgress($id)
         {
                 $orders = Order::where('prepared_by', $id)->where('status','P')->get();

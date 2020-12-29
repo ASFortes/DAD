@@ -37,14 +37,16 @@ export default {
       axios
         .put("/api/userUnavailable/"+this.$store.state.user.id)
         .then((response) => {
+           this.$socket.emit("user_offline", this.$store.state.user.id);
           //   console.log("User has logged out");
          axios
         .post("/api/logout")
         .then((response) => {
           //   console.log("User has logged out");
-
+          
            this.$store.commit('clearUser');
            this.$store.commit('clearCart');
+          
 
 
         })

@@ -44,7 +44,9 @@ import AddUser from "./components/addUser"
 
 
 
+
 import DeliveryManOrders from "./components/deliveryManOrders"
+import ManagerEmpList from "./components/managerEmpList"
 
 
 const routes = [
@@ -74,7 +76,8 @@ const routes = [
     
     { path: '/addProduct', component:AddProduct},
     { path: '/manageUsers', component:ManageUsers},
-    { path: '/addUser', component:AddUser}
+    { path: '/addUser', component:AddUser},
+    { path: '/managerEmpList', component:ManagerEmpList}
 
 
    

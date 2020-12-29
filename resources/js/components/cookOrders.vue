@@ -161,7 +161,11 @@ export default {
                 alert("New order assigned to you");
                 this.orders = [];
                 this.orders[0] = response.data;
-                this.$socket.emit("order_cooked", this.orders.id);
+                
+               // this.$socket.emit("order_cooked", this.orders.id);
+                 
+                
+                
               }
             })
             .catch((error) => {
@@ -175,6 +179,10 @@ export default {
           console.log(error);
         });
       this.$socket.emit("order_cooked", this.orders[0].id);
+      this.$socket.emit("addToDeliveryMan", this.orders[0]);
+      // this.$socket.emit("change_Status_To_P", this.orders.id);
+      this.$socket.emit("user_cooking", this.$store.state.user.id);
+      //this.$socket.emit("cook_back_avaiable", this.$store.state.user.id);
     },
 
     calcula_data: function (current_status_time) {

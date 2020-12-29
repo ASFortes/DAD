@@ -7,7 +7,9 @@
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='C'" href="/#/cart" >Cart</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='C'" href="/#/ordersInProgress" >My orders</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EC'" href="/#/cookOrders" >My Orders</a>
+    <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='ED'" href="/#/deliveryManOrders" >My OrdersD</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/manageUsers" >Manage Users</a>
+    <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/managerEmpList" >Manage Workers</a>
     <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
     <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
    
@@ -20,7 +22,7 @@
 
 
 
-     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='ED'" href="/#/deliveryManOrders" >My OrdersD</a>
+     
   </div>
 </template>
 <script>
@@ -44,14 +46,16 @@ export default {
       axios
         .put("/api/userUnavailable/"+this.$store.state.user.id)
         .then((response) => {
+           this.$socket.emit("user_offline", this.$store.state.user.id);
           //   console.log("User has logged out");
          axios
         .post("/api/logout")
         .then((response) => {
           //   console.log("User has logged out");
-
+          
            this.$store.commit('clearUser');
            this.$store.commit('clearCart');
+          
 
 
         })

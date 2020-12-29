@@ -69,23 +69,72 @@ io.on('connection', function (socket) {
    
     socket.on('deliveryMan_ready',(id)=>{
         socket.broadcast.emit('deliveryMan_ready', id)
-        console.log('delivery Id ' + id)
+        console.log('delivery Id ASSIGN DELIVERYMEN' + id)
     })
 
 
     socket.on('order_delivered',(id)=>{
         socket.broadcast.emit('order_delivered', id)
-        console.log('Order Id ' + id)
+        console.log('Order Id DELIVERED ' + id)
     })
 
     socket.on('order_cooked',(id)=>{
         socket.broadcast.emit('order_cooked', id)
-        console.log('Order Id ' + id)
+        console.log('Order Id COOK ' + id)
     })
+
+    socket.on('addToDeliveryMan',(id)=>{
+        socket.broadcast.emit('addToDeliveryMan', id)
+        console.log('Order Id COOKTOD ')
+        console.log( id)
+    })
+
+
+
     socket.on('new_order',(id)=>{
         socket.broadcast.emit('new_order', id)
-        console.log('Order Id ' + id+'aqui')
+        console.log('Order Id NEW ORDER ' + id+'aqui')
     })
+
+    socket.on('create_user_socket',(id)=>{
+        socket.broadcast.emit('create_user_socket', id)
+        console.log('Created USER ' + id+'aqui')
+    })
+
+    // socket.on('change_Status_To_P',(id)=>{
+    //     socket.broadcast.emit('change_Status_To_P', id)
+    //     console.log(' MUDANÇA PARA [P]: ' + id+'aqui')
+    // })
+
+    socket.on('change_Status_To_D',(id)=>{
+        socket.broadcast.emit('change_Status_To_D', id)
+        console.log(' MUDANÇA PARA [D]: ' + id+'aqui')
+    })
+    socket.on('user_cooking',(id)=>{
+        socket.broadcast.emit('user_cooking', id)
+        console.log(' USER_COZINHAR [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_delivering',(id)=>{
+        socket.broadcast.emit('user_delivering', id)
+        console.log(' USER_ENTREGAR [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_offline',(id)=>{
+        socket.broadcast.emit('user_offline', id)
+        console.log(' USER_LOGOUT [user]: ' + id+'aqui')
+    })
+
+    socket.on('user_available',(id)=>{
+        socket.broadcast.emit('user_available', id)
+        console.log(' USER_LOGGED IN [user]: ' + id+'aqui')
+    })
+
+    socket.on('cook_back_avaiable',(id)=>{
+        socket.broadcast.emit('cook_back_avaiable', id)
+        console.log('cook_back_avai [user]: ' + id+'aqui')
+    })
+
 
 
 })

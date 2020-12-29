@@ -16,6 +16,7 @@
 
       <div v-if="this.orders.length > 0">
         <b-table
+          
           class="table table-striped"
           id="my-table"
           :items="orders"
@@ -147,7 +148,7 @@ export default {
       photo_url:"user_undefined.png",
       fields: [
         "id",
-        "opened_at",
+    {key:"opened_at",sortable: true},
         "customer_name",
         "customer_address",
         "customer_phone",
@@ -242,7 +243,7 @@ export default {
           this.orders[0] = response.data;
            console.log(this.orders);
            this.showFlag = 1;
-          
+          this.$socket.emit("user_delivering", this.$store.state.user.id);
           
             })
             .catch((error) => {
@@ -262,7 +263,10 @@ export default {
         .then((response) => {
           console.log(response);
            this.$socket.emit("order_delivered", id);
+           this.$socket.emit("change_Status_To_D", id);
+           
            this.getOrders();
+           
           
             })
             .catch((error) => {
@@ -301,6 +305,24 @@ export default {
           this.orders.splice(index,1);
          // array.splice(index, 1);
           //this.orders[index].status='T';
+        },
+        addToDeliveryMan(iD) {
+          //const index = this.orders.findIndex(item => item.id === iD);
+          
+          
+         // this.$refs.table.refresh();
+         // this.rows += 1;
+
+          //this.orders[0] = iD;
+         // this.orders.length +=1;
+         this.orders.splice(this.orders.length,0,iD);
+
+          this.orders[this.orders.length-1].status='R';
+          
+         // window.location.reload(true);
+           console.log(this.orders)
+
+          
         },
     
 },

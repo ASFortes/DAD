@@ -61,7 +61,10 @@ export default {
         axios
           .post("/api/login", this.credentials)
           .then((response) => {
+            //axios.put()
+            
             this.$store.commit("setUser", response.data);
+            this.$socket.emit("user_available", this.$store.state.user.id);
 
             if (this.$store.state.user.type == "EC" ) {
 
@@ -91,9 +94,13 @@ export default {
                       });
 
             }
+            if(this.$store.state.user.type == "ED"){
+              this.$router.push("/deliveryManOrders");
+
+            }
 
             //this.$toasted.show('User is authenticated successfully',{type:'success'})
-            if (this.$store.state.user.type != "EC") {
+            if (this.$store.state.user.type != "EC" &&  this.$store.state.user.type != "ED" ) {
               this.$router.push("/products");
             }
             

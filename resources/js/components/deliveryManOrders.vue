@@ -303,12 +303,22 @@ export default {
          // array.splice(index, 1);
           //this.orders[index].status='T';
         },
-        order_cooked(iD) {
-          const index = this.orders.findIndex(item => item.id === iD);
+        addToDeliveryMan(iD) {
+          //const index = this.orders.findIndex(item => item.id === iD);
           
-          this.orders[index].status='R';
+          
          // this.$refs.table.refresh();
-          this.rows.push(this.orders[index],index)
+         // this.rows += 1;
+
+          //this.orders[0] = iD;
+         // this.orders.length +=1;
+         this.orders.splice(this.orders.length,0,iD);
+
+          this.orders[this.orders.length-1].status='R';
+          
+         // window.location.reload(true);
+           console.log(this.orders)
+
           
         },
     

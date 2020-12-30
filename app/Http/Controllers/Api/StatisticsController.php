@@ -36,7 +36,11 @@ class StatisticsController extends Controller
         return new StatsPerMonth(Order::find(444));
     }
 
-    
+    //products mais vendidos
+    public function bestSellers()
+    {
+        return new StatsPerMonth(Order::find(444));
+    }
 
     public function numberofusers()
     {

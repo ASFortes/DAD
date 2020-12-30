@@ -85,4 +85,22 @@ class Order extends Model
         }
 
 
+        //stats sales by products
+        public function bestSellers($year) {
+            $bestProduct = $this->productSumPerYearAndMonth($year);
+            return $bestProduct == null ? "" : $bestProduct;
+        }
+    
+        private function productSumPerYearAndMonth($year) {
+            return OrderItems::groupBy('product_id')
+                            ->selectRaw('product_id, sum(quantity) as quantity')
+                            ->get();
+                        // select('product_id')->all()->sum('quantity')->groupBy('product_id');
+                        //  ->join('products', 'order_items.product_id', '=', 'products.id')
+                        //  ->whereYear('date','=', $year)
+                        //  ->groupBy('product_id')
+                        //  ->get();
+        }
+
+
 }

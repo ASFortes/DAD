@@ -18,6 +18,8 @@ class StatsPerMonth extends JsonResource
 
         $totalSells    = $this->sellsPerMonthYear($year);
         $totalorders    = $this->ordersPerMonthYear($year);
+        $productsFormated    = $this->bestSellers($year);
+        
 
         $graphFormattedSells = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         $orderFormated = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -33,7 +35,9 @@ class StatsPerMonth extends JsonResource
         return [
             'year'          => $year,
             'total_price'   => $graphFormattedSells,
-            'total_order'   => $orderFormated
+            'total_order'   => $orderFormated,
+            'total_products'=> $productsFormated
+
         ];
     }
 }

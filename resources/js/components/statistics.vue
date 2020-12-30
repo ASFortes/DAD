@@ -131,10 +131,14 @@
                   :series="ordersByMonth.series"
                 ></apexchart>
               </div>
+
+              <div class="mb-3">
+                <small class="text-secondary">Orders of the past year</small>
+              </div>
               
               <div id="chart_order">
                 <apexchart
-                  type="line"
+                  type="bar"
                   height="350"
                   :options="totalProducts.chartOptions"
                   :series="totalProducts.series"
@@ -142,7 +146,7 @@
               </div>
 
               <div class="mb-3">
-                <small class="text-secondary">Orders of the past year</small>
+                <small class="text-secondary">Number of products sold in the last year (hover over the bars to see the ID of the product)</small>
               </div>
             </div>
           </b-col>
@@ -169,19 +173,16 @@ Vue.component("apexchart", VueApexCharts);
 
 export default {
   name: "teste",
-  props: ["user", "wallet", "movements"],
+  props: [],
   userID: null,
   data() {
     return {
       x: [],
       y:[],
-      usr: {},
-      movs: {},
       numberOfUsers: 0,
       numberoforders: 0,
       revenue: 0,
       avgtime: 0,
-      wall: {},
       spentByMonth: {
         chartOptions: {
           chart: {
@@ -232,7 +233,7 @@ export default {
           },
         ],
       },
-
+//grafico linha para numero de orders por mes no ultimo ano
       ordersByMonth: {
         chartOptions: {
           chart: {
@@ -284,12 +285,12 @@ export default {
         ],
       },
 
-
+//grafico barras numero de produtos vendidos
      totalProducts: {
         chartOptions: {
           chart: {
             height: 350,
-            type: "column",
+            type: "bar",
             zoom: {
               enabled: false,
             },
@@ -323,6 +324,93 @@ export default {
           },
         ],
       },
+
+
+      
+// totalProducts: {
+          
+//           series: [{
+//             name: 'Euros',
+//             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//           }],
+//           chartOptions: {
+//             chart: {
+//               height: 350,
+//               type: 'bar',
+//             },
+//             plotOptions: {
+//               bar: {
+//                 dataLabels: {
+//                   position: 'top', // top, center, bottom
+//                 },
+//               }
+//             },
+//             dataLabels: {
+//               enabled: true,
+//               formatter: function (val) {
+//                 return val;
+//               },
+//               offsetY: -20,
+//               style: {
+//                 fontSize: '12px',
+//                 colors: ["#304758"]
+//               }
+//             },
+            
+//             xaxis: {
+//               categories: [],
+//               position: 'top',
+//               axisBorder: {
+//                 show: false
+//               },
+//               axisTicks: {
+//                 show: false
+//               },
+//               crosshairs: {
+//                 fill: {
+//                   type: 'gradient',
+//                   gradient: {
+//                     colorFrom: '#D8E3F0',
+//                     colorTo: '#BED1E6',
+//                     stops: [0, 100],
+//                     opacityFrom: 0.4,
+//                     opacityTo: 0.5,
+//                   }
+//                 }
+//               },
+//               tooltip: {
+//                 enabled: true,
+//               }
+//             },
+//             yaxis: {
+//               axisBorder: {
+//                 show: false
+//               },
+//               axisTicks: {
+//                 show: false,
+//               },
+//               labels: {
+//                 show: false,
+//                 formatter: function (val) {
+//                   return val;
+//                 }
+//               }
+            
+//             },
+//             title: {
+//               text: 'Total number of product sales',
+//               floating: true,
+//               offsetY: 330,
+//               align: 'center',
+//               style: {
+//                 color: '#444'
+//               }
+//             }
+//           },
+          
+          
+//         },
+
 
 
       users_operators_admins: {
@@ -379,7 +467,7 @@ export default {
           },
           labels: ["Cookers AVG Time", "Deliverers AVG Time"],
         },
-        series: [0, 0, 0],
+        series: [0, 0],
       },
     };
   },
@@ -403,7 +491,7 @@ export default {
       });
       axios.get("api/numberoforders").then((response) => {
         this.numberoforders = response.data;
-        //console.log("Number of orders: " + this.numberoforders);
+        console.log("Number of orders: " + this.numberoforders);
       });
 
       axios.get("api/revenue").then((response) => {
@@ -423,11 +511,6 @@ export default {
       });
     },
 
-    teste: function () {
-      axios.get("api/numberoforders").then((response) => {
-        // console.log(response);
-      });
-    },
     /////////////////////
     getAverageSpentCustomer: function () {
       axios.get("api/averageSpentCustomer").then((response) => {
@@ -474,13 +557,9 @@ export default {
                   
         this.totalProducts.chartOptions.xaxis.categories = this.x;
         
-        // this.yearMovsByMonth.series = series;
       });
     },
 
-    viewAllMyMovements() {
-      this.$router.push("/my/movements/");
-    },
   },
   mounted() {
     this.userID = 20;
@@ -498,9 +577,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.img-usr-container {
-  width: 40px;
-  height: 40px;
-}
-</style>
+

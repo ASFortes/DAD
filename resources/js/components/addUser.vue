@@ -152,7 +152,7 @@ changeType: function (type) {
         fd.append("photo", this.form.photo);
       }
 
-       if (this.password != this.confirmPassword) {
+       if (this.form.password != this.form.confirmPassword) {
         this.showMessage = true;
         this.errorMessage = "The passwords must match";
       }

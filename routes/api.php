@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderItemsController;
+use App\Http\Controllers\Api\StatisticsController;
 
 
 /*
@@ -89,3 +90,17 @@ Route::put('assignDeliveryMan/{id}', [OrderController::class, 'assignDeliveryMan
 Route::put('changeOrderRtoT/{id}', [OrderController::class, 'changeOrderRtoT']);
 Route::put('changeOrderTtoD/{id}', [OrderController::class, 'changeOrderTtoD']);
 Route::get('getDeliveryOrdersInProgress/{id}', [OrderController::class, 'getDeliveryOrdersInProgress']);//orders do deliveryman current
+
+
+
+//STATISTICS
+Route::get('numberofusers', [StatisticsController::class, 'numberofusers']);
+Route::get('numberoforders', [StatisticsController::class, 'numberoforders']);
+Route::get('revenue', [StatisticsController::class, 'revenue']);
+Route::get('typeofcategory', [StatisticsController::class, 'typeofcategory']);
+Route::get('averageSpentCustomer', [StatisticsController::class, 'averageSpentCustomer']);
+Route::get('avgtime', [StatisticsController::class, 'avgtime']);
+Route::get('salespermonth', [StatisticsController::class, 'salespermonth']);
+Route::get('ordersPerMonthYear', [StatisticsController::class, 'ordersPerMonthYear']);
+
+

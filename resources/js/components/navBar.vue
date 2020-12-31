@@ -10,6 +10,7 @@
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='ED'" href="/#/deliveryManOrders" >My OrdersD</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/manageUsers" >Manage Users</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/managerEmpList" >Manage Workers</a>
+    <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/statistics" >Statistics</a>
     <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
     <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
    

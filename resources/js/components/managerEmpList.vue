@@ -239,6 +239,7 @@ export default {
       currentPage: 1,
       currentPage2: 1,
       perPage: 10,
+      
       rows: 0,
       rows2: 0,
       searchTerm: "",
@@ -517,9 +518,10 @@ export default {
 
 
     sockets:{
-       create_user_socket(iD) {
+       create_user_socket() {
           //const index = this.users.findIndex(item => item.id === iD);
-          this.users.splice(this.users.length,0,iD);
+          //this.users.splice(this.users.length,0,iD);
+          window.location.reload(true);
           //this.$set(this.users,index,iD);
          // this.$set(this.users,index);
          // array.splice(index, 1);

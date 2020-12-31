@@ -49,6 +49,34 @@
                   
                 </b-form-group>
 
+
+                <b-form-group label="Password" label-for="password">
+                  <b-form-input
+                    id="password"
+                    v-model="form.password"
+                    type="password"
+                    required
+                    placeholder="Password"
+                  ></b-form-input>
+                </b-form-group>
+
+
+                <b-form-group
+                  label="ConfirmPassword"
+                  label-for="confirmpassword"
+                >
+                  <b-form-input
+                    id="confirmpassword"
+                    v-model="form.confirmPassword"
+                    type="password"
+                    required
+                    placeholder="Confirm Password"
+                  ></b-form-input>
+                </b-form-group>
+
+
+
+
                 <b-form-group label="Email" label-for="Email">
                   <b-form-input
                     id="email"
@@ -93,6 +121,8 @@ export default {
       form: {
         name: "",
         type: "Select a type",
+        password: "",
+        confirmPassword: "",
         email: null,
         photo: null,
       },
@@ -116,9 +146,15 @@ changeType: function (type) {
       const fd = new FormData();
       fd.append("name", this.form.name);
       fd.append("type", this.form.type);
+      fd.append("password", this.form.password);
       fd.append("email", this.form.email);
       if (this.form.photo != null) {
         fd.append("photo", this.form.photo);
+      }
+
+       if (this.password != this.confirmPassword) {
+        this.showMessage = true;
+        this.errorMessage = "The passwords must match";
       }
       axios
         .post("api/managerCreateUser", fd, {
@@ -146,6 +182,7 @@ changeType: function (type) {
       // Reset our form values
       this.form.name = "";
       this.form.type = "";
+       this.form.password = "";
       this.form.email = null;
       this.form.photo = null;
       // Trick to reset/clear native browser form validation state

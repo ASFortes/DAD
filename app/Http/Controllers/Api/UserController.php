@@ -342,6 +342,7 @@ public function users()
      $validator = Validator::make($request->all(),[
               'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
               'email' => 'required|email|unique:users,email',
+              'password' =>'required|min:3',
               'type'=> 'required',
               'photo'=>'sometimes|required|mimes:jpeg,png|max:10000', 
 
@@ -357,7 +358,8 @@ public function users()
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->type = $request['type'];
-            $user->password = '123';
+           // $user->password = '123';
+            $user->password = $request['password'];
             $user->password = Hash::make($user->password);
 
 

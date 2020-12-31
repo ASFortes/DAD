@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderItemsController;
 use App\Http\Controllers\Api\StatisticsController;
+use App\Http\Middleware\IsManager;
+use App\Http\Middleware\IsCooker;
+use App\Http\Middleware\IsDeliveryMan;
+use App\Http\Middleware\IsCustomer;
 
 
 /*
@@ -27,19 +31,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->get('users/me', [UserController::class, 'me']);
 Route::middleware('auth:sanctum')->post('profile/photo', [UserController::class, 'uploadPhoto']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->post('logout', [AuthController::class, 'logout']);
 Route::post('register', [UserController::class, 'store']);
-Route::post('update', [UserController::class, 'update']);
-Route::put('password',[UserController::class, 'changePassword']);
-Route::put('userUnavailable/{id}', [UserController::class, 'updateUserToUnavailable']);
-Route::get('users', [UserController::class, 'users']);
-Route::get('usersEmp', [UserController::class, 'usersEmp']);
-Route::post('managerUpdateUsers', [UserController::class, 'managerUpdateUsers']);
-Route::post('managerCreateUser', [UserController::class, 'managerCreateUser']);
-Route::put('deleteUser/{id}/{type}', [UserController::class, 'deleteUser']);
-Route::put('blockUser/{id}', [UserController::class, 'blockUser']);
-Route::put('unblockUser/{id}', [UserController::class, 'unblockUser']);
-
+Route::middleware('auth:sanctum')->post('update', [UserController::class, 'update']);
+Route::middleware('auth:sanctum')->put('password',[UserController::class, 'changePassword']);
+Route::middleware('auth:sanctum')->put('userUnavailable/{id}', [UserController::class, 'updateUserToUnavailable']);
+Route::middleware('auth:sanctum')->get('users', [UserController::class, 'users'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('usersEmp', [UserController::class, 'usersEmp'])->middleware("manager");
+Route::middleware('auth:sanctum')->post('managerUpdateUsers', [UserController::class, 'managerUpdateUsers'])->middleware("manager");
+Route::middleware('auth:sanctum')->post('managerCreateUser', [UserController::class, 'managerCreateUser'])->middleware("manager");
+Route::middleware('auth:sanctum')->put('deleteUser/{id}/{type}', [UserController::class, 'deleteUser'])->middleware("manager");
+Route::middleware('auth:sanctum')->put('blockUser/{id}', [UserController::class, 'blockUser'])->middleware("manager");
+Route::middleware('auth:sanctum')->put('unblockUser/{id}', [UserController::class, 'unblockUser'])->middleware("manager");
 //PRODUCTS
 Route::get('fotos/{filename}', function ($filename)
 {
@@ -55,28 +58,28 @@ Route::get('fotos/{filename}', function ($filename)
 })->name('fotos_url');
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{id}', [ProductController::class, 'showProduct']);
-Route::post('updateProducts', [ProductController::class, 'updateProducts']);
-Route::post('newProduct', [ProductController::class, 'newProduct']);
-Route::put('deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
+Route::middleware('auth:sanctum')->post('updateProducts', [ProductController::class, 'updateProducts'])->middleware("manager");
+Route::middleware('auth:sanctum')->post('newProduct', [ProductController::class, 'newProduct'])->middleware("manager");
+Route::middleware('auth:sanctum')->put('deleteProduct/{id}', [ProductController::class, 'deleteProduct'])->middleware("manager");
 
 
 //ORDERS
 
-Route::put('assignCook/{id}', [OrderController::class, 'assignCook']);
-Route::post('orderStore', [OrderController::class, 'storeOrder']);
-Route::get('orders', [OrderController::class, 'getAllOrders']);//orders a espera 'H'
-Route::get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar
-Route::get('ordersNot/{id}', [OrderController::class, 'getOrdersNot']);//orders cutomer entregues
-Route::get('ordersUncooked', [OrderController::class, 'getOrdersUncooked']);//orders para o cozinheiro
-Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//orders do cozinheiro
-Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
-Route::put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR']);
-Route::put('assignOnlineCook/{id}', [OrderController::class, 'assignOnlineCook']);
+Route::middleware('auth:sanctum')->put('assignCook/{id}', [OrderController::class, 'assignCook'])->middleware("cooker");
+Route::middleware('auth:sanctum')->post('orderStore', [OrderController::class, 'storeOrder'])->middleware("customer");;
+Route::middleware('auth:sanctum')->get('orders', [OrderController::class, 'getAllOrders'])->middleware("cooker");//orders a espera 'H'
+Route::middleware('auth:sanctum')->get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar
+Route::middleware('auth:sanctum')->get('ordersNot/{id}', [OrderController::class, 'getOrdersNot']);//orders cutomer entregues
+Route::middleware('auth:sanctum')->get('ordersUncooked', [OrderController::class, 'getOrdersUncooked'])->middleware("cooker");//orders para o cozinheiro
+Route::middleware('auth:sanctum')->get('cookOrders/{id}', [OrderController::class, 'getCookOrders'])->middleware("cooker");//orders do cozinheiro
+Route::middleware('auth:sanctum')->get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress'])->middleware("cooker");//orders do cozinheiro em progresso
+Route::middleware('auth:sanctum')->put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR'])->middleware("cooker");
+Route::middleware('auth:sanctum')->put('assignOnlineCook/{id}', [OrderController::class, 'assignOnlineCook'])->middleware("cooker");
 
 //ORDER ITEMS 
 
 
-Route::get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);
+Route::middleware('auth:sanctum')->get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);
 
 
 
@@ -85,22 +88,22 @@ Route::get('orderItems/{id}', [OrderItemsController::class, 'getOrderItems']);
 
 //ORDERS DELIVERYMAN//////////////////////////////////////
 
-Route::get('deliveryManOrders/', [OrderController::class, 'getDeliveryManOrders']);//orders do deliveryman
-Route::put('assignDeliveryMan/{id}', [OrderController::class, 'assignDeliveryMan']);
-Route::put('changeOrderRtoT/{id}', [OrderController::class, 'changeOrderRtoT']);
-Route::put('changeOrderTtoD/{id}', [OrderController::class, 'changeOrderTtoD']);
-Route::get('getDeliveryOrdersInProgress/{id}', [OrderController::class, 'getDeliveryOrdersInProgress']);//orders do deliveryman current
+Route::middleware('auth:sanctum')->get('deliveryManOrders/', [OrderController::class, 'getDeliveryManOrders'])->middleware("deliveryman");//orders do deliveryman
+Route::middleware('auth:sanctum')->put('assignDeliveryMan/{id}', [OrderController::class, 'assignDeliveryMan'])->middleware("deliveryman");
+Route::middleware('auth:sanctum')->put('changeOrderRtoT/{id}', [OrderController::class, 'changeOrderRtoT'])->middleware("deliveryman");
+Route::middleware('auth:sanctum')->put('changeOrderTtoD/{id}', [OrderController::class, 'changeOrderTtoD'])->middleware("deliveryman");
+Route::middleware('auth:sanctum')->get('getDeliveryOrdersInProgress/{id}', [OrderController::class, 'getDeliveryOrdersInProgress'])->middleware("deliveryman");//orders do deliveryman current
 
 
 
 //STATISTICS
-Route::get('numberofusers', [StatisticsController::class, 'numberofusers']);
-Route::get('numberoforders', [StatisticsController::class, 'numberoforders']);
-Route::get('revenue', [StatisticsController::class, 'revenue']);
-Route::get('typeofcategory', [StatisticsController::class, 'typeofcategory']);
-Route::get('averageSpentCustomer', [StatisticsController::class, 'averageSpentCustomer']);
-Route::get('avgtime', [StatisticsController::class, 'avgtime']);
-Route::get('salespermonth', [StatisticsController::class, 'salespermonth']);
-Route::get('ordersPerMonthYear', [StatisticsController::class, 'ordersPerMonthYear']);
+Route::middleware('auth:sanctum')->get('numberofusers', [StatisticsController::class, 'numberofusers'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('numberoforders', [StatisticsController::class, 'numberoforders'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('revenue', [StatisticsController::class, 'revenue'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('typeofcategory', [StatisticsController::class, 'typeofcategory'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('averageSpentCustomer', [StatisticsController::class, 'averageSpentCustomer'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('avgtime', [StatisticsController::class, 'avgtime'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('salespermonth', [StatisticsController::class, 'salespermonth'])->middleware("manager");
+Route::middleware('auth:sanctum')->get('ordersPerMonthYear', [StatisticsController::class, 'ordersPerMonthYear'])->middleware("manager");
 
 

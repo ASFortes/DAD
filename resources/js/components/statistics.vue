@@ -59,8 +59,8 @@
                     <apexcharts
                       class="mt-2"
                       height="200"
-                      :options="users_operators_admins.chartOptions"
-                      :series="users_operators_admins.series"
+                      :options="numberofcurrentusers.chartOptions"
+                      :series="numberofcurrentusers.series"
                     ></apexcharts>
                   </div>
                 </div>
@@ -326,97 +326,10 @@ export default {
       },
 
 
-      
-// totalProducts: {
-          
-//           series: [{
-//             name: 'Euros',
-//             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-//           }],
-//           chartOptions: {
-//             chart: {
-//               height: 350,
-//               type: 'bar',
-//             },
-//             plotOptions: {
-//               bar: {
-//                 dataLabels: {
-//                   position: 'top', // top, center, bottom
-//                 },
-//               }
-//             },
-//             dataLabels: {
-//               enabled: true,
-//               formatter: function (val) {
-//                 return val;
-//               },
-//               offsetY: -20,
-//               style: {
-//                 fontSize: '12px',
-//                 colors: ["#304758"]
-//               }
-//             },
-            
-//             xaxis: {
-//               categories: [],
-//               position: 'top',
-//               axisBorder: {
-//                 show: false
-//               },
-//               axisTicks: {
-//                 show: false
-//               },
-//               crosshairs: {
-//                 fill: {
-//                   type: 'gradient',
-//                   gradient: {
-//                     colorFrom: '#D8E3F0',
-//                     colorTo: '#BED1E6',
-//                     stops: [0, 100],
-//                     opacityFrom: 0.4,
-//                     opacityTo: 0.5,
-//                   }
-//                 }
-//               },
-//               tooltip: {
-//                 enabled: true,
-//               }
-//             },
-//             yaxis: {
-//               axisBorder: {
-//                 show: false
-//               },
-//               axisTicks: {
-//                 show: false,
-//               },
-//               labels: {
-//                 show: false,
-//                 formatter: function (val) {
-//                   return val;
-//                 }
-//               }
-            
-//             },
-//             title: {
-//               text: 'Total number of product sales',
-//               floating: true,
-//               offsetY: 330,
-//               align: 'center',
-//               style: {
-//                 color: '#444'
-//               }
-//             }
-//           },
-          
-          
-//         },
-
-
-
-      users_operators_admins: {
+      numberofcurrentusers: {
         chartOptions: {
           chart: {
-            id: "users_operators_admins",
+            id: "numberofcurrentusers",
             height: 150,
             type: "donut",
             zoom: {
@@ -481,13 +394,13 @@ export default {
       axios.get("api/numberofusers").then((response) => {
         this.numberOfUsers = response.data.total;
         //  console.log(response.data);
-        this.users_operators_admins.series = [
+        this.numberofcurrentusers.series = [
           response.data.customers,
           response.data.cookers,
           response.data.deliverers,
           response.data.managers,
         ];
-        // console.log(this.users_operators_admins.series);
+        // console.log(this.numberofcurrentusers.series);
       });
       axios.get("api/numberoforders").then((response) => {
         this.numberoforders = response.data;

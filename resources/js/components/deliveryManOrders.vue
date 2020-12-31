@@ -326,6 +326,15 @@ export default {
 
           
         },
+      
+
+        order_canceled(iD,id_delivered_by) {
+          //  if (prepared_by==this.$store.state.user.id && order.state==P){
+         
+          //  }
+             alert("Order:" + iD + " canceled");
+            window.location.reload(true);
+        },
     
 },
 };

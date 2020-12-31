@@ -72,7 +72,7 @@ Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//order
 Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
 Route::put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR']);
 Route::put('assignOnlineCook/{id}', [OrderController::class, 'assignOnlineCook']);
-
+Route::put('changeOrdertoC/{id}', [OrderController::class, 'changeOrdertoC']);
 //ORDER ITEMS 
 
 

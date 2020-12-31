@@ -134,6 +134,17 @@ export default {
                 this.orders[0] = order;
             }
         },
+
+         order_canceled(iD) {
+           
+            if (iD.id_prepared_by==this.$store.state.user.id){
+                alert("Order:" + iD + " canceled");
+            window.location.reload(true);
+            }else{
+              alert("Order:" + iD + " estupidezzzzzzzzzzzzzzzzzzz");
+            }
+             
+        },
        
   },
 
@@ -234,6 +245,7 @@ export default {
         if(response.data.length > 0){
         this.orders[0] = response.data[0];
         console.log(this.orders[0]);
+        console.log(this.$store.state.user.id);
         }
       })
       .catch((error) => {

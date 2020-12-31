@@ -64,7 +64,9 @@ export default {
             //axios.put()
             
             this.$store.commit("setUser", response.data);
+            if(this.$store.state.user.type != 'C'){
             this.$socket.emit("user_available", this.$store.state.user.id);
+            }
 
             if (this.$store.state.user.type == "EC" ) {
 

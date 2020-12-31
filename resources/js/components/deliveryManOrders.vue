@@ -192,12 +192,14 @@ export default {
             this.currentPage
         )
         .then((response) => {
-            console.log(response.data);
+           if(response.data.length !=  0){
+            console.log(response.data.length);
             if(response.data[0]['status'] == 'T'){
             this.showFlag = 1;
             }else{
               this.showFlag = 0;
             }
+           }
             /* for (let index = 0; index < response.data.length; index++) {
                  if(response.data[index].customer_photo!=null){
       this.photo_url = response.data[index].customer_photo;

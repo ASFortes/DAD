@@ -210,7 +210,7 @@
               
             "
             class="btn btn-sm btn-danger"
-            v-on:click.prevent="cancelOrder(data.item.id,data.item.prepared_by,data.item.delivered_by);"
+            v-on:click.prevent="cancelOrder(data.item.id);"
           >
             Cancel Order
           </button> 
@@ -494,14 +494,14 @@ export default {
       
     },
 
-    cancelOrder: function(id,id_prepared_by,id_delivered_by) {
+    cancelOrder: function(id) {
            axios
         .put("api/changeOrdertoC/" + id)
         .then((response) => {
           console.log(response);
           
           
-             this.$socket.emit("order_canceled", id,id_prepared_by,id_delivered_by);
+             
            
            //this.$socket.emit("change_Status_To_D", id);
            
@@ -514,6 +514,7 @@ export default {
               console.log(error);
        
         });
+        this.$socket.emit("order_canceled", this.activeOrders[0]);
     },
      
   },
@@ -522,7 +523,7 @@ export default {
     this.getUsers();
     
 
-    console.log(this.users);
+   // console.log(this.users);
   },
   computed: {
      filteredUsers() {

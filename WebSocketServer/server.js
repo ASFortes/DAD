@@ -135,9 +135,9 @@ io.on('connection', function (socket) {
         console.log('cook_back_avai [user]: ' + id+'aqui')
     })
 
-    socket.on('order_canceled',(id,id_prepared_by,id_delivered_by)=>{
-        socket.broadcast.emit('order_canceled', id,id_prepared_by,id_delivered_by)
-        console.log('cook_back_avai [user]: ' + id+ "/"+ id_prepared_by +"/"+ id_delivered_by +  'aqui')
+    socket.on('order_canceled',(id)=>{
+        socket.broadcast.emit('order_canceled', id)
+        console.log('cook_back_avai [user]: ' + id +  'aqui')
     })
 
 

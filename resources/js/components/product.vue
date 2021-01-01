@@ -4,6 +4,7 @@
       <div>
         <nav-bar></nav-bar>
       </div>
+      <br><br><br>
 
       <input v-model="searchTerm" placeholder="Filtrar por nome" />
 

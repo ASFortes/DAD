@@ -143,10 +143,10 @@ class UserController extends Controller
             $user->name = $request['name'];
             $user->email = $request['email'];
          
-            $user->photo_url=$request['photo'];
+            
             if($user->type=='C'){
                 $customer = User::find($user_id);
-            var_dump($customer);
+           
             $customer->nif = $request['nif'];
             $customer->address = $request['address'];
             $customer->phone = $request['phone'];
@@ -155,11 +155,12 @@ class UserController extends Controller
             //$customer->save();
             }
             $user->save();
+         
             if ($request->hasfile('photo')) {
-                
+                   
                 $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
-                Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
-                
+         
+                 Storage::putFileAs("fotos", $request->file('photo'), $nov_nome);//364
                 $user['photo_url'] = $nov_nome;
             }
             $user->update();
@@ -291,19 +292,18 @@ public function users()
     {
 
         //  return response()->json($request, 201);
-               $user_id = Auth::user()->id;
-               
-            //    $customer_id=$user_id;
-                $user = User::find($request['id']);
-                
-
-               $validator = Validator::make($request->all(),[
+            $user= User::find($request['id']);
+              $user_id = $request['id'];
+             //return response()->json( $user_id, 201);
+              $validator = Validator::make($request->all(),[
                 'name' => 'required|min:2|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
                 'email' => 'required|email|unique:users,email,'.$user_id,
                 'photo'=>'sometimes|required|mimes:jpeg,png|max:10000',
                 'type'=>'required'
               
             ]);
+
+            
 
             if ($validator->fails()) {
                 return response()->json(['error' =>$validator->errors()->first()],400);
@@ -313,10 +313,7 @@ public function users()
                $user->type = $request['type'];
                $user->email = $request['email'];
                 
-              
-               //$customer->save();
-               //}
-            //    $user->save();
+        
                if ($request->hasfile('photo')) {
                    
                    $nov_nome = $user->id . "_" . time() . "." . $request->file('photo')->getClientOriginalExtension();
@@ -327,12 +324,6 @@ public function users()
                $user->save();
                return response()->json($user, 201);
    
-            //    $user->update();
-   
-              
-   
-            //   return response()->json($user, 201);
-       // return response()->json( $user, 201);
     }
 
 

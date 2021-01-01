@@ -222,11 +222,6 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
 
-      // const file = new Blob([this.file]);
-      // const formData = new FormData();
-      // formData.append("photo", file, this.email + "_photo");
-      // this.photo=this.email+"_photo";
-
       const fd = new FormData();
       fd.append("name", this.form.name);
       fd.append("email", this.form.email);
@@ -243,6 +238,7 @@ export default {
       if (this.form.photo != null) {
         fd.append("photo", this.form.photo);
       }
+      
 
       if (this.password != this.confirmPassword) {
         this.showMessage = true;

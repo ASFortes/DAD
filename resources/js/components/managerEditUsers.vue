@@ -54,7 +54,7 @@
                     type="text"
                     required
                     placeholder="Email"
-                  ></b-form-input>
+                  >{{this.user.name}}</b-form-input>
                 </b-form-group>
 
                 <b-form-group label="Photo">

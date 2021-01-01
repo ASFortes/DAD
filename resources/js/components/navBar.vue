@@ -1,7 +1,9 @@
 <template>
   <div class="top-right links">
-    <a v-if="this.$route.path != '/home'" href="/#/home">Home</a>
-    <a v-if="this.$route.path != '/products'" href="/#/products">Menu</a>
+    <!-- <a v-if="this.$route.path != '/home'" href="/#/home">Home</a> -->
+    <!-- <a v-if="this.$route.path != '/products'" href="/#/products">Menu</a> -->
+    <a v-if="this.$store.state.user==null || this.$store.state.user.type=='C'" href="/#/home">Home</a>
+    <a v-if="this.$store.state.user==null || this.$store.state.user.type=='C' || this.$store.state.user.type=='EM'" href="/#/products">Menu</a>
     <a v-if="this.$store.state.user==null" href="/#/login">Login</a>
     <a v-if="this.$store.state.user==null" href="/#/register">Register</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='C'" href="/#/cart" >Cart</a>
@@ -11,7 +13,7 @@
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/manageUsers" >Manage Users</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/managerEmpList" >Manage Workers</a>
     <a v-if="this.$store.state.user!=null && this.$store.state.user.type=='EM'" href="/#/statistics" >Statistics</a>
-    <a v-if="this.$store.state.user!=null" href="/#/userEdit" @click.prevent="myself">Profile</a>
+    <a v-if="this.$store.state.user!=null && (this.$store.state.user.type=='EM' || this.$store.state.user.type=='C')" href="/#/userEdit" @click.prevent="myself">Profile</a>
     <a v-if="this.$store.state.user!=null" href="/#/home" @click="logout">Logout</a>
    
 

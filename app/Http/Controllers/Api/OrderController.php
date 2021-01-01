@@ -351,6 +351,27 @@ class OrderController extends Controller
         }
 
 
+
+        public function changeOrdertoC($id)
+        {
+                
+                $order= Order::find($id);
+               // $userWorker=User::where('available_at',null)->where('type','ED')->where('id',$order->delivered_by)->first();
+                
+                $order->status='C';
+                //$order->delivery_time= strtotime(date('Y-m-d H:i:s')) - strtotime($order->current_status_at);
+                $order->current_status_at=date('Y-m-d H:i:s');
+                $order->updated_at=date('Y-m-d H:i:s');
+                $order->closed_at=date('Y-m-d H:i:s');
+                //$userWorker->available_at=date('Y-m-d H:i:s');
+                $order->save();
+               // $userWorker->save();
+                
+
+                return response()->json($order, 201);
+        }
+
+
      
 
 }

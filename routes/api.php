@@ -65,6 +65,17 @@ Route::middleware('auth:sanctum')->put('deleteProduct/{id}', [ProductController:
 
 //ORDERS
 
+Route::put('assignCook/{id}', [OrderController::class, 'assignCook']);
+Route::post('orderStore', [OrderController::class, 'storeOrder']);
+Route::get('orders', [OrderController::class, 'getAllOrders']);//orders a espera 'H'
+Route::get('orders/{id}', [OrderController::class, 'getOrders']);//orders por entregar
+Route::get('ordersNot/{id}', [OrderController::class, 'getOrdersNot']);//orders cutomer entregues
+Route::get('ordersUncooked', [OrderController::class, 'getOrdersUncooked']);//orders para o cozinheiro
+Route::get('cookOrders/{id}', [OrderController::class, 'getCookOrders']);//orders do cozinheiro
+Route::get('cookOrdersInProgress/{id}', [OrderController::class, 'getCookOrdersInProgress']);//orders do cozinheiro em progresso
+Route::put('changeOrderPtoR/{id}', [OrderController::class, 'changeOrderPtoR']);
+Route::put('assignOnlineCook/{id}', [OrderController::class, 'assignOnlineCook']);
+Route::put('changeOrdertoC/{id}', [OrderController::class, 'changeOrdertoC']);
 Route::middleware('auth:sanctum')->put('assignCook/{id}', [OrderController::class, 'assignCook'])->middleware("cooker");
 Route::middleware('auth:sanctum')->post('orderStore', [OrderController::class, 'storeOrder'])->middleware("customer");;
 Route::middleware('auth:sanctum')->get('orders', [OrderController::class, 'getAllOrders'])->middleware("cooker");//orders a espera 'H'

@@ -326,6 +326,18 @@ export default {
 
           
         },
+      
+
+         order_canceled(iD) {
+           
+            if (iD.delivered_by==this.$store.state.user.id){
+                alert("Order:" + iD.id + " canceled");
+            window.location.reload(true);
+            }else{
+              alert("Order:" + iD.id + " estupidezzzzzzzzzzzzzzzzzzz");
+            }
+             
+        },
     
 },
 };

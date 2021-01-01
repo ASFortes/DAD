@@ -105,6 +105,8 @@
           </button>
         </template>
 
+        
+
         <template #cell(type)="data">
           <span
             v-if="data.item.type == 'EC'"
@@ -196,6 +198,23 @@
           >
             seeOrderDetails
           </button>
+        </template>
+
+        <template #cell(actions2)="data">
+           <button
+            v-if="
+              $store.state.user != null &&
+              $store.state.user.type == 'EM' &&
+              $store.state.user.id != data.item.id 
+              //data.item.available_at == null && data.item.logged_at != null
+              
+            "
+            class="btn btn-sm btn-danger"
+            v-on:click.prevent="cancelOrder(data.item.id);"
+          >
+            Cancel Order
+          </button> 
+          
         </template>
 
 
@@ -326,7 +345,7 @@ export default {
              //   return "";
              // }
              if (item.name == null){
-                 return "Nao Atribuido"
+                 return "Not attributed"
              }
              return item.name;
            },
@@ -369,6 +388,12 @@ export default {
               return "";
             }
           },
+        },
+
+        {
+          key:"actions2",
+          label: "Cancel Order",
+          
         },
           
         ],
@@ -468,6 +493,29 @@ export default {
       }
       
     },
+
+    cancelOrder: function(id) {
+           axios
+        .put("api/changeOrdertoC/" + id)
+        .then((response) => {
+          console.log(response);
+          
+          
+             
+           
+           //this.$socket.emit("change_Status_To_D", id);
+           
+           this.getUsers();
+           
+          
+            })
+            .catch((error) => {
+              console.log("erro aquii");
+              console.log(error);
+       
+        });
+        this.$socket.emit("order_canceled", this.activeOrders[0]);
+    },
      
   },
 
@@ -475,7 +523,7 @@ export default {
     this.getUsers();
     
 
-    console.log(this.users);
+   // console.log(this.users);
   },
   computed: {
      filteredUsers() {

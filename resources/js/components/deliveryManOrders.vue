@@ -323,6 +323,7 @@ export default {
           
          // window.location.reload(true);
            console.log(this.orders)
+           this.getOrders();
 
           
         },

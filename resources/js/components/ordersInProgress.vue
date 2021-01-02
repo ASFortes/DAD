@@ -19,6 +19,40 @@
         responsive="sm"
         ref="orderTable"
       >
+
+      <template #cell(status)="data">
+          <span
+            v-if="data.item.status == 'H'"
+            class="text-center"
+            >Holding</span
+          >
+          <span
+            v-if="data.item.status == 'P'"
+            class="text-center"
+            >Preparing</span
+          >
+          <span
+            v-if="data.item.status == 'R'"
+            class="text-center"
+            >Cooked</span
+          >
+          <span
+            v-if="data.item.status == 'T'"
+            class="text-center"
+            >In Transit</span
+          >
+          <span
+            v-if="data.item.status == 'D'"
+            class="text-center"
+            >Delivered</span
+          >
+          <span
+            v-if="data.item.status == 'C'"
+            class="text-center"
+            >Canceled</span
+          >
+        </template>
+
         <template #cell(actions)="data">
           <b-button
             id="show-btn"

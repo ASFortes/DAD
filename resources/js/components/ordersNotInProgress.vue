@@ -18,6 +18,18 @@
         hover
         responsive="sm"
       >
+      <template #cell(status)="data">
+          <span
+            v-if="data.item.status == 'D'"
+            class="text-center"
+            >Delivered</span
+          >
+          <span
+            v-if="data.item.status == 'C'"
+            class="text-center"
+            >Canceled</span
+          >
+        </template>
         <template #cell(actions)="data">
           <b-button
             id="show-btn"
@@ -27,7 +39,7 @@
               show = true;
               seeOrderDetails(data.item.id);
             "
-            >Ver detalhes</b-button
+            >See Details</b-button
           >
           <b-modal id="my-modal" v-model="show">
             

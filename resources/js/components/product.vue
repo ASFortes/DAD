@@ -6,9 +6,9 @@
       </div>
       <br><br><br>
 
-      <input v-model="searchTerm" placeholder="Filtrar por nome" />
+      <input v-model="searchTerm" placeholder="Filter by name" />
 
-      <b-dropdown id="dropdown-1" text="Tipo" variant="primary" class="m-2">
+      <b-dropdown id="dropdown-1" text="Type" variant="primary" class="m-2">
         <b-dropdown-item @click="changeType('drink')">Drink</b-dropdown-item>
         <b-dropdown-item @click="changeType('dessert')"
           >Dessert</b-dropdown-item

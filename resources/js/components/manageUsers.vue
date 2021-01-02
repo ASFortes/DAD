@@ -6,7 +6,7 @@
       </div>
       <br><br><br>
 
-      <input v-model="searchTerm" placeholder="Filtrar por nome" />
+      <input v-model="searchTerm" placeholder="Filter by name" />
 
       <b-dropdown
         id="dropdown-1"

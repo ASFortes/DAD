@@ -8,7 +8,7 @@
       <br /><br /><br />
 
 
-     <input v-model="searchTerm" placeholder="Filtrar por nome" />
+     <input v-model="searchTerm" placeholder="Filter by name" />
 
       <b-dropdown id="dropdown-1" text="Filter By Role" variant="primary" class="m-2">
         <b-dropdown-item @click="changeType('EM')">Managers</b-dropdown-item>

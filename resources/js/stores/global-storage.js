@@ -45,7 +45,7 @@ export default new Vuex.Store({
         if (record.quantity == 1) {
           state.shopCart.products.splice(state.shopCart.products.indexOf(record), 1)
         } else {
-          state.shopCart[state.shopCart.products.indexOf(record)].quantity--
+          record.quantity--
         }
       }
 
